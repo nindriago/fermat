@@ -1,13 +1,14 @@
 package org.fermat.fermat_dap_api.layer.agent.asset_miner.interfaces;
 
 import com.bitdubai.fermat_api.Agent;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.FermatManager;
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.bitcoin_wallet.interfaces.BitcoinWalletWallet;
 
 /**
  * Created by rodrigo on 4/10/16.
  * Agent that monitors incoming Assets and Breaks them to get the Bitcoins.
  */
-public interface AssetMinerAgentManager {
+public interface AssetMinerAgentManager extends FermatManager {
 
     /**
      * Indicates if the Agent is enabled to execute automatic mining of expired Assets
