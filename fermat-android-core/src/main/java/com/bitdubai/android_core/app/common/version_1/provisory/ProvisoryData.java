@@ -144,7 +144,7 @@ public class ProvisoryData {
         item2.setPosition(5);
         lstIdentities.add(item2);
 
-        installedSubApp = new InstalledSubApp(
+        /*installedSubApp = new InstalledSubApp(
                 SubApps.TKY_FAN_IDENTITY_SUB_APP,
                 null,
                 null,
@@ -191,7 +191,6 @@ public class ProvisoryData {
                 "sub_app_chat_identity",
                 new Version(1, 0, 0),
                 Platforms.CHAT_PLATFORM);
-
         item2 = new Item(installedSubApp);
         item2.setIconResource(R.drawable.chat_subapp);
         item2.setPosition(8);
