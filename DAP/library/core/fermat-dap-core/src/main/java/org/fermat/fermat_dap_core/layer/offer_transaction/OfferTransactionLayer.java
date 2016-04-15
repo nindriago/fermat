@@ -16,7 +16,7 @@ public class OfferTransactionLayer extends AbstractLayer {
 
     //CONSTRUCTORS
     public OfferTransactionLayer() {
-        super(Layers.CRYPTO_TRANSACTION);
+        super(Layers.OFFER_TRANSACTION);
     }
 
     //PUBLIC METHODS
