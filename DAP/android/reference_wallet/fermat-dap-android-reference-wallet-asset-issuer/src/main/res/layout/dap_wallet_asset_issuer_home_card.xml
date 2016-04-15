@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:layout_marginBottom="13dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="12dp"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="@drawable/bg_card">
+
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:id="@+id/assetQuantityCardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20 assets"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/color_white"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/assetImageCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_asset_without_image"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/color_white">
+
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:id="@+id/assetNameCardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Asset Name"
+                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="3dp"/>
+
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:id="@+id/assetValueCardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.000123"
+                    android:layout_below="@+id/assetNameCardText"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginLeft="5dp"/>
+
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BTC"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"
+                    android:layout_toRightOf="@+id/assetValueCardText"
+                    android:layout_alignTop="@+id/assetValueCardText"
+                    android:layout_marginLeft="3dp"
+                    android:textStyle="bold"/>
+
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Exp Date:"
+                    android:textSize="12sp"
+                    android:layout_toLeftOf="@+id/assetExpDateCardText"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"/>
+
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:id="@+id/assetExpDateCardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dec 16, 2016"
+                    android:textSize="12sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/gray"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageButton
+                        android:id="@+id/cardAppropriateButton"
+                        android:layout_width="75dp"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:src="@drawable/appropriate_ic"/>
+
+                    <ImageButton
+                        android:id="@+id/cardDeliverButton"
+                        android:layout_width="75dp"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:src="@drawable/deliver_ic"/>
+
+                    <ImageButton
+                        android:id="@+id/cardTransactionsButton"
+                        android:layout_width="75dp"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:src="@drawable/transactions_ic"/>
+
+                    <ImageButton
+                        android:id="@+id/cardStatsButton"
+                        android:layout_width="75dp"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:src="@drawable/stats_ic"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
