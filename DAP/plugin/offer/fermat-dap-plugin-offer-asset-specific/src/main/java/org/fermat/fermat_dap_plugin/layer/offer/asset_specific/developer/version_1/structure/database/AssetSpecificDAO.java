@@ -83,7 +83,7 @@ public class AssetSpecificDAO {
 
     private Database openDatabase(PluginDatabaseSystem pluginDatabaseSystem, UUID pluginId) throws CantExecuteDatabaseOperationException {
         try {
-            return pluginDatabaseSystem.openDatabase(pluginId, AssetSpecificDatabaseConstants.SPECIFIC_OFFER_TABLE);
+            return pluginDatabaseSystem.openDatabase(pluginId, AssetSpecificDatabaseConstants.SPECIFIC_OFFER_DATABASE);
         } catch (CantOpenDatabaseException | DatabaseNotFoundException exception) {
             throw new CantExecuteDatabaseOperationException(exception, "Opening the Asset Reception Transaction Database", "Error in database plugin.");
         }
