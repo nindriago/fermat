@@ -15,7 +15,7 @@ public class OfferLayer extends AbstractLayer {
 
     //CONSTRUCTORS
     public OfferLayer() {
-        super(Layers.CRYPTO_TRANSACTION);
+        super(Layers.OFFER);
     }
 
     //PUBLIC METHODS
@@ -23,7 +23,7 @@ public class OfferLayer extends AbstractLayer {
     public void start() throws CantStartLayerException {
         try {
 
-            registerPlugin(new AssetGeneralPluginSubsystem());
+//            registerPlugin(new AssetGeneralPluginSubsystem());
             registerPlugin(new AssetSpecificPluginSubsystem());
 
         } catch (Exception e) {

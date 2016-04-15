@@ -83,7 +83,7 @@ public class DigitalAssetMetadataDAO {
 
     private Database openDatabase(PluginDatabaseSystem pluginDatabaseSystem, UUID pluginId) throws CantExecuteDatabaseOperationException {
         try {
-            return pluginDatabaseSystem.openDatabase(pluginId, DigitalAssetMetadataDatabaseConstants.DIGITAL_ASSET_METADATA_TABLE);
+            return pluginDatabaseSystem.openDatabase(pluginId, DigitalAssetMetadataDatabaseConstants.DIGITAL_ASSET_METADATA_DATABASE);
         } catch (CantOpenDatabaseException | DatabaseNotFoundException exception) {
             throw new CantExecuteDatabaseOperationException(exception, "Opening the Asset Reception Transaction Database", "Error in database plugin.");
         }
