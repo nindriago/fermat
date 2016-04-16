@@ -16,9 +16,11 @@ import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
 import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.HomeCardFragment;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 
 /**
@@ -65,7 +67,7 @@ public class HomeCardViewHolder extends FermatViewHolder {
         cardStatsButton = (ImageButton) itemView.findViewById(R.id.cardStatsButton);
     }
 
-    public void bind(final DigitalAsset digitalAsset) {
+    public void bind(final DigitalAsset digitalAsset, final HomeCardFragment homeCardFragment) {
         byte[] img = (digitalAsset.getImage() == null) ? new byte[0] : digitalAsset.getImage();
         BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(assetImageCard, res, R.drawable.img_asset_without_image, false);
         bitmapWorkerTask.execute(img);
@@ -97,7 +99,8 @@ public class HomeCardViewHolder extends FermatViewHolder {
         cardDeliverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                appSession.setData("asset_data", digitalAsset);
+                homeCardFragment.doDeliverAction();
             }
         });
         cardTransactionsButton.setOnClickListener(new View.OnClickListener() {

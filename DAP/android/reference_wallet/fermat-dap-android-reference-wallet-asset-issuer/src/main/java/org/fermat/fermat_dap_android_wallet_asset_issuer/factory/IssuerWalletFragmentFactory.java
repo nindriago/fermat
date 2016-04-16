@@ -18,6 +18,7 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.UserDeliveryL
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.UserRedeemedListFragment;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.DeliverUserFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.HomeCardFragment;
 
 import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
@@ -64,7 +65,7 @@ public class IssuerWalletFragmentFactory extends FermatFragmentFactory<AssetIssu
                     currentFragment = new UserRedeemedListFragment();
                     break;
                 case DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY:
-                    currentFragment = new AssetDeliveryFragment();
+                    currentFragment = new DeliverUserFragment();
                     break;
                 case DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY_TAB_SELECT_USERS:
                     currentFragment = new AssetDeliverySelectUsersFragment();

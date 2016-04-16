@@ -350,7 +350,7 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
     @Override
     public FermatAdapter getAdapter() {
         if (adapter == null) {
-            adapter = new HomeCardAdapter(getActivity(), digitalAssets, moduleManager, appSession);
+            adapter = new HomeCardAdapter(this, getActivity(), digitalAssets, moduleManager, appSession);
             adapter.setFermatListEventListener(this);
         } else {
             adapter.changeDataSet(digitalAssets);
@@ -419,5 +419,9 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
             default:
                 super.onUpdateViewOnUIThread(code);
         }
+    }
+
+    public void doDeliverAction() {
+        changeActivity(Activities.DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY, appSession.getAppPublicKey());
     }
 }

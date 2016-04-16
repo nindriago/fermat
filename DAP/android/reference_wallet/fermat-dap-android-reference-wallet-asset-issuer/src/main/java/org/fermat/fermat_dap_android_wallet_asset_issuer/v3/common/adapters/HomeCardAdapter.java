@@ -14,6 +14,7 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.holders.MyAssetsViewHol
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.filters.HomeCardAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.holders.HomeCardViewHolder;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.HomeCardFragment;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 
 import java.util.List;
@@ -23,11 +24,13 @@ import java.util.List;
  */
 public class HomeCardAdapter extends FermatAdapter<DigitalAsset, HomeCardViewHolder> implements Filterable {
 
+    private HomeCardFragment homeCardFragment;
     private AssetIssuerWalletSupAppModuleManager manager;
     private FermatSession appSession;
 
-    public HomeCardAdapter(Context context, List<DigitalAsset> digitalAssets, AssetIssuerWalletSupAppModuleManager manager, FermatSession appSession) {
+    public HomeCardAdapter(HomeCardFragment homeCardFragment, Context context, List<DigitalAsset> digitalAssets, AssetIssuerWalletSupAppModuleManager manager, FermatSession appSession) {
         super(context, digitalAssets);
+        this.homeCardFragment = homeCardFragment;
         this.manager = manager;
         this.dataSet = digitalAssets;
         this.appSession = appSession;
@@ -45,7 +48,7 @@ public class HomeCardAdapter extends FermatAdapter<DigitalAsset, HomeCardViewHol
 
     @Override
     protected void bindHolder(HomeCardViewHolder holder, DigitalAsset data, int position) {
-        holder.bind(data);
+        holder.bind(data, homeCardFragment);
     }
 
     @Override

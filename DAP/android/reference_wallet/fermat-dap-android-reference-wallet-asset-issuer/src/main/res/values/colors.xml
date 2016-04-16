@@ -33,4 +33,6 @@
     <color name="dap_issuer_wallet_delivered_list_redeemed"></color>
     <color name="dap_issuer_wallet_delivered_list_unused"></color>
     -->
+
+    <color name="card_toolbar_trans">#aa1371a7</color>
 </resources>
