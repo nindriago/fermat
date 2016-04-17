@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 import static android.widget.Toast.makeText;
 
@@ -143,7 +144,6 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
             }
         }, 500);
 
-        setupBackgroundBitmap(layout);
         configureToolbar();
         noAssetsView = layout.findViewById(R.id.dap_wallet_no_assets);
 
@@ -250,51 +250,14 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
+            toolbar.setBackgroundColor(getResources().getColor(R.color.dap_issuer_wallet_v3_toolbar));
             toolbar.setTitleTextColor(Color.WHITE);
-            Drawable drawable = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                drawable = getResources().getDrawable(R.drawable.dap_wallet_asset_issuer_action_bar_gradient_colors, null);
-                toolbar.setElevation(0);
-            } else {
-                drawable = getResources().getDrawable(R.drawable.dap_wallet_asset_issuer_action_bar_gradient_colors);
+            toolbar.setBottom(Color.WHITE);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getActivity().getWindow();
+                window.setStatusBarColor(getResources().getColor(R.color.dap_issuer_wallet_v3_toolbar));
             }
-            toolbar.setBackground(drawable);
         }
-    }
-
-    private void setupBackgroundBitmap(final View rootView) {
-        AsyncTask<Void, Void, Bitmap> asyncTask = new AsyncTask<Void, Void, Bitmap>() {
-
-            WeakReference<ViewGroup> view;
-
-            @Override
-            protected void onPreExecute() {
-                view = new WeakReference(rootView);
-            }
-
-            @Override
-            protected Bitmap doInBackground(Void... params) {
-                Bitmap drawable = null;
-                try {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inScaled = true;
-                    options.inSampleSize = 5;
-                    drawable = BitmapFactory.decodeResource(
-                            getResources(), R.drawable.bg_app_image, options);
-                } catch (OutOfMemoryError error) {
-                    error.printStackTrace();
-                }
-                return drawable;
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap drawable) {
-                if (drawable != null) {
-                    view.get().setBackground(new BitmapDrawable(getResources(), drawable));
-                }
-            }
-        };
-        asyncTask.execute();
     }
 
     @Override
@@ -304,7 +267,7 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dap_wallet_asset_issuer_my_assets_activity;
+        return R.layout.dap_wallet_asset_issuer_home;
     }
 
     @Override

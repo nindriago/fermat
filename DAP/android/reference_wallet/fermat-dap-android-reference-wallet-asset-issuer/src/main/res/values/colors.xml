@@ -35,4 +35,14 @@
     -->
 
     <color name="card_toolbar_trans">#aa1371a7</color>
+    <color name="dap_issuer_wallet_v3_toolbar_top">#161616</color>
+    <color name="dap_issuer_wallet_v3_toolbar">#212121</color>
+    <color name="dap_issuer_wallet_v3_card_top">#E53935</color>
+    <color name="dap_issuer_wallet_v3_card_top_text">#FFEBEE</color>
+    <color name="dap_issuer_wallet_v3_card_outside_background">#F3F3F3</color>
+    <color name="dap_issuer_wallet_v3_card_text_principal">#424242</color>
+    <color name="dap_issuer_wallet_v3_card_text_sec_1">#757575</color>
+    <color name="dap_issuer_wallet_v3_card_text_sec_2">#BDBDBD</color>
+    <color name="dap_issuer_wallet_v3_card_button_enabled">#F5F5F5</color>
+    <color name="dap_issuer_wallet_v3_card_line">#F5F5F5</color>
 </resources>

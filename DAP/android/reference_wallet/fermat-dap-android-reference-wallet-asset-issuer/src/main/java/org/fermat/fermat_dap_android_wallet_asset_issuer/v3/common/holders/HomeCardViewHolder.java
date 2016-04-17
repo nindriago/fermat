@@ -35,6 +35,7 @@ public class HomeCardViewHolder extends FermatViewHolder {
     private ImageView assetImageCard;
     private FermatTextView assetNameCardText;
     private FermatTextView assetQuantityCardText;
+    private FermatTextView assetQuantityCardText2;
     private FermatTextView assetValueCardText;
     private FermatTextView assetExpDateCardText;
     private ImageButton cardAppropriateButton;
@@ -59,6 +60,7 @@ public class HomeCardViewHolder extends FermatViewHolder {
         assetImageCard = (ImageView) itemView.findViewById(R.id.assetImageCard);
         assetNameCardText = (FermatTextView) itemView.findViewById(R.id.assetNameCardText);
         assetQuantityCardText = (FermatTextView) itemView.findViewById(R.id.assetQuantityCardText);
+        assetQuantityCardText2 = (FermatTextView) itemView.findViewById(R.id.assetQuantityCardText2);
         assetValueCardText = (FermatTextView) itemView.findViewById(R.id.assetValueCardText);
         assetExpDateCardText = (FermatTextView) itemView.findViewById(R.id.assetExpDateCardText);
         cardAppropriateButton = (ImageButton) itemView.findViewById(R.id.cardAppropriateButton);
@@ -76,7 +78,8 @@ public class HomeCardViewHolder extends FermatViewHolder {
 
         long available = digitalAsset.getAvailableBalanceQuantity();
         long book = digitalAsset.getBookBalanceQuantity();
-        assetQuantityCardText.setText(availableText(available));
+        assetQuantityCardText.setText(Long.toString(available));
+        assetQuantityCardText2.setText(availableText(available));
 
         assetValueCardText.setText(digitalAsset.getFormattedAvailableBalanceBitcoin());
         assetExpDateCardText.setText(digitalAsset.getFormattedExpDate());
@@ -152,6 +155,6 @@ public class HomeCardViewHolder extends FermatViewHolder {
     }
 
     private String availableText(long available) {
-        return available + ((available == 1) ? " asset" : " assets");
+        return ((available == 1) ? "ASSET" : " ASSETS");
     }
 }
