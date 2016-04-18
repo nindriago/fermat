@@ -25,6 +25,8 @@ public class DigitalAsset {
     private String assetPublicKey;
     private ActorAssetUser actorAssetUser;
     private byte[] image;
+    private String actorUserNameFrom;
+    private byte[] imageActorUserFrom;
 
     public DigitalAsset() {
     }
@@ -139,5 +141,21 @@ public class DigitalAsset {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getActorUserNameFrom() {
+        return actorUserNameFrom;
+    }
+
+    public void setActorUserNameFrom(String actorUserNameFrom) {
+        this.actorUserNameFrom = actorUserNameFrom;
+    }
+
+    public byte[] getImageActorUserFrom() {
+        return imageActorUserFrom;
+    }
+
+    public void setImageActorUserFrom(byte[] imageActorUserFrom) {
+        this.imageActorUserFrom = imageActorUserFrom;
     }
 }
