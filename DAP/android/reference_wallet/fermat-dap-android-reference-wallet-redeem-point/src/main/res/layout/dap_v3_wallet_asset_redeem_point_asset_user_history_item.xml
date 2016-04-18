@@ -2,21 +2,63 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:paddingTop="4dp">
+
+    <LinearLayout
+        android:id="@+id/historySectionHeader"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                android:id="@+id/historyDateHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18 / 04 / 2016"
+                android:textColor="@color/dap_V3_redeem_point_wallet_black_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,RtlSymmetry"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true" />
+
+            <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                android:id="@+id/historyAssetsQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6 Assets"
+                android:textColor="@color/dap_V3_redeem_point_wallet_black_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,RtlSymmetry"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/historyItem"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/historySectionHeader">
 
         <RelativeLayout
             android:layout_width="85dp"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/imageLayout_left"
@@ -61,7 +103,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:id="@+id/relativeLayout">
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                     android:id="@+id/historyAssetName"
@@ -86,16 +129,17 @@
                     tools:ignore="HardcodedText,RtlSymmetry" />
 
             </RelativeLayout>
+
         </RelativeLayout>
 
 
     </LinearLayout>
-    
+
     <View
         android:id="@+id/view"
+        android:layout_below="@id/historyItem"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
         android:background="#55e1e1e1" />
 
 </RelativeLayout>
