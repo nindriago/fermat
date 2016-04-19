@@ -18,6 +18,7 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.UserDeliveryL
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.UserRedeemedListFragment;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.DeliverGroupFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.DeliverUserFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.HomeCardFragment;
 
@@ -64,17 +65,17 @@ public class IssuerWalletFragmentFactory extends FermatFragmentFactory<AssetIssu
                 case DAP_WALLET_ASSET_ISSUER_USER_REDEEMED_LIST:
                     currentFragment = new UserRedeemedListFragment();
                     break;
-                case DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY:
-                    currentFragment = new DeliverUserFragment();
-                    break;
+//                case DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY:
+//                    currentFragment = new DeliverUserFragment();
+//                    break;
                 case DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY_TAB_SELECT_USERS:
-                    currentFragment = new AssetDeliverySelectUsersFragment();
+                    currentFragment = new DeliverUserFragment();
                     break;
                 case DAP_WALLET_ASSET_ISSUER_USER_APPROPIATE_LIST:
                     currentFragment = new UserAppropiateListFragment();
                     break;
                 case DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY_TAB_SELECT_GROUPS:
-                    currentFragment = new AssetDeliverySelectGroupsFragment();
+                    currentFragment = new DeliverGroupFragment();
                     break;
                 case DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY_TABS:
                     currentFragment = new MainActivityFragment();

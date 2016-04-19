@@ -155,28 +155,28 @@
                         android:layout_width="75dp"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:src="@drawable/ic_appropriate"/>
+                        android:src="@drawable/bg_appropriate_button"/>
 
                     <ImageButton
                         android:id="@+id/cardDeliverButton"
                         android:layout_width="75dp"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:src="@drawable/ic_distribute"/>
+                        android:src="@drawable/bg_deliver_button"/>
 
                     <ImageButton
                         android:id="@+id/cardTransactionsButton"
                         android:layout_width="75dp"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:src="@drawable/ic_transations"/>
+                        android:src="@drawable/bg_transactions_button"/>
 
                     <ImageButton
                         android:id="@+id/cardStatsButton"
                         android:layout_width="75dp"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:src="@drawable/ic_stats"/>
+                        android:src="@drawable/bg_stats_button"/>
 
                 </LinearLayout>
 

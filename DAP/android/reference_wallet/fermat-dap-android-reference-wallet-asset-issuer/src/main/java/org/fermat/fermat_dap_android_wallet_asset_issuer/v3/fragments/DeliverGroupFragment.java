@@ -2,6 +2,7 @@ package org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments;
 
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,11 +31,11 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.Un
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Data;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.models.User;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Group;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.SessionConstantsAssetIssuer;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.util.CommonLogger;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverUserAdapter;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverGroupAdapter;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 
@@ -46,26 +47,26 @@ import static android.widget.Toast.makeText;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DeliverUserFragment extends FermatWalletListFragment<User>
-        implements FermatListItemListeners<User> {
+public class DeliverGroupFragment extends FermatWalletListFragment<Group>
+        implements FermatListItemListeners<Group> {
 
     // Constants
-    private static final String TAG = "AssetDeliverySelectUsersFragment";
+    private static final String TAG = "AssetDeliverySelectGroupsFragment";
 
     // Fermat Managers
     private AssetIssuerWalletSupAppModuleManager moduleManager;
     private ErrorManager errorManager;
 
     // Data
-    private List<User> users;
+    private List<Group> groups;
 
     SettingsManager<AssetIssuerSettings> settingsManager;
 
     //UI
-    private View noUsersView;
+    private View noGroupsView;
 
-    public static DeliverUserFragment newInstance() {
-        return new DeliverUserFragment();
+    public static DeliverGroupFragment newInstance() {
+        return new DeliverGroupFragment();
     }
 
     @Override
@@ -78,6 +79,8 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
             errorManager = appSession.getErrorManager();
 
             settingsManager = appSession.getModuleManager().getSettingsManager();
+
+            groups = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
         } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
             if (errorManager != null)
@@ -92,20 +95,9 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
         configureToolbar();
 
-        noUsersView = layout.findViewById(R.id.dap_wallet_asset_issuer_delivery_user_no_users);
+        noGroupsView = layout.findViewById(R.id.dap_wallet_asset_issuer_delivery_no_groups);
 
-        users = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
-        showOrHideNoUsersView(users.isEmpty());
-    }
-
-    private void showOrHideNoUsersView(boolean show) {
-        if (show) {
-            recyclerView.setVisibility(View.GONE);
-            noUsersView.setVisibility(View.VISIBLE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            noUsersView.setVisibility(View.GONE);
-        }
+        showOrHideNoUsersView(groups.isEmpty());
     }
 
     private void setUpHelpAssetDeliverUsers(boolean checkButton) {
@@ -130,7 +122,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_USER, 0, "Help")
+        menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_GROUP, 0, "Help")
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
     }
 
@@ -139,7 +131,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         try {
             int id = item.getItemId();
 
-            if (id == SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_USER) {
+            if (id == SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_GROUP) {
                 setUpHelpAssetDeliverUsers(settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isPresentationHelpEnabled());
                 return true;
             }
@@ -180,12 +172,12 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
     @Override
     protected boolean hasMenu() {
-        return false;
+        return true;
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dap_wallet_asset_issuer_deliver_user;
+        return R.layout.dap_wallet_asset_issuer_deliver_group;
     }
 
     @Override
@@ -195,7 +187,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
     @Override
     protected int getRecyclerLayoutId() {
-        return R.id.dap_wallet_asset_issuer_delivery_user_recycler_view;
+        return R.id.dap_wallet_asset_issuer_asset_delivery_select_groups_activity_recycler_view;
     }
 
     @Override
@@ -209,11 +201,11 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         if (isAttached) {
             swipeRefreshLayout.setRefreshing(false);
             if (result != null && result.length > 0) {
-                users = (ArrayList) result[0];
-                if (adapter != null) {
-                    adapter.changeDataSet(users);
-                }
-                showOrHideNoUsersView(users.isEmpty());
+                groups = (ArrayList) result[0];
+                if (adapter != null)
+                    adapter.changeDataSet(groups);
+
+                showOrHideNoUsersView(groups.isEmpty());
             }
         }
     }
@@ -230,7 +222,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     @Override
     public FermatAdapter getAdapter() {
         if (adapter == null) {
-            adapter = new DeliverUserAdapter(getActivity(), users, moduleManager);
+            adapter = new DeliverGroupAdapter(getActivity(), groups, moduleManager);
             adapter.setFermatListEventListener(this);
         }
         return adapter;
@@ -245,21 +237,21 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     }
 
     @Override
-    public void onItemClickListener(User data, int position) {
+    public void onItemClickListener(Group data, int position) {
     }
 
     @Override
-    public void onLongItemClickListener(User data, int position) {
+    public void onLongItemClickListener(Group data, int position) {
     }
 
     @Override
-    public List<User> getMoreDataAsync(FermatRefreshTypes refreshType, int pos) {
-        List<User> users = new ArrayList<>();
+    public List<Group> getMoreDataAsync(FermatRefreshTypes refreshType, int pos) {
+        List<Group> groups = new ArrayList<>();
         if (moduleManager != null) {
             try {
-                users = Data.getConnectedUsers(moduleManager, users);
+                groups = Data.getGroups(moduleManager, groups);
 
-                appSession.setData("users", users);
+                appSession.setData("groups", groups);
 
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);
@@ -275,7 +267,17 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
                     Toast.LENGTH_SHORT).
                     show();
         }
-        return users;
+        return groups;
+    }
+
+    private void showOrHideNoUsersView(boolean show) {
+        if (show) {
+            recyclerView.setVisibility(View.GONE);
+            noGroupsView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noGroupsView.setVisibility(View.GONE);
+        }
     }
 }
 

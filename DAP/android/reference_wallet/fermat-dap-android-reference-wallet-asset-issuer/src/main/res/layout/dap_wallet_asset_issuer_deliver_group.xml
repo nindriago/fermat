@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context="org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.DeliverUserFragment">
+    android:background="#ffffff">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
@@ -14,7 +11,7 @@
         android:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/dap_wallet_asset_issuer_delivery_user_recycler_view"
+            android:id="@+id/dap_wallet_asset_issuer_asset_delivery_select_groups_activity_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
@@ -26,7 +23,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
-        android:id="@+id/dap_wallet_asset_issuer_delivery_user_no_users"
+        android:id="@+id/dap_wallet_asset_issuer_delivery_no_groups"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -44,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/no_users"
+            android:text="@string/no_groups"
             android:textColor="#2d3e50"
             android:textSize="20sp"/>
 
