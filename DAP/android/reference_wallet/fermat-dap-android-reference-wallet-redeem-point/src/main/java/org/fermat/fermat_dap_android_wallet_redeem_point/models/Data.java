@@ -1,8 +1,16 @@
 package org.fermat.fermat_dap_android_wallet_redeem_point.models;
 
+import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
+import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Genders;
+import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
+import com.bitdubai.fermat_api.layer.osa_android.location_system.Location;
+
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
+import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAssetUser;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWallet;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletList;
@@ -15,7 +23,9 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWall
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by frank on 12/9/15.
@@ -108,5 +118,27 @@ public class Data {
             }
         }
         return null;
+    }
+
+    public static List<DigitalAsset> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+        List<DigitalAsset> digitalAssets = new ArrayList<>();
+        DigitalAsset digitalAsset;
+
+        for (int i = 0; i < 20; i++) {
+            digitalAsset = new DigitalAsset();
+            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+            digitalAsset.setName("Combo " + (i + 1) + "x1");
+            digitalAsset.setAvailableBalanceQuantity(1L);
+            digitalAsset.setBookBalanceQuantity(1L);
+            digitalAsset.setAvailableBalance(1L);
+            digitalAsset.setExpDate(new Timestamp(new Date().getTime()));
+
+            digitalAssets.add(digitalAsset);
+            digitalAsset.setImage(null);
+            digitalAsset.setActorUserNameFrom("Penelope Quintero");
+            digitalAsset.setImageActorUserFrom(null);
+
+        }
+        return digitalAssets;
     }
 }
