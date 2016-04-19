@@ -32,4 +32,9 @@
     <color name="dap_V3_redeem_point_wallet_blue_text">#00aeef</color>
     <color name="dap_V3_redeem_point_wallet_black_text">#37474f</color>
     <!-- -->
+    <!--dap v3 colors-->
+    <color name="redeem_card_background">#ffffff</color>
+    <color name="redeem_card_text_top_primary">#ffffff</color>
+    <color name="redeem_card_background_back">#ECECEC</color>
+
 </resources>
