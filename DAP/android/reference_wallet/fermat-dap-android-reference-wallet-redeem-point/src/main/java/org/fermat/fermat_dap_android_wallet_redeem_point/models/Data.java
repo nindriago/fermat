@@ -7,6 +7,7 @@ import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
 import com.bitdubai.fermat_api.layer.osa_android.location_system.Location;
 
+import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
@@ -23,6 +24,7 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWall
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -120,23 +122,73 @@ public class Data {
         return null;
     }
 
-    public static List<DigitalAsset> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
-        List<DigitalAsset> digitalAssets = new ArrayList<>();
-        DigitalAsset digitalAsset;
+    public static List<DigitalAssetHistory> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+        List<DigitalAssetHistory> digitalAssets = new ArrayList<>();
+        DigitalAssetHistory digitalAsset;
 
-        for (int i = 0; i < 20; i++) {
-            digitalAsset = new DigitalAsset();
+        for (int i = 0; i < 5; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,i);
+
+            digitalAsset = new DigitalAssetHistory();
             digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
-            digitalAsset.setName("Combo " + (i + 1) + "x1");
-            digitalAsset.setAvailableBalanceQuantity(1L);
-            digitalAsset.setBookBalanceQuantity(1L);
-            digitalAsset.setAvailableBalance(1L);
-            digitalAsset.setExpDate(new Timestamp(new Date().getTime()));
+            digitalAsset.setHistoryNameAsset("Combo " + (i + 1) + "x1");
+            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+            digitalAsset.setAcceptedDate(new Timestamp(calendar.getTime().getTime()));
+
+
+
+            digitalAsset.setHistoryNameUser("Penelope Quintero");
+            digitalAsset.setImageActorUserFrom(null);
+            digitalAsset.setImageAsset(null);
+            digitalAsset.setActorUserPublicKey(UUID.randomUUID().toString());
 
             digitalAssets.add(digitalAsset);
-            digitalAsset.setImage(null);
-            digitalAsset.setActorUserNameFrom("Penelope Quintero");
+
+        }
+
+        for (int i = 0; i < 5; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,i-1);
+
+            digitalAsset = new DigitalAssetHistory();
+            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+            digitalAsset.setHistoryNameAsset("Combo " + (i + 1) + "x1");
+            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+            digitalAsset.setAcceptedDate(new Timestamp(calendar.getTime().getTime()));
+
+
+
+            digitalAsset.setHistoryNameUser("Jinmy Bohorquez");
             digitalAsset.setImageActorUserFrom(null);
+            digitalAsset.setImageAsset(null);
+            digitalAsset.setActorUserPublicKey(UUID.randomUUID().toString());
+
+            digitalAssets.add(digitalAsset);
+
+        }
+
+        for (int i = 0; i < 5; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,i);
+
+            digitalAsset = new DigitalAssetHistory();
+            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+            digitalAsset.setHistoryNameAsset("Hamburguesa " + (i + 1) + "x1");
+            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+            digitalAsset.setAcceptedDate(new Timestamp(calendar.getTime().getTime()));
+
+
+
+            digitalAsset.setHistoryNameUser("Nerio Indriago");
+            digitalAsset.setImageActorUserFrom(null);
+            digitalAsset.setImageAsset(null);
+            digitalAsset.setActorUserPublicKey(UUID.randomUUID().toString());
+
+            digitalAssets.add(digitalAsset);
 
         }
         return digitalAssets;
