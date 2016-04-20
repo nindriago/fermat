@@ -69,8 +69,7 @@
 
         <RelativeLayout
             android:layout_width="85dp"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/imageLayout_left"
@@ -80,7 +79,7 @@
                 android:background="@drawable/bg_circular_user_list">
 
                 <ImageView
-                    android:id="@+id/imageView_asset_redeemed_avatar"
+                    android:id="@+id/imageViewAssetRedeemedAvatar"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:layout_centerInParent="true"
@@ -98,7 +97,7 @@
                 android:background="@drawable/bg_circular_user_list">
 
                 <ImageView
-                    android:id="@+id/imageView_user_redeemed_avatar"
+                    android:id="@+id/imageViewUserRedeemedAvatar"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:layout_centerInParent="true"
