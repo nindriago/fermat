@@ -112,6 +112,6 @@ public class DigitalAssetHistory implements Comparable<DigitalAssetHistory> {
 
     @Override
     public int compareTo(DigitalAssetHistory another) {
-        return getAcceptedDate().compareTo(another.getAcceptedDate());
+        return another.getAcceptedDate().compareTo(this.getAcceptedDate());
     }
 }
