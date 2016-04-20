@@ -14,6 +14,7 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.fragments.SettingsMainN
 import org.fermat.fermat_dap_android_wallet_redeem_point.fragments.SettingsNotificationsFragment;
 import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSession;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemHomeCardFragment;
+import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemHomeHistoryFragment;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemPointDetailFragment;
 
 import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
@@ -40,10 +41,11 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
                 case DAP_WALLET_REDEEM_POINT_MAIN_ACTIVITY:
                     currentFragment = new RedeemPointMainActivityFragment();
                     //currentFragment = new RedeemHomeCardFragment();
+                    //currentFragment = new RedeemHomeHistoryFragment();
                     break;
                 case DAP_WALLET_REDEEM_POINT_HISTORY_ACTIVITY:
                     currentFragment = new RedeemPointHistoryActivityFragment();
-                    //currentFragment = new RedeemPointHomeHistoryFragment();
+                    //currentFragment = new RedeemHomeHistoryFragment();
                     break;
                 case DAP_WALLET_REDEEM_POINT_STADISTICS_ACTIVITY:
                     currentFragment = new RedeemPointStadisticsActivityFragment();
