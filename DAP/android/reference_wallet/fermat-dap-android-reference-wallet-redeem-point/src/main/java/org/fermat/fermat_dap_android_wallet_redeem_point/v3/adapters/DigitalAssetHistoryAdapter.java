@@ -36,6 +36,7 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
 
     private void fillSections() {
         mapIndex = new LinkedHashMap<Timestamp, Integer>();
+        mapAssetQuantity = new LinkedHashMap<Timestamp, Integer>();
 
         //Sort dataSet for accurate date display
         Collections.sort(dataSet);
