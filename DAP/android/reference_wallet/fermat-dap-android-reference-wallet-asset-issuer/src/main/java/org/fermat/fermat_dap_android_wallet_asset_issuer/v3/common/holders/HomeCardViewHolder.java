@@ -109,7 +109,8 @@ public class HomeCardViewHolder extends FermatViewHolder {
         cardTransactionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                appSession.setData("asset_data", digitalAsset);
+                homeCardFragment.doTransactionsAction();
             }
         });
         cardStatsButton.setOnClickListener(new View.OnClickListener() {
