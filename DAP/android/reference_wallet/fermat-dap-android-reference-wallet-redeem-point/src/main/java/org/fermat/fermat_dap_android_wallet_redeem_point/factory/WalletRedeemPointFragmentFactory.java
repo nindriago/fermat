@@ -39,7 +39,7 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
             switch (fragment) {
                 case DAP_WALLET_REDEEM_POINT_MAIN_ACTIVITY:
                     currentFragment = new RedeemPointMainActivityFragment();
-                    //currentFragment = new RedeemHomeCardFragment();
+//                    currentFragment = new RedeemHomeCardFragment();
                     break;
                 case DAP_WALLET_REDEEM_POINT_HISTORY_ACTIVITY:
                     currentFragment = new RedeemPointHistoryActivityFragment();
