@@ -44,8 +44,6 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
         mapIndex = new LinkedHashMap<String, Integer>();
         mapAssetQuantity = new LinkedHashMap<String, Integer>();
 
-        //Sort dataSet for accurate date display
-        Collections.sort(dataSet);
         for (int x = 0; x < dataSet.size(); x++) {
             String dateAccepted = DAPStandardFormats.DATE_FORMAT.format(dataSet.get(x).getAcceptedDate());
             if (dateAccepted != null) {
@@ -57,13 +55,6 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
                 }
             }
         }
-        /*Set<Timestamp> sectionDates = mapIndex.keySet();
-        // create a list from the set to sort
-        sectionList = new ArrayList<>(sectionDates);
-        Collections.sort(sectionList);
-
-        sections = new String[sectionList.size()];
-        sectionList.toArray(sections);*/
     }
 
     private Timestamp getSection(DigitalAssetHistory digitalAssetHistory) {

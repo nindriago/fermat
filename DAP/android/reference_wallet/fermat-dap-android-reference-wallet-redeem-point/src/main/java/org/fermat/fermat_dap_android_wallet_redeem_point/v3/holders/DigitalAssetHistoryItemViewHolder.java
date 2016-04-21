@@ -11,6 +11,7 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.utils.ImagesUtils
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
+import com.squareup.picasso.Picasso;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.UserRedeemed;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
@@ -50,8 +51,8 @@ public class DigitalAssetHistoryItemViewHolder extends FermatViewHolder {
         historyAssetName = (FermatTextView) itemView.findViewById(R.id.historyAssetName);
         historyUserName = (FermatTextView) itemView.findViewById(R.id.historyUserName);
 
-        imageViewAssetRedeemedAvatar = (ImageView) itemView.findViewById(R.id.redeemedListUserName);
-        imageViewUserRedeemedAvatar = (ImageView) itemView.findViewById(R.id.redeemedListRedeemedDate);
+        imageViewAssetRedeemedAvatar = (ImageView) itemView.findViewById(R.id.imageViewAssetRedeemedAvatar);
+        imageViewUserRedeemedAvatar = (ImageView) itemView.findViewById(R.id.imageViewUserRedeemedAvatar);
 
     }
 
@@ -61,7 +62,8 @@ public class DigitalAssetHistoryItemViewHolder extends FermatViewHolder {
         {
             historySectionHeader.setVisibility(View.VISIBLE);
             historyDateHeader.setText(sectionTextDate);
-            historyAssetsQuantity.setText(assetsQuantity > 1 ? (assetsQuantity+" Assets"):(assetsQuantity+" Asset"));
+            String textSectionRight = (assetsQuantity > 1 ? (assetsQuantity+" Assets"):(assetsQuantity+" Asset"));
+            historyAssetsQuantity.setText(textSectionRight);
         }
         else
             historySectionHeader.setVisibility(View.GONE);
@@ -74,12 +76,16 @@ public class DigitalAssetHistoryItemViewHolder extends FermatViewHolder {
             bitmap = Bitmap.createScaledBitmap(bitmap, 120, 120, true);
             imageViewAssetRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), bitmap));
         }
+        else
+            imageViewAssetRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.asset_user_identity_history));
 
         if (digitalAssetHistory.getImageActorUserFrom() != null && digitalAssetHistory.getImageActorUserFrom().length > 0) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(digitalAssetHistory.getImageActorUserFrom(), 0, digitalAssetHistory.getImageActorUserFrom().length);
             bitmap = Bitmap.createScaledBitmap(bitmap, 120, 120, true);
             imageViewUserRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), bitmap));
-        }
+        }else
+            imageViewUserRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.asset_user_identity_history));
+
     }
 
 
