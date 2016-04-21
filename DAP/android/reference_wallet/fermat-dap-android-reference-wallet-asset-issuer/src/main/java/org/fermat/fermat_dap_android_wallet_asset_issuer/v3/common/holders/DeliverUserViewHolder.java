@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.utils.ImagesUtils;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
@@ -25,6 +26,7 @@ public class DeliverUserViewHolder extends FermatViewHolder {
 
     private FermatTextView userNameText;
     private ImageView userImage;
+    private RelativeLayout selectedUser;
 
 
 
@@ -41,29 +43,12 @@ public class DeliverUserViewHolder extends FermatViewHolder {
 
         userNameText = (FermatTextView) itemView.findViewById(R.id.userNameText);
         userImage = (ImageView) itemView.findViewById(R.id.userImage);
+        selectedUser = (RelativeLayout) itemView.findViewById(R.id.selectedUser);
     }
 
     public void bind(final User user) {
         userNameText.setText(user.getName());
-
-        if (user.isSelected()) {
-            userImage.setBackground(res.getDrawable(R.drawable.bg_circular_check));
-        } else {
-            userImage.setBackground(null);
-        }
-
-        userImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!user.isSelected()) {
-                    user.setSelected(true);
-                    userImage.setBackground(res.getDrawable(R.drawable.bg_circular_check));
-                } else {
-                    user.setSelected(false);
-                    userImage.setBackground(null);
-                }
-            }
-        });
+        selectedUser.setVisibility(user.isSelected() ? View.VISIBLE : View.INVISIBLE);
 
         if (user.getActorAssetUser().getProfileImage() != null && user.getActorAssetUser().getProfileImage().length > 0) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(user.getActorAssetUser().getProfileImage(), 0, user.getActorAssetUser().getProfileImage().length);

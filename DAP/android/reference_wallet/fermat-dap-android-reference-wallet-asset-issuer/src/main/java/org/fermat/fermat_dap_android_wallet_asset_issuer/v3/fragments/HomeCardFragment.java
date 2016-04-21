@@ -385,7 +385,18 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
     }
 
     public void doDeliverAction() {
-        changeActivity(Activities.DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY_SELECT_USERS_GROUPS, appSession.getAppPublicKey());
+        if (validateDeliverAction()) {
+            changeActivity(Activities.DAP_WALLET_ASSET_ISSUER_ASSET_DELIVERY_SELECT_USERS_GROUPS, appSession.getAppPublicKey());
+        }
+    }
+
+    private boolean validateDeliverAction() {
+        DigitalAsset digitalAsset = (DigitalAsset) appSession.getData("asset_data");
+        if (digitalAsset.getAvailableBalanceQuantity() == 0) {
+            Toast.makeText(getActivity(), R.string.dap_issuer_wallet_validate_no_available_assets, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     public void doTransactionsAction() {

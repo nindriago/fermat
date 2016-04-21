@@ -46,4 +46,6 @@
     <color name="dap_issuer_wallet_v3_card_text_sec_2">#BDBDBD</color>
     <color name="dap_issuer_wallet_v3_card_button_enabled">#F5F5F5</color>
     <color name="dap_issuer_wallet_v3_card_line">#F5F5F5</color>
+    <color name="dap_issuer_wallet_v3_deliver_text">#757575</color>
+    <color name="dap_issuer_wallet_v3_deliver_line">#BDBDBD</color>
 </resources>

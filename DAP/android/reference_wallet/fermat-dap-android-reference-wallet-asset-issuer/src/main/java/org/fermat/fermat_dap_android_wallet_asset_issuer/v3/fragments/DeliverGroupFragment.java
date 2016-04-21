@@ -1,8 +1,9 @@
 package org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments;
 
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,13 +17,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.bitdubai.fermat_android_api.ui.Views.ConfirmDialog;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.enums.FermatRefreshTypes;
 import com.bitdubai.fermat_android_api.ui.fragments.FermatWalletListFragment;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
+import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
+import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
@@ -31,6 +36,7 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.Un
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Data;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Group;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.SessionConstantsAssetIssuer;
@@ -38,6 +44,7 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.util.CommonLogger;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverGroupAdapter;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
+import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +71,7 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
 
     //UI
     private View noGroupsView;
+    private DigitalAsset digitalAsset;
 
     public static DeliverGroupFragment newInstance() {
         return new DeliverGroupFragment();
@@ -97,6 +105,17 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
 
         noGroupsView = layout.findViewById(R.id.dap_wallet_asset_issuer_delivery_no_groups);
 
+        digitalAsset = (DigitalAsset) appSession.getData("asset_data");
+
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    onRefresh();
+                }
+            });
+        }
+
         showOrHideNoUsersView(groups.isEmpty());
     }
 
@@ -124,6 +143,9 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_GROUP, 0, "Help")
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER, 1, "")
+                .setIcon(R.drawable.ic_distribute)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     @Override
@@ -134,6 +156,19 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
             if (id == SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_GROUP) {
                 setUpHelpAssetDeliverUsers(settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isPresentationHelpEnabled());
                 return true;
+            } else if (id == SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER) {
+                if (validateDistributeToGroups()) {
+                    new ConfirmDialog.Builder(getActivity(), appSession)
+                            .setTitle(getResources().getString(R.string.dap_issuer_wallet_confirm_title))
+                            .setMessage(getResources().getString(R.string.dap_issuer_wallet_confirm_entered_info))
+                            .setColorStyle(getResources().getColor(R.color.dap_issuer_wallet_principal))
+                            .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
+                                @Override
+                                public void onClick() {
+                                    doDistributeToGroups(digitalAsset.getAssetPublicKey(), groups, groups.size());
+                                }
+                            }).build().show();
+                }
             }
 
         } catch (Exception e) {
@@ -142,6 +177,21 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
                     Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean thereIsGroupSelected() {
+        for (Group group : groups) {
+            if (group.isSelected()) return true;
+        }
+        return false;
+    }
+
+    private boolean validateDistributeToGroups() {
+        if (!thereIsGroupSelected()) {
+            Toast.makeText(getActivity(), R.string.dap_issuer_wallet_validate_no_users_groups, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -238,6 +288,8 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
 
     @Override
     public void onItemClickListener(Group data, int position) {
+        data.setSelected(!data.isSelected());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -278,6 +330,50 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
             recyclerView.setVisibility(View.VISIBLE);
             noGroupsView.setVisibility(View.GONE);
         }
+    }
+
+    private void doDistributeToGroups(final String assetPublicKey, final List<Group> groups, final int assetsAmount) {
+        final Activity activity = getActivity();
+        final ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setMessage(getResources().getString(R.string.dap_issuer_wallet_wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        FermatWorker task = new FermatWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                for (Group group : groups) {
+                    if (group.isSelected()) {
+                        moduleManager.addGroupToDeliver(group.getActorAssetUserGroup());
+                    }
+                }
+                if (groups.size() > 0) {
+                    moduleManager.distributionAssets(assetPublicKey, WalletUtilities.WALLET_PUBLIC_KEY, assetsAmount);
+                }
+                return true;
+            }
+        };
+
+        task.setContext(activity);
+        task.setCallBack(new FermatWorkerCallBack() {
+            @Override
+            public void onPostExecute(Object... result) {
+                dialog.dismiss();
+                if (activity != null) {
+                    Toast.makeText(activity, R.string.dap_issuer_wallet_deliver_ok, Toast.LENGTH_LONG).show();
+                    changeActivity(Activities.DAP_ASSET_ISSUER_WALLET_ASSET_DETAIL, appSession.getAppPublicKey());
+                }
+            }
+
+            @Override
+            public void onErrorOccurred(Exception ex) {
+                dialog.dismiss();
+                if (activity != null) {
+                    Toast.makeText(activity, R.string.dap_issuer_wallet_exception,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        task.execute();
     }
 }
 

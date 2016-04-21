@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
@@ -22,6 +23,7 @@ public class DeliverGroupViewHolder extends FermatViewHolder {
 
     private FermatTextView groupNameText;
     private ImageView groupImage;
+    private RelativeLayout selectedGroup;
 
 
 
@@ -38,29 +40,12 @@ public class DeliverGroupViewHolder extends FermatViewHolder {
 
         groupNameText = (FermatTextView) itemView.findViewById(R.id.groupNameText);
         groupImage = (ImageView) itemView.findViewById(R.id.groupImage);
+        selectedGroup = (RelativeLayout) itemView.findViewById(R.id.selectedGroup);
     }
 
     public void bind(final Group group) {
         groupNameText.setText(group.getName());
-
-        if (group.isSelected()) {
-            groupImage.setBackground(res.getDrawable(R.drawable.bg_circular_check));
-        } else {
-            groupImage.setBackground(null);
-        }
-
-        groupImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!group.isSelected()) {
-                    group.setSelected(true);
-                    groupImage.setBackground(res.getDrawable(R.drawable.bg_circular_check));
-                } else {
-                    group.setSelected(false);
-                    groupImage.setBackground(null);
-                }
-            }
-        });
+        selectedGroup.setVisibility(group.isSelected() ? View.VISIBLE : View.INVISIBLE);
 
 //        if (group.getActorAssetUserGroup().getProfileImage() != null && group.getActorAssetUserGroup().getProfileImage().length > 0) {
 //            Bitmap bitmap = BitmapFactory.decodeByteArray(group.getActorAssetUserGroup().getProfileImage(), 0, group.getActorAssetUserGroup().getProfileImage().length);
