@@ -106,6 +106,8 @@ public class TransactionsFragment extends FermatWalletListFragment<Transaction>
 
         transactions = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
 
+        digitalAsset = (DigitalAsset) appSession.getData("asset_data");
+
         configureToolbar();
     }
 
