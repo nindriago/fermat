@@ -25,6 +25,7 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWall
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -210,7 +211,6 @@ public class Data {
             digitalAsset.setAcceptedDate(new Timestamp(calendar.getTime().getTime()));
 
 
-
             digitalAsset.setHistoryNameUser("Nerio Indriago");
             digitalAsset.setImageActorUserFrom(null);
             digitalAsset.setImageAsset(null);
@@ -219,6 +219,8 @@ public class Data {
             digitalAssets.add(digitalAsset);
 
         }
+        Collections.sort(digitalAssets);
+
         return digitalAssets;
     }
 
