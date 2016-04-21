@@ -16,6 +16,7 @@ import com.bitdubai.fermat_cbp_plugin.layer.negotiation_transaction.customer_bro
 import com.bitdubai.fermat_cbp_plugin.layer.negotiation_transaction.customer_broker_close.developer.bitdubai.version_1.exceptions.CantDetermineCryptoCurrencyException;
 import com.bitdubai.fermat_cbp_plugin.layer.negotiation_transaction.customer_broker_close.developer.bitdubai.version_1.exceptions.CantReceiveConfirmNegotiationTransactionException;
 import com.bitdubai.fermat_cbp_plugin.layer.negotiation_transaction.customer_broker_close.developer.bitdubai.version_1.exceptions.CantRegisterCustomerBrokerCloseNegotiationTransactionException;
+import com.bitdubai.fermat_ccp_api.layer.identity.intra_user.interfaces.IntraWalletUserIdentityManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.WalletManagerManager;
@@ -51,6 +52,8 @@ public class CustomerBrokerClosePurchaseNegotiationTransaction {
     /*Represent the Plugins Version*/
     private PluginVersionReference                                  pluginVersionReference;
 
+    private IntraWalletUserIdentityManager intraWalletUserIdentityManager;
+
     public CustomerBrokerClosePurchaseNegotiationTransaction(
             CustomerBrokerPurchaseNegotiationManager                customerBrokerPurchaseNegotiationManager,
             CustomerBrokerCloseNegotiationTransactionDatabaseDao    customerBrokerCloseNegotiationTransactionDatabaseDao,
@@ -58,7 +61,8 @@ public class CustomerBrokerClosePurchaseNegotiationTransaction {
             CryptoVaultManager                                      cryptoVaultManager,
             WalletManagerManager                                    walletManagerManager,
             ErrorManager                                            errorManager,
-            PluginVersionReference                                  pluginVersionReference
+            PluginVersionReference                                  pluginVersionReference,
+            IntraWalletUserIdentityManager intraWalletUserIdentityManager
     ){
         this.customerBrokerPurchaseNegotiationManager               = customerBrokerPurchaseNegotiationManager;
         this.customerBrokerCloseNegotiationTransactionDatabaseDao   = customerBrokerCloseNegotiationTransactionDatabaseDao;
@@ -67,6 +71,7 @@ public class CustomerBrokerClosePurchaseNegotiationTransaction {
         this.walletManagerManager                                   = walletManagerManager;
         this.errorManager                                           = errorManager;
         this.pluginVersionReference                                 = pluginVersionReference;
+        this.intraWalletUserIdentityManager = intraWalletUserIdentityManager;
     }
 
     //PROCESS THE UPDATE PURCHASE NEGOTIATION TRANSACTION
@@ -84,13 +89,18 @@ public class CustomerBrokerClosePurchaseNegotiationTransaction {
                             "\n- BrokerPublicKey = " + customerBrokerPurchaseNegotiation.getCustomerPublicKey()+
                             "\n- Status = " + customerBrokerPurchaseNegotiation.getStatus()
             );
+            String changeClause = "";
+            for (final Clause value : customerBrokerPurchaseNegotiation.getClauses()) {
+                changeClause = changeClause +"\n  - Type = "+value.getType()+". Value = "+value.getValue()+". Status = "+value.getStatus();
+            }
+            System.out.println(" - Clauses = \n" + changeClause);
 
             negotiationCryptoAdreess = new CustomerBrokerCloseNegotiationCryptoAddress(
                 this.cryptoAddressBookManager,
                 this.cryptoVaultManager,
                 this.walletManagerManager,
                 this.errorManager,
-                this.pluginVersionReference
+                this.pluginVersionReference,intraWalletUserIdentityManager
             );
 
             if (negotiationCryptoAdreess.isCryptoCurrency(customerBrokerPurchaseNegotiation.getClauses(),ClauseType.BROKER_PAYMENT_METHOD)){
@@ -145,12 +155,18 @@ public class CustomerBrokerClosePurchaseNegotiationTransaction {
                             "\n- Status = " + customerBrokerPurchaseNegotiation.getStatus()
             );
 
+            String changeClause = "";
+            for (final Clause value : customerBrokerPurchaseNegotiation.getClauses()) {
+                changeClause = changeClause +"\n  - Type = "+value.getType()+". Value = "+value.getValue()+". Status = "+value.getStatus();
+            }
+            System.out.println(" - Clauses = \n" + changeClause);
+
             negotiationCryptoAdreess = new CustomerBrokerCloseNegotiationCryptoAddress(
                 this.cryptoAddressBookManager,
                 this.cryptoVaultManager,
                 this.walletManagerManager,
                 this.errorManager,
-                this.pluginVersionReference
+                this.pluginVersionReference,intraWalletUserIdentityManager
             );
 
             if (negotiationCryptoAdreess.isCryptoCurrency(customerBrokerPurchaseNegotiation.getClauses(),ClauseType.BROKER_PAYMENT_METHOD)){
@@ -171,6 +187,7 @@ public class CustomerBrokerClosePurchaseNegotiationTransaction {
             }
 
             System.out.print("\n\n**** 21.3) MOCK NEGOTIATION TRANSACTION - CUSTOMER BROKER CLOSE - PURCHASE NEGOTIATION - CUSTOMER BROKER CLOSE PURCHASE NEGOTIATION TRANSACTION. CLOSE NEGOTIATION ****\n");
+
             //CLOSE NEGOTIATION
             customerBrokerPurchaseNegotiationManager.closeNegotiation(customerBrokerPurchaseNegotiation);
 
@@ -205,22 +222,29 @@ public class CustomerBrokerClosePurchaseNegotiationTransaction {
                 this.cryptoVaultManager,
                 this.walletManagerManager,
                 this.errorManager,
-                this.pluginVersionReference
+                this.pluginVersionReference,intraWalletUserIdentityManager
             );
 
-            if(negotiationCryptoAdreess.isCryptoCurrency(customerBrokerPurchaseNegotiation.getClauses(), ClauseType.CUSTOMER_PAYMENT_METHOD)) {
+            String changeClause = "";
+            for (final Clause value : customerBrokerPurchaseNegotiation.getClauses()) {
+                changeClause = changeClause +"\n  - Type = "+value.getType()+". Value = "+value.getValue()+". Status = "+value.getStatus();
+            }
+            System.out.println(" - Clauses = \n" + changeClause);
 
-                System.out.print("\n\n**** 28.2) MOCK NEGOTIATION TRANSACTION - CUSTOMER BROKER CLOSE - PURCHASE NEGOTIATION - CUSTOMER BROKER CLOSE PURCHASE NEGOTIATION TRANSACTION. IS CRYPTO CURRENCY ****" +
-                        "\nClauses Date.");
-                for (Clause item: customerBrokerPurchaseNegotiation.getClauses()){
-                    System.out.print("\n- "+item.getType()+" = "+item.getValue()+"\n");
-                }
-                //SAVE CRYPTO ADREESS OF THE CUSTOMER
-                this.customerBrokerPurchaseNegotiationManager.updateCustomerBrokerPurchaseNegotiation(customerBrokerPurchaseNegotiation);
-
+            for (Clause item: customerBrokerPurchaseNegotiation.getClauses()){
+                System.out.print("\n- "+item.getType()+" = "+item.getValue()+"\n");
             }
 
+//            if(negotiationCryptoAdreess.isCryptoCurrency(customerBrokerPurchaseNegotiation.getClauses(), ClauseType.CUSTOMER_PAYMENT_METHOD)) {
+//                //SAVE CRYPTO ADREESS OF THE CUSTOMER
+//                this.customerBrokerPurchaseNegotiationManager.updateCustomerBrokerPurchaseNegotiation(customerBrokerPurchaseNegotiation);
+//            }
+
             System.out.print("\n\n**** 29) MOCK NEGOTIATION TRANSACTION - CUSTOMER BROKER CLOSE - PURCHASE NEGOTIATION - CUSTOMER BROKER CLOSE PURCHASE NEGOTIATION****\n");
+
+            //UPDATE NEGOTIAITON
+            this.customerBrokerPurchaseNegotiationManager.updateCustomerBrokerPurchaseNegotiation(customerBrokerPurchaseNegotiation);
+
             //CLOSE NEGOTIATION
             customerBrokerPurchaseNegotiationManager.closeNegotiation(customerBrokerPurchaseNegotiation);
 

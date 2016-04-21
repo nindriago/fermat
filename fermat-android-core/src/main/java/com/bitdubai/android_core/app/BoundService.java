@@ -9,8 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bitdubai.android_core.app.common.version_1.util.AndroidCoreUtils;
-import com.bitdubai.android_core.app.common.version_1.util.task.GetTask;
 import com.bitdubai.android_core.app.common.version_1.util.ServiceCallback;
+import com.bitdubai.android_core.app.common.version_1.util.task.GetTask;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.exceptions.CantGetAddonException;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.exceptions.VersionNotFoundException;
@@ -31,8 +31,9 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.platform_info.interfac
 import java.util.concurrent.ExecutorService;
 
 /**
- * Created by mati on 2016.02.03..
+ * Created by Matias Furszyfer on 2016.02.03..
  */
+//TODO: tengo que cambiar el nombre de este servicio para que sea el responsable de ser llamado en el bootup del sistema y active el servicio de Fermat y todos los procesos asociados que se requieran
 public class BoundService extends Service implements FermatWorkerCallBack {
 
     public static String LOG_TAG = "BoundService";
@@ -58,7 +59,6 @@ public class BoundService extends Service implements FermatWorkerCallBack {
     @Override
     public void onCreate() {
         super.onCreate();
-
         try {
 
             final FermatSystem fermatSystem = ApplicationSession.getInstance().getFermatSystem();

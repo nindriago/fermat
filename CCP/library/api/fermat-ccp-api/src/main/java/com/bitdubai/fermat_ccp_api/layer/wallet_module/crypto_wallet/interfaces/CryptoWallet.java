@@ -7,6 +7,7 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ReferenceWallet;
 import com.bitdubai.fermat_api.layer.all_definition.enums.VaultType;
 import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
+import com.bitdubai.fermat_api.layer.modules.interfaces.ModuleManager;
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.common.enums.BalanceType;
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.common.enums.TransactionType;
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.common.exceptions.CantGetMnemonicTextException;
@@ -53,7 +54,7 @@ import java.util.UUID;
  * Created by Leon Acosta - (laion.cj91@gmail.com) on 10/06/15.
  * @version 1.0
  */
-public interface CryptoWallet extends Serializable {
+public interface CryptoWallet  extends Serializable,ModuleManager {
 
     /**
      * List all wallet contact related to an specific wallet.
@@ -442,15 +443,8 @@ public interface CryptoWallet extends Serializable {
      * @param walletPublicKey
      * @return List of PaymentRequest object
      */
-    List<PaymentRequest> listSentPaymentRequest(String  walletPublicKey,int max,int offset) throws CantListSentPaymentRequestException;
+    List<PaymentRequest> listSentPaymentRequest(String  walletPublicKey,BlockchainNetworkType blockchainNetworkType,int max,int offset) throws CantListSentPaymentRequestException;
 
-    /**
-     *The method <code>listReceivedPaymentRequest</code> list the wallet receive payments request.
-     *
-     * @param walletPublicKey
-     * @return List of PaymentRequest object
-     */
-    List<PaymentRequest> listReceivedPaymentRequest(String  walletPublicKey,int max,int offset)throws CantListReceivePaymentRequestException;
 
     /**
      * The method <code>listPaymentRequestDateOrder</code> list the wallet payments requests order by date.
@@ -547,4 +541,17 @@ public interface CryptoWallet extends Serializable {
      * @throws CantGetMnemonicTextException
      */
     List<String> getMnemonicText() throws CantGetMnemonicTextException;
+
+    /**
+     * /**
+     *The method <code>listReceivedPaymentRequest</code> list the wallet receive payments request.
+
+     * @param walletPublicKey
+     * @param blockchainNetworkType
+     * @param max
+     * @param offset
+     * @return
+     * @throws CantListReceivePaymentRequestException
+     */
+    List<PaymentRequest> listReceivedPaymentRequest(String walletPublicKey,BlockchainNetworkType blockchainNetworkType,int max,int offset) throws CantListReceivePaymentRequestException;
 }

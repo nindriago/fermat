@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
@@ -12,15 +13,16 @@ import java.util.List;
 
 
 /**
- * Created by Matias on 23/07/2015.
+ * Created by Matias Furszyfer on 23/07/2015.
  */
 
 /**
  * ScreenPagerAdapter to add new subApp
  */
-public class ScreenPagerAdapter extends FragmentPagerAdapter {
+public class ScreenPagerAdapter extends FragmentPagerAdapter implements FermatUIAdapter {
 
 
+    private static final String TAG = "ScreenPagerAdapter";
     private List<AbstractFermatFragment> fragments;
 
     /**
@@ -37,6 +39,12 @@ public class ScreenPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
+        if(fragments.isEmpty()){
+            Log.e(TAG,"fragmentos en desktop nulo");
+        }
+        if(position>fragments.size()){
+            Log.e(TAG,"position mayor a cantidad de fragmentos en desktop");
+        }
         return this.fragments.get(position);
     }
 
@@ -50,10 +58,7 @@ public class ScreenPagerAdapter extends FragmentPagerAdapter {
        // }
     }
 
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        return super.instantiateItem(container, position);
-    }
+
 
     /*
              * Return the number of views available.

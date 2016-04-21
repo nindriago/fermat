@@ -4,6 +4,7 @@ package com.bitdubai.fermat_android_api.layer.definition.wallet;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +24,10 @@ import com.bitdubai.fermat_api.AndroidCoreManager;
 import com.bitdubai.fermat_api.FermatStates;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Engine;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.interfaces.DesktopAppSelector;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.interfaces.FermatRuntime;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.interfaces.FermatScreenSwapper;
+import com.bitdubai.fermat_api.layer.dmp_module.InstalledApp;
 import com.bitdubai.fermat_api.layer.osa_android.broadcaster.FermatBundle;
 import com.bitdubai.fermat_api.layer.pip_engine.interfaces.ResourceProviderManager;
 
@@ -50,6 +53,10 @@ public abstract class AbstractFermatFragment<S extends FermatSession,R extends R
      */
     protected ViewInflater viewInflater;
     private WizardConfiguration context;
+
+    enum ScreenSize{
+        LARGE,NORMAL, UNDEFINED, SMALL
+    }
 
 
     @Override
@@ -121,6 +128,24 @@ public abstract class AbstractFermatFragment<S extends FermatSession,R extends R
     }
 
 
+    protected void selectApp(InstalledApp installedSubApp) throws Exception {
+        destroy();
+        getDesktopAppSelector().selectApp(installedSubApp);
+    }
+
+    private DesktopAppSelector getDesktopAppSelector() throws Exception {
+        if(getActivity() instanceof DesktopAppSelector){
+            return (DesktopAppSelector) getActivity();
+        }
+        throw new Exception("big problem occur");
+    }
+
+    /**
+     * Method used to go to home desktop
+     */
+    protected void home(){
+        ((FermatActivityManager)getActivity()).goHome();
+    }
 
 
     /**
@@ -227,6 +252,10 @@ public abstract class AbstractFermatFragment<S extends FermatSession,R extends R
         return ((FermatActivityManager)getActivity()).getRuntimeManager();
     }
 
+    protected final FermatActivityManager getFermatActivityManager(){
+        return ((FermatActivityManager)getActivity());
+    }
+
     protected final AndroidCoreManager getFermatState(){
         return ((FermatStates)getActivity()).getFermatStates();
     }
@@ -297,8 +326,31 @@ public abstract class AbstractFermatFragment<S extends FermatSession,R extends R
 
     }
 
-    public void onDrawerSlide(View drawerView, float offset)
-    {
+    public void onDrawerSlide(View drawerView, float offset) {
 
+    }
+
+
+    private ScreenSize getScreenSize(){
+        int screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+        ScreenSize screenSizeType = null;
+        switch(screenSize) {
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                screenSizeType = ScreenSize.LARGE;
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                screenSizeType = ScreenSize.NORMAL;
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                screenSizeType = ScreenSize.SMALL;
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_UNDEFINED:
+                screenSizeType = ScreenSize.UNDEFINED;
+                break;
+            default:
+                screenSizeType = ScreenSize.UNDEFINED;
+        }
+        return screenSizeType;
     }
 }

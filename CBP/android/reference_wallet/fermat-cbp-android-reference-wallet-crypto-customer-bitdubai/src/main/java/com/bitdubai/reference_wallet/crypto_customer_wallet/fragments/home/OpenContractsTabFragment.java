@@ -21,7 +21,6 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.A
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.pip_engine.interfaces.ResourceProviderManager;
 import com.bitdubai.fermat_cbp_api.layer.wallet_module.common.interfaces.ContractBasicInformation;
-import com.bitdubai.fermat_cbp_api.layer.wallet_module.crypto_customer.interfaces.CryptoCustomerWalletManager;
 import com.bitdubai.fermat_cbp_api.layer.wallet_module.crypto_customer.interfaces.CryptoCustomerWalletModuleManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
@@ -34,8 +33,8 @@ import com.bitdubai.reference_wallet.crypto_customer_wallet.util.CommonLogger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.bitdubai.fermat_cbp_api.all_definition.constants.CBPBroadcasterConstants.CCW_NEW_CONTRACT_UPDATE_VIEW;
-
+import static com.bitdubai.fermat_cbp_api.all_definition.constants.CBPBroadcasterConstants.CCW_NEGOTIATION_UPDATE_VIEW;
+import static com.bitdubai.fermat_cbp_api.all_definition.constants.CBPBroadcasterConstants.CCW_CONTRACT_UPDATE_VIEW;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -160,14 +159,13 @@ public class OpenContractsTabFragment extends FermatWalletExpandableListFragment
 
         if (moduleManager != null) {
             try {
-                CryptoCustomerWalletManager wallet = moduleManager.getCryptoCustomerWallet(appSession.getAppPublicKey());
                 GrouperItem<ContractBasicInformation> grouper;
 
                 List<ContractBasicInformation> waitingForCustomer = new ArrayList<>();
-                waitingForCustomer.addAll(wallet.getContractsWaitingForCustomer(10, 0));
+                waitingForCustomer.addAll(moduleManager.getContractsWaitingForCustomer(10, 0));
 
                 List<ContractBasicInformation> waitingForBroker = new ArrayList<>();
-                waitingForBroker.addAll(wallet.getContractsWaitingForBroker(10, 0));
+                waitingForBroker.addAll(moduleManager.getContractsWaitingForBroker(10, 0));
 
                 if(!waitingForCustomer.isEmpty() || !waitingForBroker.isEmpty()){
                     grouperText = getActivity().getString(R.string.waiting_for_you);
@@ -240,8 +238,11 @@ public class OpenContractsTabFragment extends FermatWalletExpandableListFragment
 
     @Override
     public void onUpdateViewOnUIThread(String code) {
-        switch (code){
-            case CCW_NEW_CONTRACT_UPDATE_VIEW:
+        switch (code) {
+            case CCW_CONTRACT_UPDATE_VIEW:
+                onRefresh();
+                break;
+            case CCW_NEGOTIATION_UPDATE_VIEW:
                 onRefresh();
                 break;
         }

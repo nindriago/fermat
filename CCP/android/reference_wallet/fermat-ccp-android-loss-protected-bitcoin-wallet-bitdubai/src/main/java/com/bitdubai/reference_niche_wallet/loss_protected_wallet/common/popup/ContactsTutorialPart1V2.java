@@ -18,7 +18,6 @@ import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsM
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.LossProtectedWalletSettings;
 import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
 import com.bitdubai.reference_niche_wallet.loss_protected_wallet.session.LossProtectedWalletSession;
-
 import com.bitdubai.reference_niche_wallet.loss_protected_wallet.session.SessionConstant;
 
 /**
@@ -76,9 +75,7 @@ public class ContactsTutorialPart1V2 extends FermatDialog<LossProtectedWalletSes
         if(id == R.id.add_fermat_user){
             try {
                 saveSettings();
-//                Object[] object = new Object[2];
-//                changeApp(Engine.BITCOIN_WALLET_CALL_INTRA_USER_COMMUNITY, getSession().getCommunityConnection(), object);
-                changeActivity(Activities.CCP_BITCOIN_WALLET_ADD_CONNECTION_ACTIVITY);
+                changeActivity(Activities.CCP_BITCOIN_LOSS_PROTECTED_WALLET_ADD_CONNECTION_ACTIVITY);
                 dismiss();
             } catch (Exception e) {
                 e.printStackTrace();

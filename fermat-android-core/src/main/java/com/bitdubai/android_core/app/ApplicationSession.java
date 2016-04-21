@@ -1,13 +1,18 @@
 package com.bitdubai.android_core.app;
 
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.bitdubai.android_core.app.common.version_1.apps_manager.FermatAppsManager;
+import com.bitdubai.android_core.app.common.version_1.apps_manager.FermatAppsManagerService;
+import com.bitdubai.android_core.app.common.version_1.communication.client_system_broker.ClientSystemBrokerService;
+import com.bitdubai.android_core.app.common.version_1.notifications.NotificationService;
 import com.bitdubai.android_core.app.common.version_1.util.mail.YourOwnSender;
+import com.bitdubai.android_core.app.common.version_1.util.services_helpers.ServicesHelpers;
 import com.bitdubai.fermat.R;
 import com.bitdubai.fermat_android_api.engine.FermatApplicationSession;
 import com.bitdubai.fermat_core.FermatSystem;
@@ -18,17 +23,12 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * Reformated by Matias Furszyfer
+ * Matias Furszyfer
  */
 
-/**
- * This class, is created by the Android OS before any Activity. That means its constructor is run before any other code
- * written by ourselves.
- *
- * -- Luis.
- */
 
 @ReportsCrashes(//formUri = "http://yourserver.com/yourscript",
         mailTo = "matiasfurszyfer@gmail.com",
@@ -38,6 +38,7 @@ import java.io.Serializable;
 
 public class ApplicationSession extends MultiDexApplication implements Serializable,FermatApplicationSession {
 
+    private final String TAG = "ApplicationSession";
 
     private static ApplicationSession instance;
     /**
@@ -54,11 +55,6 @@ public class ApplicationSession extends MultiDexApplication implements Serializa
     private FermatSystem fermatSystem;
 
     /**
-     * Apps manager
-     */
-    private FermatAppsManager fermatAppsManager;
-
-    /**
      *  Application state
      */
     public static int applicationState=STATE_NOT_CREATED;
@@ -70,6 +66,12 @@ public class ApplicationSession extends MultiDexApplication implements Serializa
 
     private Thread.UncaughtExceptionHandler defaultUncaughtHandler = Thread.getDefaultUncaughtExceptionHandler();
 
+
+    /**
+     * Services helpers
+     */
+    private ServicesHelpers servicesHelpers;
+
     /**
      *  Application session constructor
      */
@@ -78,7 +80,6 @@ public class ApplicationSession extends MultiDexApplication implements Serializa
         super();
         instance = this;
         fermatSystem = FermatSystem.getInstance();
-        fermatAppsManager = new FermatAppsManager();
 
 
     }
@@ -93,15 +94,6 @@ public class ApplicationSession extends MultiDexApplication implements Serializa
             fermatSystem = FermatSystem.getInstance();
         }
         return fermatSystem;
-    }
-
-    /**
-     * Fermat app manager
-     *
-     * @return FermatAppsManager
-     */
-    public FermatAppsManager getFermatAppsManager() {
-        return fermatAppsManager;
     }
 
     /**
@@ -127,6 +119,7 @@ public class ApplicationSession extends MultiDexApplication implements Serializa
 
     @Override
     public void onTerminate(){
+        servicesHelpers.unbindServices();
         super.onTerminate();
     }
 
@@ -139,9 +132,29 @@ public class ApplicationSession extends MultiDexApplication implements Serializa
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable e) {
+                e.printStackTrace();
                 handleUncaughtException(thread, e);
+                ACRA.getErrorReporter().handleSilentException(e);
+                ACRA.getErrorReporter().handleException(e);
             }
         });
+
+//        loadProcessInfo();
+
+        if(!isFermatOpen()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    servicesHelpers = new ServicesHelpers(getInstance().getApplicationContext());
+                    servicesHelpers.bindServices();
+
+
+                }
+            }).start();
+        }
+
+//        new ANRWatchDog().start();
+
         super.onCreate();
     }
     protected void attachBaseContext(Context base) {
@@ -156,5 +169,52 @@ public class ApplicationSession extends MultiDexApplication implements Serializa
         startActivity(intent);
     }
 
+    public FermatAppsManagerService getAppManager(){
+        return getServicesHelpers().getAppManager();
+    }
 
+    public NotificationService getNotificationService(){
+        return getServicesHelpers().getNotificationService();
+    }
+
+    public ClientSystemBrokerService getClientSideBrokerService(){
+        return getServicesHelpers().getClientSideBrokerService();
+    }
+
+    public ServicesHelpers getServicesHelpers() {
+        return servicesHelpers;
+    }
+
+    /**
+     * Get the list of currently running process.
+     */
+    private void loadProcessInfo() {
+        int processId = android.os.Process.myPid();
+
+        String myProcessName =getApplicationContext().getPackageName();
+        Log.i(TAG,"context:"+myProcessName);
+
+
+
+
+
+    }
+
+    public boolean isFermatOpen() {
+        int pId = android.os.Process.myPid();
+        ActivityManager activityManager = (ActivityManager) this
+                .getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager
+                .getRunningAppProcesses();
+        for (int idx = 0; idx < procInfos.size(); idx++) {
+            ActivityManager.RunningAppProcessInfo process = procInfos.get(idx);
+            String processName = process.processName;
+            if(pId != process.pid) {
+                if (processName.equals("org.fermat")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

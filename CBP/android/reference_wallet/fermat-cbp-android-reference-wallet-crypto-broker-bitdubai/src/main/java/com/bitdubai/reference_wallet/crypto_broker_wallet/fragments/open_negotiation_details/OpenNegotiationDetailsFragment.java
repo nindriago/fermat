@@ -41,7 +41,6 @@ import com.bitdubai.fermat_cbp_api.layer.network_service.negotiation_transmissio
 import com.bitdubai.fermat_cbp_api.layer.wallet.crypto_broker.interfaces.Quote;
 import com.bitdubai.fermat_cbp_api.layer.wallet_module.common.interfaces.ClauseInformation;
 import com.bitdubai.fermat_cbp_api.layer.wallet_module.common.interfaces.CustomerBrokerNegotiationInformation;
-import com.bitdubai.fermat_cbp_api.layer.wallet_module.crypto_broker.interfaces.CryptoBrokerWalletManager;
 import com.bitdubai.fermat_cbp_api.layer.wallet_module.crypto_broker.interfaces.CryptoBrokerWalletModuleManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.reference_wallet.crypto_broker_wallet.R;
@@ -94,9 +93,9 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
     private NegotiationWrapper negotiationWrapper;
 
     // Fermat Managers
-    private CryptoBrokerWalletManager walletManager;
     private ErrorManager errorManager;
     private OpenNegotiationDetailsAdapter adapter;
+    private CryptoBrokerWalletModuleManager moduleManager;
 
     public static OpenNegotiationDetailsFragment newInstance() {
         return new OpenNegotiationDetailsFragment();
@@ -108,8 +107,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
         super.onCreate(savedInstanceState);
 
         try {
-            CryptoBrokerWalletModuleManager moduleManager = appSession.getModuleManager();
-            walletManager = moduleManager.getCryptoBrokerWallet(appSession.getAppPublicKey());
+            moduleManager = appSession.getModuleManager();
             errorManager = appSession.getErrorManager();
 
             CustomerBrokerNegotiationInformation negotiationInfo = appSession.getNegotiationData();
@@ -184,7 +182,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
                 @Override
                 public void onClick(String editTextValue) {
                     try {
-                        walletManager.cancelNegotiation(negotiationWrapper.getNegotiationInfo(), editTextValue);
+                        moduleManager.cancelNegotiation(negotiationWrapper.getNegotiationInfo(), editTextValue);
                         changeActivity(Activities.CBP_CRYPTO_BROKER_WALLET_HOME, appSession.getAppPublicKey());
 
                     } catch (FermatException e) {
@@ -282,9 +280,9 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
             final Calendar calendar = Calendar.getInstance();
 
             if (deliveryDatetimeValue < calendar.getTimeInMillis()) {
-                Toast.makeText(getActivity(), "Need to select a date time from today up", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Merchandise delivery date must be in the future", Toast.LENGTH_SHORT).show();
             } else if (deliveryDatetimeValue < paymentDatetimeValue) {
-                Toast.makeText(getActivity(), "The Delivery Date need to be lower than the Delivery Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "The Merchandise Delivery date must be after the Payment date", Toast.LENGTH_SHORT).show();
             } else {
                 negotiationWrapper.confirmClauseChanges(clause);
                 adapter.changeDataSet(negotiationWrapper);
@@ -297,9 +295,9 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
             final Calendar calendar = Calendar.getInstance();
 
             if (paymentDatetimeValue < calendar.getTimeInMillis()) {
-                Toast.makeText(getActivity(), "Need to select a date time from today up", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Payment date must be in the future", Toast.LENGTH_SHORT).show();
             } else if (paymentDatetimeValue > deliverDatetimeValue) {
-                Toast.makeText(getActivity(), "The Payment Date need to be higher than the Payment Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "The Payment date must be before the Merchandise Delivery Date", Toast.LENGTH_SHORT).show();
             } else {
                 negotiationWrapper.confirmClauseChanges(clause);
                 adapter.changeDataSet(negotiationWrapper);
@@ -332,7 +330,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
     public void onSendButtonClicked() {
         try {
             if (negotiationWrapper.isClausesConfirmed()) {
-                walletManager.sendNegotiation(negotiationWrapper.getNegotiationInfo());
+                moduleManager.sendNegotiation(negotiationWrapper.getNegotiationInfo());
                 changeActivity(Activities.CBP_CRYPTO_BROKER_WALLET_HOME, appSession.getAppPublicKey());
             } else
                 Toast.makeText(getActivity(), "Need to confirm ALL the clauses", Toast.LENGTH_LONG).show();
@@ -374,7 +372,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
                 final String currencyToReceiveCode = clauses.get(BROKER_CURRENCY).getValue();
                 final Currency currencyPayment = CurrencyHelper.getCurrency(currencyToReceiveCode);
 
-                return walletManager.getQuote(merchandise, currencyPayment, appSession.getAppPublicKey());
+                return moduleManager.getQuote(merchandise, currencyPayment, appSession.getAppPublicKey());
             }
         };
 
@@ -475,7 +473,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
         try {
             SimpleListDialogFragment<MoneyType> dialogFragment;
             ClauseInformation brokerCurrency = clauses.get(BROKER_CURRENCY);
-            List<MoneyType> paymentMethods = walletManager.getPaymentMethods(brokerCurrency.getValue(), appSession.getAppPublicKey());
+            List<MoneyType> paymentMethods = moduleManager.getPaymentMethods(brokerCurrency.getValue(), appSession.getAppPublicKey());
 
             dialogFragment = new SimpleListDialogFragment<>();
             dialogFragment.configure("Payment Methods", paymentMethods);
@@ -496,7 +494,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
                                 List<String> bankAccounts;
                                 try {
                                     final String currencyToReceive = clauses.get(BROKER_CURRENCY).getValue();
-                                    bankAccounts = walletManager.getAccounts(currencyToReceive, appSession.getAppPublicKey());
+                                    bankAccounts = moduleManager.getAccounts(currencyToReceive, appSession.getAppPublicKey());
                                 } catch (FermatException e) {
                                     bankAccounts = new ArrayList<>();
                                 }
@@ -510,7 +508,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
                             if (clauses.get(BROKER_PLACE_TO_DELIVER) == null) {
                                 List<NegotiationLocations> locations;
                                 try {
-                                    locations = Lists.newArrayList(walletManager.getAllLocations(NegotiationType.SALE));
+                                    locations = Lists.newArrayList(moduleManager.getAllLocations(NegotiationType.SALE));
                                 } catch (FermatException e) {
                                     locations = new ArrayList<>();
                                 }
@@ -534,7 +532,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
         List<NegotiationLocations> locations;
 
         try {
-            locations = Lists.newArrayList(walletManager.getAllLocations(NegotiationType.SALE));
+            locations = Lists.newArrayList(moduleManager.getAllLocations(NegotiationType.SALE));
         } catch (FermatException e) {
             locations = new ArrayList<>();
         }
@@ -560,7 +558,7 @@ public class OpenNegotiationDetailsFragment extends AbstractFermatFragment<Crypt
         List<String> bankAccounts;
 
         try {
-            bankAccounts = walletManager.getAccounts(currencyToReceive, appSession.getAppPublicKey());
+            bankAccounts = moduleManager.getAccounts(currencyToReceive, appSession.getAppPublicKey());
         } catch (FermatException e) {
             bankAccounts = new ArrayList<>();
         }

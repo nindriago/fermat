@@ -4,17 +4,19 @@ import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
 import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
 import com.bitdubai.fermat_api.layer.all_definition.enums.CryptoCurrency;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ReferenceWallet;
 import com.bitdubai.fermat_api.layer.all_definition.enums.VaultType;
 import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
+import com.bitdubai.fermat_api.layer.core.PluginInfo;
 import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.CantLoadWalletsException;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_api.layer.modules.exceptions.ActorIdentityNotSelectedException;
 import com.bitdubai.fermat_api.layer.modules.exceptions.CantGetSelectedActorIdentityException;
-import com.bitdubai.fermat_api.layer.modules.interfaces.ModuleManager;
+import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_bch_api.layer.crypto_module.crypto_address_book.exceptions.CantRegisterCryptoAddressBookRecordException;
 import com.bitdubai.fermat_bch_api.layer.crypto_module.crypto_address_book.interfaces.CryptoAddressBookManager;
 import com.bitdubai.fermat_bch_api.layer.crypto_vault.bitcoin_vault.CryptoVaultManager;
@@ -69,6 +71,7 @@ import com.bitdubai.fermat_ccp_api.layer.request.crypto_payment.exceptions.Crypt
 import com.bitdubai.fermat_ccp_api.layer.request.crypto_payment.interfaces.CryptoPayment;
 import com.bitdubai.fermat_ccp_api.layer.request.crypto_payment.interfaces.CryptoPaymentManager;
 import com.bitdubai.fermat_ccp_api.layer.request.crypto_payment.interfaces.CryptoPaymentRegistry;
+import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.BitcoinWalletSettings;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.exceptions.CantApproveRequestPaymentException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.exceptions.CantCreateWalletContactException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.exceptions.CantDeleteWalletContactException;
@@ -101,6 +104,7 @@ import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.interfaces.
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.interfaces.CryptoWalletTransaction;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.interfaces.CryptoWalletWalletContact;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.interfaces.PaymentRequest;
+import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.structure.CryptoWalletWalletModuleWalletContact;
 import com.bitdubai.fermat_ccp_plugin.layer.wallet_module.crypto_wallet.developer.bitdubai.version_1.exceptions.CantCreateOrRegisterActorException;
 import com.bitdubai.fermat_ccp_plugin.layer.wallet_module.crypto_wallet.developer.bitdubai.version_1.exceptions.CantEnrichIntraUserException;
 import com.bitdubai.fermat_ccp_plugin.layer.wallet_module.crypto_wallet.developer.bitdubai.version_1.exceptions.CantEnrichTransactionException;
@@ -133,7 +137,8 @@ import java.util.UUID;
  * @version 1.0
  * @since Java JDK 1.7
  */
-public class CryptoWalletWalletModuleManager implements CryptoWallet, ModuleManager,Serializable {
+@PluginInfo(platform = Platforms.CRYPTO_CURRENCY_PLATFORM, layer = Layers.WALLET_MODULE, plugin = Plugins.CRYPTO_WALLET)
+public class CryptoWalletWalletModuleManager implements CryptoWallet,Serializable {
 
     private final BitcoinWalletManager           bitcoinWalletManager          ;
     private final CryptoAddressBookManager       cryptoAddressBookManager      ;
@@ -147,20 +152,22 @@ public class CryptoWalletWalletModuleManager implements CryptoWallet, ModuleMana
     private final OutgoingExtraUserManager       outgoingExtraUserManager      ;
     private final OutgoingIntraActorManager      outgoingIntraActorManager     ;
     private final WalletContactsManager          walletContactsManager         ;
+    private final UUID pluginId;
+    private final PluginFileSystem pluginFileSystem;
 
 
-    public CryptoWalletWalletModuleManager(final BitcoinWalletManager           bitcoinWalletManager          ,
-                                           final CryptoAddressBookManager       cryptoAddressBookManager      ,
-                                           final CryptoAddressesManager         cryptoAddressesNSManager      ,
-                                           final CryptoPaymentManager           cryptoPaymentManager          ,
-                                           final CryptoVaultManager cryptoVaultManager            ,
-                                           final ErrorManager                   errorManager                  ,
-                                           final ExtraUserManager               extraUserManager              ,
-                                           final IntraWalletUserActorManager    intraUserManager              ,
+    public CryptoWalletWalletModuleManager(final BitcoinWalletManager bitcoinWalletManager,
+                                           final CryptoAddressBookManager cryptoAddressBookManager,
+                                           final CryptoAddressesManager cryptoAddressesNSManager,
+                                           final CryptoPaymentManager cryptoPaymentManager,
+                                           final CryptoVaultManager cryptoVaultManager,
+                                           final ErrorManager errorManager,
+                                           final ExtraUserManager extraUserManager,
+                                           final IntraWalletUserActorManager intraUserManager,
                                            final IntraWalletUserIdentityManager intraWalletUserIdentityManager,
-                                           final OutgoingExtraUserManager       outgoingExtraUserManager      ,
-                                           final OutgoingIntraActorManager      outgoingIntraActorManager     ,
-                                           final WalletContactsManager          walletContactsManager        ) {
+                                           final OutgoingExtraUserManager outgoingExtraUserManager,
+                                           final OutgoingIntraActorManager outgoingIntraActorManager,
+                                           final WalletContactsManager walletContactsManager, UUID pluginId, PluginFileSystem pluginFileSystem) {
 
         this.bitcoinWalletManager           = bitcoinWalletManager          ;
         this.cryptoAddressBookManager       = cryptoAddressBookManager      ;
@@ -174,6 +181,8 @@ public class CryptoWalletWalletModuleManager implements CryptoWallet, ModuleMana
         this.outgoingExtraUserManager       = outgoingExtraUserManager      ;
         this.outgoingIntraActorManager      = outgoingIntraActorManager     ;
         this.walletContactsManager          = walletContactsManager         ;
+        this.pluginId = pluginId;
+        this.pluginFileSystem = pluginFileSystem;
 
     }
 
@@ -988,14 +997,14 @@ public class CryptoWalletWalletModuleManager implements CryptoWallet, ModuleMana
     }
 
     @Override
-    public List<PaymentRequest> listSentPaymentRequest(String walletPublicKey,int max,int offset) throws CantListSentPaymentRequestException {
+    public List<PaymentRequest> listSentPaymentRequest(String walletPublicKey,BlockchainNetworkType blockchainNetworkType,int max,int offset) throws CantListSentPaymentRequestException {
         try {
             List<PaymentRequest> lst =  new ArrayList<>();
             CryptoWalletWalletModuleWalletContact cryptoWalletWalletContact = null;
             byte[] profilePicture = null;
 
             //find received payment request
-            for (CryptoPayment paymentRecord :  cryptoPaymentRegistry.listCryptoPaymentRequestsByType(walletPublicKey, CryptoPaymentType.SENT, max, offset)) {
+            for (CryptoPayment paymentRecord :  cryptoPaymentRegistry.listCryptoPaymentRequestsByType(walletPublicKey, CryptoPaymentType.SENT,blockchainNetworkType, max, offset)) {
 
                 WalletContactRecord walletContactRecord = walletContactsRegistry.getWalletContactByActorAndWalletPublicKey(paymentRecord.getActorPublicKey(),walletPublicKey);
 
@@ -1048,8 +1057,8 @@ public class CryptoWalletWalletModuleManager implements CryptoWallet, ModuleMana
 
     }
 
-
-    public List<PaymentRequest> listReceivedPaymentRequest(String walletPublicKey,int max,int offset) throws CantListReceivePaymentRequestException {
+    @Override
+    public List<PaymentRequest> listReceivedPaymentRequest(String walletPublicKey,BlockchainNetworkType blockchainNetworkType,int max,int offset) throws CantListReceivePaymentRequestException {
 
         try {
             List<PaymentRequest> lst =  new ArrayList<>();
@@ -1058,9 +1067,10 @@ public class CryptoWalletWalletModuleManager implements CryptoWallet, ModuleMana
             byte[] profilePicture = null;
 
             //find received payment request
-            for (CryptoPayment paymentRecord :  cryptoPaymentRegistry.listCryptoPaymentRequestsByType(
+            for (CryptoPayment paymentRecord :  cryptoPaymentRegistry.listCryptoPaymentRequestsByTypeAndNetwork(
                     walletPublicKey,
                     CryptoPaymentType.RECEIVED,
+                    blockchainNetworkType,
                     max,
                     offset
             )) {
@@ -1475,19 +1485,40 @@ public class CryptoWalletWalletModuleManager implements CryptoWallet, ModuleMana
         return sdf.format(date);
     }
 
+    private SettingsManager<BitcoinWalletSettings> settingsManager;
     @Override
-    public SettingsManager getSettingsManager() {
-        return null;
+    public SettingsManager<BitcoinWalletSettings> getSettingsManager() {
+        System.out.println("Settings manager 1: "+ String.valueOf(settingsManager!=null) );
+        if (this.settingsManager != null)
+            return this.settingsManager;
+
+        this.settingsManager = new SettingsManager<>(
+                pluginFileSystem,
+                pluginId
+        );
+        System.out.println("Settings manager 2: "+ String.valueOf(settingsManager!=null) );
+
+        return this.settingsManager;
     }
 
     @Override
     public ActiveActorIdentityInformation getSelectedActorIdentity() throws CantGetSelectedActorIdentityException, ActorIdentityNotSelectedException {
-        return null;
+        try {
+            List<IntraWalletUserIdentity> lst = getActiveIdentities();
+            if(lst.isEmpty()){
+                return null;
+            }else{
+                return lst.get(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void createIdentity(String name, String phrase, byte[] profile_img) throws Exception {
-
+        createIntraUser(name, phrase, profile_img);
     }
 
     @Override
