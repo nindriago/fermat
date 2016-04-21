@@ -36,5 +36,7 @@
     <color name="redeem_card_background">#ffffff</color>
     <color name="redeem_card_text_top_primary">#ffffff</color>
     <color name="redeem_card_background_back">#ECECEC</color>
+    <!--cambiar popr los colores que son-->
+    <color name="redeem_card_toolbar">#ECECEC</color>
 
 </resources>

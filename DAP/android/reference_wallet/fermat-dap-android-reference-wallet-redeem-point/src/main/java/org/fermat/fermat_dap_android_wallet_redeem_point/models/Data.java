@@ -121,6 +121,34 @@ public class Data {
         }
         return null;
     }
+    
+//    public static List<DigitalAsset> getAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws CantLoadWalletException {
+//        List<AssetRedeemPointWalletList> assetRedeemPointWalletList = moduleManager.
+//                getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
+//        AssetRedeemPointWallet redeemWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
+//        List<DigitalAsset> assets = new ArrayList<>();
+//        for (AssetRedeemPointWalletList assetRedeemWalletList : assetRedeemPointWalletList) {
+//            List<CryptoAddress> addresses = assetRedeemWalletList.getAddresses();
+//            for (int i = 0; i < assetRedeemWalletList.getQuantityBookBalance(); i++) {
+//                try {
+//                    CryptoAddress address = addresses.get(i);
+//                    assets.add(new DigitalAsset(assetRedeemWalletList, redeemWallet.getActorTransactionSummary(), address));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        Collections.sort(assets, new Comparator<DigitalAsset>() {
+//            @Override
+//            public int compare(DigitalAsset lhs, DigitalAsset rhs) {
+//                if (lhs.getDate().getTime() > rhs.getDate().getTime()) return -1;
+//                else if (lhs.getDate().getTime() < rhs.getDate().getTime()) return 1;
+//                return 0;
+//            }
+//        });
+//
+//        return assets;
+//    }
 
     public static List<DigitalAssetHistory> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
         List<DigitalAssetHistory> digitalAssets = new ArrayList<>();
@@ -193,4 +221,5 @@ public class Data {
         }
         return digitalAssets;
     }
+
 }

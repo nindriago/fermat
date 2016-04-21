@@ -118,7 +118,7 @@
                 android:layout_below="@id/actorUserImage"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/cardStatusImage"
@@ -159,7 +159,7 @@
                 android:layout_below="@id/actorUserImage"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/cardConfirmedImage"
