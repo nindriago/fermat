@@ -44,4 +44,27 @@ public class Utils {
             return diff / DAY_MILLIS + " days ago";
         }
     }
+
+    public static String getTimeAgoHistory(long time) {
+        String temp= null;
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+
+        long now = new Date().getTime();
+        if (time > now || time <= 0) {
+            return "Future";
+        }
+
+        final long diff = now - time;
+        if (diff < 24 * HOUR_MILLIS) {
+            return "Today";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "Yesterday";
+        } else {
+            temp = diff / DAY_MILLIS + " days ago";
+            return temp;
+        }
+    }
 }

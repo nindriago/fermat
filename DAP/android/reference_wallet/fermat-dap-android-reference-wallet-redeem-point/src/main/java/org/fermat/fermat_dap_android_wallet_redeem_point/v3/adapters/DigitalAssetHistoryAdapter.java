@@ -12,6 +12,7 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.filters.MyAssetsAdapter
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.filters.DigitalAssetHistoryAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.holders.DigitalAssetHistoryItemViewHolder;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
+import org.fermat.fermat_dap_android_wallet_redeem_point.v3.util.Utils;
 import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 
@@ -45,7 +46,7 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
         mapAssetQuantity = new LinkedHashMap<String, Integer>();
 
         for (int x = 0; x < dataSet.size(); x++) {
-            String dateAccepted = DAPStandardFormats.DATE_FORMAT.format(dataSet.get(x).getAcceptedDate());
+            String dateAccepted = Utils.getTimeAgoHistory(dataSet.get(x).getAcceptedDate().getTime());
             if (dateAccepted != null) {
                 if (!mapIndex.containsKey(dateAccepted)) {
                     mapIndex.put(dateAccepted, x);
@@ -73,7 +74,7 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
 
     @Override
     protected void bindHolder(DigitalAssetHistoryItemViewHolder holder, DigitalAssetHistory data, int position) {
-        holder.bind(data, data.getFormattedAcceptedDate(), mapAssetQuantity.get(data.getFormattedAcceptedDate()) , mapIndex.get(data.getFormattedAcceptedDate()) == position);
+        holder.bind(data, Utils.getTimeAgoHistory(data.getAcceptedDate().getTime()), mapAssetQuantity.get(Utils.getTimeAgoHistory(data.getAcceptedDate().getTime())) , mapIndex.get(Utils.getTimeAgoHistory(data.getAcceptedDate().getTime())) == position);
     }
 
     @Override
