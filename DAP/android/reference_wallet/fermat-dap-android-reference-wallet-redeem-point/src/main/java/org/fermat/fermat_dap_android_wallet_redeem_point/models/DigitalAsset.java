@@ -32,7 +32,10 @@ public class DigitalAsset {
     private ActorAssetUser actorAssetUser;
     private byte[] image;
     private String actorUserNameFrom;
+    private String actorIssuerNameFrom;
+    private String actorIssuerAddress;
     private byte[] imageActorUserFrom;
+    private byte[] imageActorIssuerFrom;
 
     public DigitalAsset() {
     }
@@ -172,5 +175,29 @@ public class DigitalAsset {
     }
     public String getFormattedDate() {
         return (date == null) ? "No date" : Utils.getTimeAgo(date.getTime());
+    }
+
+    public String getActorIssuerNameFrom() {
+        return actorIssuerNameFrom;
+    }
+
+    public void setActorIssuerNameFrom(String actorIssuerNameFrom) {
+        this.actorIssuerNameFrom = actorIssuerNameFrom;
+    }
+
+    public String getActorIssuerAddress() {
+        return actorIssuerAddress;
+    }
+
+    public void setActorIssuerAddress(String actorIssuerAddress) {
+        this.actorIssuerAddress = actorIssuerAddress;
+    }
+
+    public byte[] getImageActorIssuerFrom() {
+        return imageActorIssuerFrom;
+    }
+
+    public void setImageActorIssuerFrom(byte[] imageActorIssuerFrom) {
+        this.imageActorIssuerFrom = imageActorIssuerFrom;
     }
 }

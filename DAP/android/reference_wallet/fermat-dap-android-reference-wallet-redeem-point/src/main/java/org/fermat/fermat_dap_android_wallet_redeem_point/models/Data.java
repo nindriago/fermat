@@ -158,7 +158,7 @@ public class Data {
         for (int i = 0; i < 5; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            calendar.add(Calendar.DATE,i);
+            calendar.add(Calendar.DATE,-i);
 
             digitalAsset = new DigitalAssetHistory();
             digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
@@ -180,7 +180,7 @@ public class Data {
         for (int i = 0; i < 5; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            calendar.add(Calendar.DATE,i-1);
+            calendar.add(Calendar.DATE,-i);
 
             digitalAsset = new DigitalAssetHistory();
             digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());

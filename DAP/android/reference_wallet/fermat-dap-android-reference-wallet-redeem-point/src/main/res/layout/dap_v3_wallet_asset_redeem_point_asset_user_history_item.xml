@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/historySectionHeader"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         android:layout_alignParentRight="true"
         android:visibility="visible">
@@ -23,34 +23,36 @@
                 android:id="@+id/historyDateHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:text="18 / 04 / 2016"
-                android:textColor="@color/dap_V3_redeem_point_wallet_black_text"
+                android:textColor="@color/dap_V3_redeem_point_history_text"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 tools:ignore="HardcodedText,RtlSymmetry"
                 android:layout_centerVertical="true"
-                android:paddingLeft="10dp"
                 android:layout_alignParentLeft="true" />
 
             <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                 android:id="@+id/historyAssetsQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:text="6 Assets"
-                android:textColor="@color/fab_material_red_500"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:textColor="@color/dap_V3_redeem_point_history_asset_quantity"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif"
                 tools:ignore="HardcodedText,RtlSymmetry"
                 android:layout_centerVertical="true"
-                android:paddingRight="10dp"
                 android:layout_alignParentRight="true" />
 
             <View
                 android:id="@+id/viewHeader"
                 android:layout_alignParentBottom="true"
                 android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="#e1e1e1" />
+                android:layout_height="1dp"
+                android:background="@color/dap_V3_redeem_point_history_section_stroke" />
 
         </RelativeLayout>
 
@@ -61,10 +63,10 @@
     <LinearLayout
         android:id="@+id/historyItem"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="72dp"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_below="@+id/historySectionHeader">
 
         <RelativeLayout
@@ -93,8 +95,8 @@
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/bg_circular_user_list">
+                android:layout_marginLeft="25dp"
+                android:background="@drawable/bg_circular_home_redeem">
 
                 <ImageView
                     android:id="@+id/imageViewUserRedeemedAvatar"
@@ -122,10 +124,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif"
                     android:text="Combo 2x1 French Fries"
-                    android:textColor="@color/dap_V3_redeem_point_wallet_black_text"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:textColor="@color/dap_V3_redeem_point_history_asset_name"
+                    android:textSize="14sp"
                     tools:ignore="HardcodedText,RtlSymmetry" />
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
@@ -134,10 +136,21 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/historyAssetName"
                     android:layout_gravity="center_vertical"
-                    android:text="Penelope Quintero - Asset User"
-                    android:textColor="@color/dap_V3_redeem_point_wallet_black_text"
+                    android:text="Penelope Quintero"
+                    android:textColor="@color/dap_V3_redeem_point_history_asset_username"
                     android:textSize="12sp"
                     tools:ignore="HardcodedText,RtlSymmetry" />
+
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=" - Asset User"
+                    android:textColor="@color/dap_V3_redeem_point_history_section_stroke"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText,RtlSymmetry"
+                    android:layout_alignTop="@+id/historyUserName"
+                    android:layout_toRightOf="@+id/historyUserName" />
 
             </RelativeLayout>
 
@@ -151,6 +164,8 @@
         android:layout_below="@id/historyItem"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="#e1e1e1" />
+        android:layout_marginLeft="49dp"
+        android:layout_marginRight="49dp"
+        android:background="@color/dap_V3_redeem_point_history_asset_stroke" />
 
 </RelativeLayout>
