@@ -40,7 +40,7 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
             switch (fragment) {
                 case DAP_WALLET_REDEEM_POINT_MAIN_ACTIVITY:
                     currentFragment = new RedeemPointMainActivityFragment();
-                    //currentFragment = new RedeemHomeCardFragment();
+//                    currentFragment = new RedeemHomeCardFragment();
                     //currentFragment = new RedeemHomeHistoryFragment();
                     break;
                 case DAP_WALLET_REDEEM_POINT_HISTORY_ACTIVITY:
@@ -65,6 +65,12 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
                     break;
                 case DAP_WALLET_REDEEM_POINT_ASSET_SETTINGS_NOTIFICATIONS:
                     currentFragment = new SettingsNotificationsFragment();
+                    break;
+                case DAP_WALLET_REDEEM_POINT_MAIN_PENDING_TAB_FRAGMENT:
+                    currentFragment = new RedeemHomeCardFragment();
+                    break;
+                case DAP_WALLET_REDEEM_POINT_MAIN_HISTORY_TAB_FRAGMENT:
+                    currentFragment = new RedeemHomeHistoryFragment();
                     break;
                 default:
                     throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
