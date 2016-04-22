@@ -92,7 +92,7 @@ implements FermatListItemListeners<DigitalAssetHistory> {
             moduleManager = ((RedeemPointSession) appSession).getModuleManager();
             errorManager = appSession.getErrorManager();
             settingsManager = appSession.getModuleManager().getSettingsManager();
-            digitalAssetsHistory = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
+
 
         } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
@@ -147,6 +147,12 @@ implements FermatListItemListeners<DigitalAssetHistory> {
         //setupBackgroundBitmap(layout);
         configureToolbar();
         noAssetsView = layout.findViewById(R.id.dap_v3_wallet_asset_redeem_point_asset_user_history_no_history);
+
+        try {
+            digitalAssetsHistory = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         showOrHideNoAssetsView(digitalAssetsHistory.isEmpty());
