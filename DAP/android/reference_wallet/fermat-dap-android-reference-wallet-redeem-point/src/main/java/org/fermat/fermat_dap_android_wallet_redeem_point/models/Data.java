@@ -150,7 +150,34 @@ public class Data {
 //
 //        return assets;
 //    }
+    public static List<DigitalAsset> getAllTestAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception{
+        List<DigitalAsset> digitalAssets = new ArrayList<>();
+        DigitalAsset digitalAsset;
 
+        for (int i = 0; i < 5; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,i);
+
+            digitalAsset = new DigitalAsset();
+            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+            digitalAsset.setName("Combo " + (i + 1) + "x1");
+            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+            digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+
+
+
+            digitalAsset.setActorUserNameFrom("Penelope Quintero");
+            digitalAsset.setImageActorUserFrom(null);
+            digitalAsset.setImage(null);
+
+
+            digitalAssets.add(digitalAsset);
+
+        }
+
+        return digitalAssets;
+    }
     public static List<DigitalAssetHistory> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
         List<DigitalAssetHistory> digitalAssets = new ArrayList<>();
         DigitalAssetHistory digitalAsset;

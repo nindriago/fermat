@@ -38,5 +38,6 @@
     <color name="redeem_card_background_back">#ECECEC</color>
     <!--cambiar popr los colores que son-->
     <color name="redeem_card_toolbar">#ECECEC</color>
+    <color name="redeem_card_titlebar">#009688</color>
 
 </resources>
