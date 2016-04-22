@@ -31,6 +31,7 @@
     <string name="dap_issuer_wallet_validate_assets_to_deliver">Please enter the number of assets to deliver</string>
     <string name="dap_issuer_wallet_validate_assets_to_deliver_greater">Value can\'t be greater than </string>
     <string name="dap_issuer_wallet_validate_no_available_assets">There is no assets to distribute</string>
+    <string name="dap_issuer_wallet_validate_no_available_assets_appropriate">There is no assets to appropriate</string>
     <string name="dap_issuer_wallet_validate_no_users_groups">No users/groups selected</string>
     <string name="dap_issuer_wallet_validate_not_enought_assets">There are not enough assets to distribute</string>
     <!-- -->
@@ -39,6 +40,8 @@
     <string name="dap_issuer_wallet_confirm_title">Confirm</string>
     <string name="dap_issuer_wallet_confirm_entered_info">Are you sure that the entered information is correct? This action is irreversible</string>
     <string name="dap_issuer_wallet_confirm_sure">Are you sure you want to do this? This action is irreversible</string>
+    <string name="dap_issuer_wallet_v3_appropriate_confirm">Are you sure you want to appropriate this asset? This action is irreversible</string>
+    <string name="dap_issuer_wallet_v3_distribute_confirm">Are you sure you want to deliver this asset? This action is irreversible</string>
     <!-- -->
 
     <!-- app messages -->

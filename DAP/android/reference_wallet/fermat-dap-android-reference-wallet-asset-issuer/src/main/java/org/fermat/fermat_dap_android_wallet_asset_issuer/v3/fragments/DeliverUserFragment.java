@@ -172,8 +172,8 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
                 if (validateDistributeToUsers()) {
                     new ConfirmDialog.Builder(getActivity(), appSession)
                             .setTitle(getResources().getString(R.string.dap_issuer_wallet_confirm_title))
-                            .setMessage(getResources().getString(R.string.dap_issuer_wallet_confirm_entered_info))
-                            .setColorStyle(getResources().getColor(R.color.dap_issuer_wallet_principal))
+                            .setMessage(getResources().getString(R.string.dap_issuer_wallet_v3_distribute_confirm))
+                            .setColorStyle(getResources().getColor(R.color.dap_issuer_wallet_v3_dialog))
                             .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
                                 @Override
                                 public void onClick() {

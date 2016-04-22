@@ -87,16 +87,18 @@ public class HomeCardViewHolder extends FermatViewHolder {
         cardAppropriateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ConfirmDialog.Builder((Activity) context, appSession)
-                        .setTitle(res.getString(R.string.dap_issuer_wallet_confirm_title))
-                        .setMessage(res.getString(R.string.dap_issuer_wallet_confirm_sure))
-                        .setColorStyle(res.getColor(R.color.dap_issuer_wallet_principal))
-                        .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
-                            @Override
-                            public void onClick() {
-                                doAppropriate(digitalAsset.getAssetPublicKey(), digitalAsset.getWalletPublicKey());
-                            }
-                        }).build().show();
+                if (validateAppropriateAction(digitalAsset)) {
+                    new ConfirmDialog.Builder((Activity) context, appSession)
+                            .setTitle(res.getString(R.string.dap_issuer_wallet_confirm_title))
+                            .setMessage(res.getString(R.string.dap_issuer_wallet_v3_appropriate_confirm))
+                            .setColorStyle(res.getColor(R.color.dap_issuer_wallet_v3_dialog))
+                            .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
+                                @Override
+                                public void onClick() {
+                                    doAppropriate(digitalAsset.getAssetPublicKey(), digitalAsset.getWalletPublicKey());
+                                }
+                            }).build().show();
+                }
             }
         });
         cardDeliverButton.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +121,15 @@ public class HomeCardViewHolder extends FermatViewHolder {
 
             }
         });
+    }
+
+    private boolean validateAppropriateAction(DigitalAsset digitalAsset) {
+        Activity activity = (Activity) context;
+        if (digitalAsset.getAvailableBalanceQuantity() == 0) {
+            Toast.makeText(activity, R.string.dap_issuer_wallet_validate_no_available_assets_appropriate, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void doAppropriate(final String assetPublicKey, final String walletPublicKey) {
