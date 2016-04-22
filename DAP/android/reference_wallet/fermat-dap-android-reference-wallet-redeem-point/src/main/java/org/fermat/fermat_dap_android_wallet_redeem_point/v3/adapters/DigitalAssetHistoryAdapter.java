@@ -42,17 +42,19 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
     }
 
     private void fillSections() {
-        mapIndex = new LinkedHashMap<String, Integer>();
-        mapAssetQuantity = new LinkedHashMap<String, Integer>();
+        if (dataSet != null) {
+            mapIndex = new LinkedHashMap<String, Integer>();
+            mapAssetQuantity = new LinkedHashMap<String, Integer>();
 
-        for (int x = 0; x < dataSet.size(); x++) {
-            String dateAccepted = Utils.getTimeAgoHistory(dataSet.get(x).getAcceptedDate().getTime());
-            if (dateAccepted != null) {
-                if (!mapIndex.containsKey(dateAccepted)) {
-                    mapIndex.put(dateAccepted, x);
-                    mapAssetQuantity.put(dateAccepted,1);
-                }else {
-                    mapAssetQuantity.put(dateAccepted, mapAssetQuantity.get(dateAccepted) + 1);
+            for (int x = 0; x < dataSet.size(); x++) {
+                String dateAccepted = Utils.getTimeAgoHistory(dataSet.get(x).getAcceptedDate().getTime());
+                if (dateAccepted != null) {
+                    if (!mapIndex.containsKey(dateAccepted)) {
+                        mapIndex.put(dateAccepted, x);
+                        mapAssetQuantity.put(dateAccepted, 1);
+                    } else {
+                        mapAssetQuantity.put(dateAccepted, mapAssetQuantity.get(dateAccepted) + 1);
+                    }
                 }
             }
         }
