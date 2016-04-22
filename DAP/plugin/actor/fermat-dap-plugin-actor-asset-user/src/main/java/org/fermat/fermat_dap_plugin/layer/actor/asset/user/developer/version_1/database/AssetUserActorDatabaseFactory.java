@@ -125,7 +125,6 @@ public class AssetUserActorDatabaseFactory implements DealsWithPluginDatabaseSys
             table.addColumn(AssetUserActorDatabaseConstants.ASSET_USER_GROUP_MEMBER_GROUP_ID_COLUMN_NAME, DatabaseDataType.STRING, 256, Boolean.TRUE);
             table.addColumn(AssetUserActorDatabaseConstants.ASSET_USER_GROUP_MEMBER_USER_REGISTERED_PUBLIC_KEY_COLUMN_NAME, DatabaseDataType.STRING, 256, Boolean.FALSE);
 
-//            table.addIndex(AssetUserActorDatabaseConstants.ASSET_USER_GROUP_MEMBER_GROUP_ID_COLUMN_NAME);
             table.addIndex(AssetUserActorDatabaseConstants.ASSET_USER_GROUP_MEMBER_FIRST_KEY_COLUMN);
 
             try {
