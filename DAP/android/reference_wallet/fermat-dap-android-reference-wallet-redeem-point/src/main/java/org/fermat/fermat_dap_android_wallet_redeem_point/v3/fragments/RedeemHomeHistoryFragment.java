@@ -28,6 +28,7 @@ import com.bitdubai.fermat_android_api.ui.fragments.FermatWalletListFragment;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
@@ -91,7 +92,7 @@ implements FermatListItemListeners<DigitalAssetHistory> {
             moduleManager = ((RedeemPointSession) appSession).getModuleManager();
             errorManager = appSession.getErrorManager();
             settingsManager = appSession.getModuleManager().getSettingsManager();
-            digitalAssetsHistory = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
+
 
         } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
@@ -133,7 +134,7 @@ implements FermatListItemListeners<DigitalAssetHistory> {
 
         final RedeemPointSettings redeemPointSettingsTemp = settings;
 
-
+/*
         Handler handlerTimer = new Handler();
         handlerTimer.postDelayed(new Runnable() {
             public void run() {
@@ -141,11 +142,17 @@ implements FermatListItemListeners<DigitalAssetHistory> {
                     setUpPresentation(false);
                 }
             }
-        }, 500);
+        }, 500);*/
 
-        setupBackgroundBitmap(layout);
+        //setupBackgroundBitmap(layout);
         configureToolbar();
         noAssetsView = layout.findViewById(R.id.dap_v3_wallet_asset_redeem_point_asset_user_history_no_history);
+
+        try {
+            digitalAssetsHistory = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         showOrHideNoAssetsView(digitalAssetsHistory.isEmpty());
@@ -224,7 +231,9 @@ implements FermatListItemListeners<DigitalAssetHistory> {
 
     @Override
     public void onItemClickListener(DigitalAssetHistory data, int position) {
-
+        //TODO
+        //appSession.setData("asset_data",data.getAssetPublicKey());
+        //changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
     }
 
     @Override
@@ -387,40 +396,5 @@ implements FermatListItemListeners<DigitalAssetHistory> {
         } catch (CantGetIdentityRedeemPointException e) {
             e.printStackTrace();
         }
-    }
-
-    private void setupBackgroundBitmap(final View rootView) {
-        AsyncTask<Void, Void, Bitmap> asyncTask = new AsyncTask<Void, Void, Bitmap>() {
-
-            WeakReference<ViewGroup> view;
-
-            @Override
-            protected void onPreExecute() {
-                view = new WeakReference(rootView);
-            }
-
-            @Override
-            protected Bitmap doInBackground(Void... params) {
-                Bitmap drawable = null;
-                try {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inScaled = true;
-                    options.inSampleSize = 5;
-                    drawable = BitmapFactory.decodeResource(
-                            getResources(), R.drawable.bg_image_redeem_point, options);
-                } catch (OutOfMemoryError error) {
-                    error.printStackTrace();
-                }
-                return drawable;
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap drawable) {
-                if (drawable != null) {
-                    view.get().setBackground(new BitmapDrawable(getResources(), drawable));
-                }
-            }
-        };
-        asyncTask.execute();
     }
 }
