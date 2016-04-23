@@ -154,27 +154,47 @@ public class Data {
         List<DigitalAsset> digitalAssets = new ArrayList<>();
         DigitalAsset digitalAsset;
 
-        for (int i = 0; i < 5; i++) {
+
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            calendar.add(Calendar.DATE,i);
+            calendar.add(Calendar.DATE, 0);
 
-            digitalAsset = new DigitalAsset();
-            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
-            digitalAsset.setName("Combo " + (i + 1) + "x1");
-            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
-            digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (0 + 1) + "x1");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Penelope Quintero");
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.PENDING);
 
+        digitalAssets.add(digitalAsset);
 
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (2) + "pizza");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Jinmy Bohorquez");
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.CONFIRMED);
 
-            digitalAsset.setActorUserNameFrom("Penelope Quintero");
-            digitalAsset.setImageActorUserFrom(null);
-            digitalAsset.setImage(null);
+        digitalAssets.add(digitalAsset);
 
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("tequeños " + (2) + "mix");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Nerio Indriago");
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.ACEPTED);
 
-            digitalAssets.add(digitalAsset);
+        digitalAssets.add(digitalAsset);
 
-        }
 
         return digitalAssets;
     }
