@@ -61,6 +61,7 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
     }
 
     public void bind (RedeemCardViewHolder holder, final DigitalAsset asset){
+
         Bitmap bitmap;
         if (asset.getImage() != null && asset.getImage().length > 0) {
             bitmap = BitmapFactory.decodeByteArray(asset.getImage(), 0, asset.getImage().length);
@@ -81,28 +82,47 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
 
         holder.cardActorName.setText(asset.getActorUserNameFrom());
 
+        if(asset.getStatus() == DigitalAsset.Status.PENDING){
 
-        holder.cardAcceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                assetRedeemSession.setData("asset_data", asset);
-                fragment.doAcceptAsset();
-            }
-        });
-        holder.cardRejectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                assetRedeemSession.setData("asset_data",asset);
-                fragment.doRejectAsset();
-            }
-        });
-        holder.cardDeliverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                assetRedeemSession.setData("asset_data",asset);
-                fragment.doDeliver();
-            }
-        });
+            holder.redeemNegotiationV3Asset.setVisibility(View.VISIBLE);
+            holder.confirmedV3Asset.setVisibility(View.GONE);
 
+        }else if(asset.getStatus() == DigitalAsset.Status.CONFIRMED) {
+
+            holder.redeemNegotiationV3Asset.setVisibility(View.VISIBLE);
+            holder.confirmedV3Asset.setVisibility(View.GONE);
+
+            holder.cardStatusImage.setImageResource(R.drawable.received);
+            holder.cardAcceptButton.setImageResource(R.drawable.accept_active);
+            holder.cardRejectButton.setImageResource(R.drawable.cancel_active);
+
+            holder.cardAcceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    assetRedeemSession.setData("asset_data", asset);
+                    fragment.doAcceptAsset();
+                }
+            });
+            holder.cardRejectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    assetRedeemSession.setData("asset_data", asset);
+                    fragment.doRejectAsset();
+                }
+            });
+
+
+        }else{
+            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
+            holder.confirmedV3Asset.setVisibility(View.VISIBLE);
+
+            holder.cardDeliverButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    assetRedeemSession.setData("asset_data", asset);
+                    fragment.doDeliver();
+                }
+            });
+        }
     }
 }
