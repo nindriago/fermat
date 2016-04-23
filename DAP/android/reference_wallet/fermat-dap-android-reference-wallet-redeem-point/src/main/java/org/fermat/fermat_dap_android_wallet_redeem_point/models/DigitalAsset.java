@@ -36,6 +36,21 @@ public class DigitalAsset {
     private String actorIssuerAddress;
     private byte[] imageActorUserFrom;
     private byte[] imageActorIssuerFrom;
+    private Status status;
+
+    public enum Status{
+        PENDING("PENDING"),
+        CONFIRMED("CONFIRMED"),
+        ACEPTED("ACEPTED"),
+        DELIVERED("DELIVERED");
+
+        private String status;
+
+        Status(String status) {this.status = status;}
+
+        public String getStatus(){return this.status;}
+    }
+
 
     public DigitalAsset() {
     }
@@ -199,5 +214,13 @@ public class DigitalAsset {
 
     public void setImageActorIssuerFrom(byte[] imageActorIssuerFrom) {
         this.imageActorIssuerFrom = imageActorIssuerFrom;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

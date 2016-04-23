@@ -13,9 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="13dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="8dp">
 
@@ -27,26 +27,38 @@
             <RelativeLayout
                 android:id="@+id/cardHeader"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="48dp"
                 android:background="@drawable/redeem_bg_card">
 
                 <RelativeLayout
                     android:id="@+id/cardAssetImageLayout"
-                    android:layout_width="47dp"
-                    android:layout_height="47dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
                     android:background="@drawable/bg_circular_home_redeem">
 
                     <ImageView
-                        android:id="@+id/cardAssetImage"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:id="@+id/cardAssetImageShadow"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        android:background="@drawable/sombra_photo_42x42"/>
+
+                    <ImageView
+                        android:id="@+id/cardAssetImage"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        tools:ignore="ContentDescription"
+                        />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -63,7 +75,8 @@
                         android:layout_height="wrap_content"
                         android:text="Asset Name"
                         android:textColor="@color/redeem_card_text_top_primary"
-                        android:textSize="15sp" />
+                        android:fontFamily="sans-serif"
+                        android:textSize="12sp" />
 
                 </RelativeLayout>
 
@@ -73,11 +86,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-
+                    android:layout_marginRight="20dp"
                     android:text="00:00"
-                    android:textColor="@color/redeem_card_text_top_primary"
-                    android:textSize="13sp" />
+                    android:textColor="@color/redeem_card_text_top_time"
+                    android:textSize="12sp"
+
+                    />
+
 
             </RelativeLayout>
 
@@ -86,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cardHeader"
-                android:layout_margin="5dp">
+                android:layout_margin="0dp">
 
                 <ImageView
                     android:id="@+id/cardActorUserImage"
@@ -103,29 +118,32 @@
                     android:layout_height="wrap_content"
                     android:text="Name User"
                     android:textColor="@color/redeem_card_text_top_primary"
-                    android:textSize="23sp"
+                    android:textSize="24sp"
+                    android:fontFamily="sans-serif"
                     android:layout_alignBottom="@+id/cardActorUserImage"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:layout_marginBottom="16dp"/>
             </RelativeLayout>
 
-            <!--Redeem Negotiation Section-->
+            <!--Redeem confirmed Section-->
             <RelativeLayout
-                android:id="@+id/redeemNegotiationV3Asset"
+                android:id="@+id/redeemConfirmedV3Asset"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="48dp"
 
                 android:layout_below="@id/actorUserImage"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/cardStatusImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/detail_uncheck" />
+                    android:src="@drawable/wait"
+                    android:scaleType="centerCrop"
+                    android:layout_marginLeft="7dp"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -134,19 +152,22 @@
                     android:layout_centerVertical="true">
 
                     <ImageButton
-                        android:id="@+id/cardAcceptButton"
-                        android:layout_width="55dp"
-                        android:layout_height="30dp"
+                        android:id="@+id/cardRejectButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@null"
-                        android:src="@drawable/detail_check" />
+                        android:src="@drawable/cancel_inactive"
+                        android:scaleType="centerCrop"
+                        android:layout_marginRight="18dp"/>
 
                     <ImageButton
-                        android:id="@+id/cardRejectButton"
-                        android:layout_width="55dp"
-                        android:layout_height="30dp"
+                        android:id="@+id/cardAcceptButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@null"
-                        android:src="@drawable/detail_reject" />
-
+                        android:src="@drawable/accept_inactive"
+                        android:scaleType="centerCrop"
+                        android:layout_marginRight="30dp"/>
                 </LinearLayout>
 
             </RelativeLayout>
@@ -154,19 +175,22 @@
             <RelativeLayout
                 android:id="@+id/confirmedV3Asset"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="48dp"
 
                 android:layout_below="@id/actorUserImage"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/cardConfirmedImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/detail_check" />
+                    android:src="@drawable/received"
+                    android:scaleType="centerCrop"
+                    android:layout_marginLeft="9dp"
+                    android:visibility="invisible"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -176,10 +200,12 @@
 
                     <ImageButton
                         android:id="@+id/cardDeliverButton"
-                        android:layout_width="55dp"
-                        android:layout_height="30dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@null"
-                        android:src="@drawable/detail_reject" />
+                        android:src="@drawable/delivery"
+                        android:scaleType="centerCrop"
+                        android:layout_marginRight="30dp"/>
 
 
                 </LinearLayout>

@@ -370,12 +370,12 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_card_toolbar));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_card_titlebar));
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setBottom(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(getResources().getColor(R.color.redeem_card_toolbar));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_card_titlebar));
             }
         }
     }
@@ -396,10 +396,10 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         List<DigitalAsset> assets = new ArrayList<>();
         if (moduleManager != null) {
             try {
-                assets = Data.getAllDigitalAssets(moduleManager);
+//                assets = Data.getAllDigitalAssets(moduleManager);
 //                assets = Data.getAssets(moduleManager);
                 //assets.addAll(DataManager.getAllPendingNegotiations());
-
+                    assets = Data.getAllTestAssets(moduleManager);
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);
                 if (errorManager != null)

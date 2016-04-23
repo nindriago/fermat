@@ -150,7 +150,54 @@ public class Data {
 //
 //        return assets;
 //    }
+    public static List<DigitalAsset> getAllTestAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception{
+        List<DigitalAsset> digitalAssets = new ArrayList<>();
+        DigitalAsset digitalAsset;
 
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, 0);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (0 + 1) + "x1");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Penelope Quintero");
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.PENDING);
+
+        digitalAssets.add(digitalAsset);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (2) + "pizza");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Jinmy Bohorquez");
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.CONFIRMED);
+
+        digitalAssets.add(digitalAsset);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("tequeños " + (2) + "mix");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Nerio Indriago");
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.ACEPTED);
+
+        digitalAssets.add(digitalAsset);
+
+
+        return digitalAssets;
+    }
     public static List<DigitalAssetHistory> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
         List<DigitalAssetHistory> digitalAssets = new ArrayList<>();
         DigitalAssetHistory digitalAsset;
