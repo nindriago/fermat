@@ -90,6 +90,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
             moduleManager = ((RedeemPointSession) appSession).getModuleManager();
             errorManager = appSession.getErrorManager();
             settingsManager = appSession.getModuleManager().getSettingsManager();
+            assets = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
 
         } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
@@ -148,18 +149,21 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
     protected void initViews(View layout) {
         super.initViews(layout);
 
+        noAssetsView = layout.findViewById(R.id.dap_v3_wallet_asset_redeem_home_no_assets);
         initSettings();
         activity = new Activity();
         configureToolbar();
 
-        noAssetsView = layout.findViewById(R.id.dap_v3_wallet_asset_redeem_home_no_assets);
+
+        /*
         try {
-            assets = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        showOrHideNoAssetsView(assets.isEmpty());
+        showOrHideNoAssetsView(assets.isEmpty());*/
+        //onRefresh();
     }
 
     @Override
@@ -194,7 +198,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
                 assets = (ArrayList) result[0];
                 if (adapter != null) {
                     adapter.changeDataSet(assets);
-                    ((RedeemHomeCardAdapterFilter) ((RedeemCardAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                    //((RedeemHomeCardAdapterFilter) ((RedeemCardAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
                 }
                 showOrHideNoAssetsView(assets.isEmpty());
             }
@@ -215,8 +219,6 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         if (adapter == null) {
             adapter = new RedeemCardAdapter(this, getActivity(), assets, moduleManager, appSession);
             adapter.setFermatListEventListener(this);
-        } else {
-            adapter.changeDataSet(assets);
         }
         return adapter;
     }

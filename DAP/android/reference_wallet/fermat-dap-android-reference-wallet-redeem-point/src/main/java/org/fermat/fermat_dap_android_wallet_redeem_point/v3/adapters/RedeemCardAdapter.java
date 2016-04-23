@@ -30,6 +30,7 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
     private  RedeemPointSession assetRedeemSession;
     private  AssetRedeemPointWalletSubAppModule manager;
     private  RedeemHomeCardFragment fragment;
+    private List<DigitalAsset> allDigitalAssets;
 
     public RedeemCardAdapter(RedeemHomeCardFragment fragment, Context context, List<DigitalAsset> digitalAssets, AssetRedeemPointWalletSubAppModule manager,
                            FermatSession appSession) {
@@ -38,6 +39,7 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
         this.manager = manager;
         this.dataSet = digitalAssets;
         this.assetRedeemSession = (RedeemPointSession) appSession;
+        this.allDigitalAssets = digitalAssets;
     }
     @Override
     protected RedeemCardViewHolder createHolder(View itemView, int type) {
@@ -57,7 +59,7 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
 
     @Override
     public Filter getFilter() {
-        return new RedeemHomeCardAdapterFilter(this.dataSet,this);
+        return new RedeemHomeCardAdapterFilter(this.allDigitalAssets,this);
     }
 
     public void bind (RedeemCardViewHolder holder, final DigitalAsset asset){
@@ -65,18 +67,18 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
         Bitmap bitmap;
         if (asset.getImage() != null && asset.getImage().length > 0) {
             bitmap = BitmapFactory.decodeByteArray(asset.getImage(), 0, asset.getImage().length);
+            bitmap = Bitmap.createScaledBitmap(bitmap, 42, 42, true);
+            holder.cardAssetImage.setImageDrawable(ImagesUtils.getRoundedBitmap(holder.res, bitmap));
         } else {
-            bitmap = BitmapFactory.decodeResource(holder.res, R.drawable.img_asset_without_image);
+            holder.cardAssetImage.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.img_asset_without_image));
         }
-        bitmap = Bitmap.createScaledBitmap(bitmap, 45, 45, true);
-        holder.cardAssetImage.setImageDrawable(ImagesUtils.getRoundedBitmap(holder.res, bitmap));
 
         holder.cardAssetName.setText(asset.getName());
 //        cardTime.setText(asset.getFormattedDate()); agregasr este metodo al modelo digital asset
         holder.cardTime.setText(asset.getFormattedExpDate());
 
         byte[] img = (asset.getImageActorUserFrom() == null) ? new byte[0] : asset.getImage(); /*modificar modelo Digital Asset*/
-        BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(holder.cardAssetImage,
+        BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(holder.cardActorUserImage,
                 holder.res, R.drawable.img_asset_without_image, false);
         bitmapWorkerTask.execute(img);
 

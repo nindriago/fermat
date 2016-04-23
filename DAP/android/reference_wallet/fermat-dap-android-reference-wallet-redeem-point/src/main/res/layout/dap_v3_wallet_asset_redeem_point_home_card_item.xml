@@ -32,27 +32,17 @@
 
                 <RelativeLayout
                     android:id="@+id/cardAssetImageLayout"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
                     android:background="@drawable/bg_circular_home_redeem">
 
-                    <ImageView
-                        android:id="@+id/cardAssetImageShadow"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:scaleType="centerCrop"
-                        tools:ignore="ContentDescription"
-                        android:background="@drawable/sombra_photo_42x42"/>
-
-                    <ImageView
+                                      <ImageView
                         android:id="@+id/cardAssetImage"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
