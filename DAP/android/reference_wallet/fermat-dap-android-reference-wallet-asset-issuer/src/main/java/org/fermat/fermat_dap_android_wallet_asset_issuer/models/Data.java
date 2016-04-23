@@ -76,6 +76,19 @@ public class Data {
         return null;
     }
 
+    public static List<UserDelivery> getStats(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) throws Exception {
+        List<UserDelivery> users = new ArrayList<>();
+        UserDelivery userDelivery;
+        List<AssetStatistic> stats = moduleManager.getWalletStatisticsByAsset(walletPublicKey, digitalAsset.getName());
+        for (AssetStatistic stat : stats) {
+            if (!stat.getStatus().equals(AssetCurrentStatus.ASSET_CREATED)) {
+                userDelivery = new UserDelivery(stat.getOwner().getProfileImage(), stat.getOwner().getName(), new Timestamp(stat.getDistributionDate().getTime()), stat.getStatus().getDescription());
+                users.add(userDelivery);
+            }
+        }
+        return users;
+    }
+
     public static List<UserDelivery> getUserDeliveryList(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) throws Exception {
         List<UserDelivery> users = new ArrayList<>();
         UserDelivery userDelivery;

@@ -1,12 +1,13 @@
 package org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments;
 
-
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,20 +15,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bitdubai.fermat_android_api.ui.Views.ConfirmDialog;
+import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.enums.FermatRefreshTypes;
 import com.bitdubai.fermat_android_api.ui.fragments.FermatWalletListFragment;
-import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
-import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
-import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
-import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
@@ -35,48 +34,46 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.Un
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
+import org.fermat.fermat_dap_android_wallet_asset_issuer.common.adapters.UserDeliveryListAdapter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Data;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.models.User;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.models.UserDelivery;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.SessionConstantsAssetIssuer;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.util.CommonLogger;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverUserAdapter;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.StatsAdapter;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 
+import java.io.ByteArrayInputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import static android.widget.Toast.makeText;
-
 /**
- * A simple {@link Fragment} subclass.
+ * Created by frank on 12/22/15.
  */
-public class DeliverUserFragment extends FermatWalletListFragment<User>
-        implements FermatListItemListeners<User> {
+public class StatsFragment extends FermatWalletListFragment<UserDelivery> {
 
     // Constants
-    private static final String TAG = "AssetDeliverySelectUsersFragment";
+    private static final String TAG = "StatsFragment";
 
     // Fermat Managers
     private AssetIssuerWalletSupAppModuleManager moduleManager;
     private ErrorManager errorManager;
 
     // Data
-    private List<User> users;
+    private List<UserDelivery> users;
+    private DigitalAsset digitalAsset;
 
     SettingsManager<AssetIssuerSettings> settingsManager;
 
     //UI
     private View noUsersView;
-    private DigitalAsset digitalAsset;
 
-    public static DeliverUserFragment newInstance() {
-        return new DeliverUserFragment();
+    public static StatsFragment newInstance() {
+        return new StatsFragment();
     }
 
     @Override
@@ -89,6 +86,8 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
             errorManager = appSession.getErrorManager();
 
             settingsManager = appSession.getModuleManager().getSettingsManager();
+
+            users = getMoreDataAsync(FermatRefreshTypes.NEW, 0);
         } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
             if (errorManager != null)
@@ -100,46 +99,20 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     @Override
     protected void initViews(View layout) {
         super.initViews(layout);
-
         configureToolbar();
-
-        noUsersView = layout.findViewById(R.id.dap_wallet_asset_issuer_delivery_user_no_users);
-
-        users = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
-
-        digitalAsset = (DigitalAsset) appSession.getData("asset_data");
-
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    onRefresh();
-                }
-            });
-        }
-
+        noUsersView = layout.findViewById(R.id.dap_wallet_asset_issuer_stats_no_users);
         showOrHideNoUsersView(users.isEmpty());
     }
 
-    private void showOrHideNoUsersView(boolean show) {
-        if (show) {
-            recyclerView.setVisibility(View.GONE);
-            noUsersView.setVisibility(View.VISIBLE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            noUsersView.setVisibility(View.GONE);
-        }
-    }
-
-    private void setUpHelpAssetDeliverUsers(boolean checkButton) {
+    private void setUpHelpAssetDeliveryList(boolean checkButton) {
         try {
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
                     .setBannerRes(R.drawable.banner_asset_issuer_wallet)
                     .setIconRes(R.drawable.asset_issuer)
                     .setVIewColor(R.color.dap_issuer_view_color)
                     .setTitleTextColor(R.color.dap_issuer_view_color)
-                    .setSubTitle(R.string.dap_issuer_wallet_redeemed_users_subTitle)
-                    .setBody(R.string.dap_issuer_wallet_redeemed_users_body)
+                    .setSubTitle(R.string.dap_issuer_wallet_delivery_list_subTitle)
+                    .setBody(R.string.dap_issuer_wallet_delivery_list_body)
                     .setTemplateType(PresentationDialog.TemplateType.TYPE_PRESENTATION_WITHOUT_IDENTITIES)
                     .setIsCheckEnabled(checkButton)
                     .build();
@@ -153,11 +126,8 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_USER, 0, "Help")
+        menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_DELIVER, 0, "Help")
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER, 1, "")
-                .setIcon(R.drawable.ic_distribute)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     @Override
@@ -165,58 +135,22 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         try {
             int id = item.getItemId();
 
-            if (id == SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_USER) {
-                setUpHelpAssetDeliverUsers(settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isPresentationHelpEnabled());
+            if (id == SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_DELIVER) {
+                setUpHelpAssetDeliveryList(settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isPresentationHelpEnabled());
                 return true;
-            } else if (id == SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER) {
-                if (validateDistributeToUsers()) {
-                    new ConfirmDialog.Builder(getActivity(), appSession)
-                            .setTitle(getResources().getString(R.string.dap_issuer_wallet_confirm_title))
-                            .setMessage(getResources().getString(R.string.dap_issuer_wallet_v3_distribute_confirm))
-                            .setColorStyle(getResources().getColor(R.color.dap_issuer_wallet_v3_dialog))
-                            .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
-                                @Override
-                                public void onClick() {
-                                    doDistributeToUsers(digitalAsset.getAssetPublicKey(), users, users.size());
-                                }
-                            }).build().show();
-                }
             }
 
         } catch (Exception e) {
             errorManager.reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.UNSTABLE, FermatException.wrapException(e));
-            makeText(getActivity(), R.string.dap_issuer_wallet_system_error,
+            Toast.makeText(getActivity(), R.string.dap_issuer_wallet_system_error,
                     Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean thereIsUserSelected() {
-        for (User user : users) {
-            if (user.isSelected()) return true;
-        }
-        return false;
-    }
-
-    private boolean validateDistributeToUsers() {
-        if (!thereIsUserSelected()) {
-            Toast.makeText(getActivity(), R.string.dap_issuer_wallet_validate_no_users_groups, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        try {
-//            IssuerWalletNavigationViewPainter navigationViewPainter = new IssuerWalletNavigationViewPainter(getActivity(), null);
-//            getPaintActivtyFeactures().addNavigationView(navigationViewPainter);
-//        } catch (Exception e) {
-//            makeText(getActivity(), "Oops! recovering from system error", Toast.LENGTH_SHORT).show();
-//            errorManager.reportUnexpectedUIException(UISource.VIEW, UnexpectedUIExceptionSeverity.CRASH, e);
-//        }
     }
 
     private void configureToolbar() {
@@ -239,7 +173,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dap_wallet_asset_issuer_deliver_user;
+        return R.layout.dap_wallet_asset_issuer_stats;
     }
 
     @Override
@@ -249,7 +183,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
     @Override
     protected int getRecyclerLayoutId() {
-        return R.id.dap_wallet_asset_issuer_delivery_user_recycler_view;
+        return R.id.dap_wallet_asset_issuer_stats_recycler_view;
     }
 
     @Override
@@ -264,9 +198,9 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
             swipeRefreshLayout.setRefreshing(false);
             if (result != null && result.length > 0) {
                 users = (ArrayList) result[0];
-                if (adapter != null) {
+                if (adapter != null)
                     adapter.changeDataSet(users);
-                }
+
                 showOrHideNoUsersView(users.isEmpty());
             }
         }
@@ -284,8 +218,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     @Override
     public FermatAdapter getAdapter() {
         if (adapter == null) {
-            adapter = new DeliverUserAdapter(getActivity(), users, moduleManager);
-            adapter.setFermatListEventListener(this);
+            adapter = new StatsAdapter(getActivity(), users, moduleManager);
         }
         return adapter;
     }
@@ -298,25 +231,23 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         return layoutManager;
     }
 
-    @Override
-    public void onItemClickListener(User data, int position) {
-        data.setSelected(!data.isSelected());
-        adapter.notifyDataSetChanged();
+    private void showOrHideNoUsersView(boolean show) {
+        if (show) {
+            recyclerView.setVisibility(View.GONE);
+            noUsersView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noUsersView.setVisibility(View.GONE);
+        }
     }
 
     @Override
-    public void onLongItemClickListener(User data, int position) {
-    }
-
-    @Override
-    public List<User> getMoreDataAsync(FermatRefreshTypes refreshType, int pos) {
-        List<User> users = new ArrayList<>();
+    public List<UserDelivery> getMoreDataAsync(FermatRefreshTypes refreshType, int pos) {
+        List<UserDelivery> users = new ArrayList<>();
         if (moduleManager != null) {
             try {
-                users = Data.getConnectedUsers(moduleManager, users);
-
-                appSession.setData("users", users);
-
+                if (digitalAsset == null) digitalAsset = (DigitalAsset) appSession.getData("asset_data");
+                users = Data.getStats(WalletUtilities.WALLET_PUBLIC_KEY, digitalAsset, moduleManager);
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);
                 if (errorManager != null)
@@ -333,49 +264,4 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         }
         return users;
     }
-
-    private void doDistributeToUsers(final String assetPublicKey, final List<User> users, final int assetsAmount) {
-        final Activity activity = getActivity();
-        final ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.setMessage("Please wait...");
-        dialog.setCancelable(false);
-        dialog.show();
-        FermatWorker task = new FermatWorker() {
-            @Override
-            protected Object doInBackground() throws Exception {
-                for (User user : users) {
-                    if (user.isSelected()) {
-                        moduleManager.addUserToDeliver(user.getActorAssetUser());
-                    }
-                }
-                if (users.size() > 0) {
-                    moduleManager.distributionAssets(assetPublicKey, WalletUtilities.WALLET_PUBLIC_KEY, assetsAmount);
-                }
-                return true;
-            }
-        };
-
-        task.setContext(activity);
-        task.setCallBack(new FermatWorkerCallBack() {
-            @Override
-            public void onPostExecute(Object... result) {
-                dialog.dismiss();
-                if (activity != null) {
-//                    refreshUIData();
-                    Toast.makeText(activity, R.string.dap_issuer_wallet_deliver_ok, Toast.LENGTH_LONG).show();
-                    changeActivity(Activities.DAP_WALLET_ASSET_ISSUER_MAIN_ACTIVITY, appSession.getAppPublicKey());
-                }
-            }
-
-            @Override
-            public void onErrorOccurred(Exception ex) {
-                dialog.dismiss();
-                if (activity != null)
-                    Toast.makeText(activity, R.string.dap_issuer_wallet_exception,
-                            Toast.LENGTH_SHORT).show();
-            }
-        });
-        task.execute();
-    }
 }
-

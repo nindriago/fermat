@@ -360,7 +360,7 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
                 dialog.dismiss();
                 if (activity != null) {
                     Toast.makeText(activity, R.string.dap_issuer_wallet_deliver_ok, Toast.LENGTH_LONG).show();
-                    changeActivity(Activities.DAP_ASSET_ISSUER_WALLET_ASSET_DETAIL, appSession.getAppPublicKey());
+                    changeActivity(Activities.DAP_WALLET_ASSET_ISSUER_MAIN_ACTIVITY, appSession.getAppPublicKey());
                 }
             }
 

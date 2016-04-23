@@ -402,4 +402,8 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
     public void doTransactionsAction() {
         changeActivity(Activities.DAP_ASSET_ISSUER_WALLET_ASSET_DETAIL, appSession.getAppPublicKey());
     }
+
+    public void doStatsAction() {
+        changeActivity(Activities.DAP_WALLET_ASSET_ISSUER_USER_DELIVERY_LIST, appSession.getAppPublicKey());
+    }
 }
