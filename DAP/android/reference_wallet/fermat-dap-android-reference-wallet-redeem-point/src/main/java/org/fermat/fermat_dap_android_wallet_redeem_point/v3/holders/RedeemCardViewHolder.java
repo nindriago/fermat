@@ -59,7 +59,7 @@ public class RedeemCardViewHolder extends FermatViewHolder {
         cardDeliverButton = (ImageButton) itemView.findViewById(R.id.cardDeliverButton);
         cardAcceptButton = (ImageButton) itemView.findViewById(R.id.cardAcceptButton);
         cardRejectButton = (ImageButton) itemView.findViewById(R.id.cardRejectButton);
-        redeemNegotiationV3Asset = itemView.findViewById(R.id.redeemConfirmedV3Asset);
+        redeemNegotiationV3Asset = itemView.findViewById(R.id.redeemPendingV3Asset);
         confirmedV3Asset = itemView.findViewById(R.id.confirmedV3Asset);
         
     }
