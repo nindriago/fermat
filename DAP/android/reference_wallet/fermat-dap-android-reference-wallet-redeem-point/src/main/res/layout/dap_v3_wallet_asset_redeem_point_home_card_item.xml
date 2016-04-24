@@ -115,9 +115,9 @@
                     android:layout_marginBottom="16dp"/>
             </RelativeLayout>
 
-            <!--Redeem confirmed Section-->
+            <!--Redeem pending Section-->
             <RelativeLayout
-                android:id="@+id/redeemConfirmedV3Asset"
+                android:id="@+id/redeemPendingV3Asset"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
 
