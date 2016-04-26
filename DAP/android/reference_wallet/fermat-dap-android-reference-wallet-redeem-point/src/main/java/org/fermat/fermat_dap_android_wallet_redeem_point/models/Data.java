@@ -47,6 +47,8 @@ public class Data {
             digitalAsset.setBookBalanceQuantity(asset.getQuantityBookBalance());
             digitalAsset.setAvailableBalance(asset.getAvailableBalance());
             digitalAsset.setExpDate((Timestamp) asset.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
+            digitalAsset.setAssetDescription(asset.getDigitalAsset().getDescription());
+
 
             digitalAssets.add(digitalAsset);
 
@@ -162,36 +164,54 @@ public class Data {
         digitalAsset = new DigitalAsset();
         digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
         digitalAsset.setName("Combo " + (0 + 1) + "x1");
+        digitalAsset.setAssetDescription("Hamburguesa Full" +
+                "con doble relleno de algun ingrediente random");
         digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
         digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
         digitalAsset.setActorUserNameFrom("Penelope Quintero");
+        digitalAsset.setAvailableBalance(200000L);
         digitalAsset.setImageActorUserFrom(null);
         digitalAsset.setImage(null);
         digitalAsset.setStatus(DigitalAsset.Status.PENDING);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Burguer");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Burguer");
 
         digitalAssets.add(digitalAsset);
 
         digitalAsset = new DigitalAsset();
         digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
         digitalAsset.setName("Combo " + (2) + "pizza");
+        digitalAsset.setAssetDescription("Pizza Full" +
+                "con doble relleno de algun ingrediente random");
         digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
         digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
         digitalAsset.setActorUserNameFrom("Jinmy Bohorquez");
+        digitalAsset.setAvailableBalance(3000000L);
         digitalAsset.setImageActorUserFrom(null);
         digitalAsset.setImage(null);
         digitalAsset.setStatus(DigitalAsset.Status.CONFIRMED);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Pizza");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Pizza");
 
         digitalAssets.add(digitalAsset);
 
         digitalAsset = new DigitalAsset();
         digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
-        digitalAsset.setName("tequeños " + (2) + "mix");
+        digitalAsset.setName("Sandwich " + (2) + "mix");
+        digitalAsset.setAssetDescription("Sandwich Full" +
+                "con doble relleno de algun ingrediente random");
         digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
         digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
         digitalAsset.setActorUserNameFrom("Nerio Indriago");
+        digitalAsset.setAvailableBalance(60000000L);
         digitalAsset.setImageActorUserFrom(null);
         digitalAsset.setImage(null);
         digitalAsset.setStatus(DigitalAsset.Status.ACEPTED);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Sandwiches");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Sandwiches");
 
         digitalAssets.add(digitalAsset);
 
