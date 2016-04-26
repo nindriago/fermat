@@ -217,8 +217,8 @@ implements FermatListItemListeners<DigitalAssetHistory> {
     @Override
     public void onItemClickListener(DigitalAssetHistory data, int position) {
         //TODO
-        appSession.setData("asset_data",data.getAssetPublicKey());
-        changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
+        //appSession.setData("asset_data",data.getAssetPublicKey());
+        //changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
     }
 
     @Override
