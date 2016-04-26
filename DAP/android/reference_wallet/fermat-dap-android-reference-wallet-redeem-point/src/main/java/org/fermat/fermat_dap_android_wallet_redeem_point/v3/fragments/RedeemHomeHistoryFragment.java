@@ -95,6 +95,7 @@ implements FermatListItemListeners<DigitalAssetHistory> {
             moduleManager = ((RedeemPointSession) appSession).getModuleManager();
             errorManager = appSession.getErrorManager();
             settingsManager = appSession.getModuleManager().getSettingsManager();
+            digitalAssetsHistory = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
 
 
         } catch (Exception ex) {
@@ -108,7 +109,9 @@ implements FermatListItemListeners<DigitalAssetHistory> {
     @Override
     protected void initViews(View layout) {
         super.initViews(layout);
+        noAssetsView = layout.findViewById(R.id.dap_v3_wallet_asset_redeem_point_asset_user_history_no_history);
         activity = new Activity();
+
         //Initialize settings
         settingsManager = appSession.getModuleManager().getSettingsManager();
         RedeemPointSettings settings = null;
@@ -137,30 +140,8 @@ implements FermatListItemListeners<DigitalAssetHistory> {
 
         final RedeemPointSettings redeemPointSettingsTemp = settings;
 
-/*
-        Handler handlerTimer = new Handler();
-        handlerTimer.postDelayed(new Runnable() {
-            public void run() {
-                if (redeemPointSettingsTemp.isPresentationHelpEnabled()) {
-                    setUpPresentation(false);
-                }
-            }
-        }, 500);*/
-
-        //setupBackgroundBitmap(layout);
         configureToolbar();
-        noAssetsView = layout.findViewById(R.id.dap_v3_wallet_asset_redeem_point_asset_user_history_no_history);
 
-        try {
-            digitalAssetsHistory = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        showOrHideNoAssetsView(digitalAssetsHistory.isEmpty());
-
-        onRefresh();
     }
 
     @Override
@@ -197,7 +178,10 @@ implements FermatListItemListeners<DigitalAssetHistory> {
                 digitalAssetsHistory = (ArrayList) result[0];
                 if (adapter != null) {
                     adapter.changeDataSet(digitalAssetsHistory);
-                    ((DigitalAssetHistoryAdapterFilter) ((DigitalAssetHistoryAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                    if (searchView != null) {
+                        if (!searchView.getQuery().toString().isEmpty())
+                        ((DigitalAssetHistoryAdapterFilter) ((DigitalAssetHistoryAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                    }
                 }
                 showOrHideNoAssetsView(digitalAssetsHistory.isEmpty());
             }
@@ -218,8 +202,6 @@ implements FermatListItemListeners<DigitalAssetHistory> {
         if (adapter == null) {
             adapter = new DigitalAssetHistoryAdapter(getActivity(), digitalAssetsHistory, moduleManager);
             adapter.setFermatListEventListener(this);
-        } else {
-            adapter.changeDataSet(digitalAssetsHistory);
         }
         return adapter;
     }
@@ -235,8 +217,8 @@ implements FermatListItemListeners<DigitalAssetHistory> {
     @Override
     public void onItemClickListener(DigitalAssetHistory data, int position) {
         //TODO
-        //appSession.setData("asset_data",data.getAssetPublicKey());
-        //changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
+        appSession.setData("asset_data",data.getAssetPublicKey());
+        changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
     }
 
     @Override
