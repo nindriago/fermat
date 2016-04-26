@@ -36,6 +36,7 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSession;
 import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.SessionConstantsRedeemPoint;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.adapters.RedeemDetailAdapter;
+import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.RedeemPointSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 
@@ -133,7 +134,7 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         viewPager.setAdapter(adapter);
         assetDetailDescription.setText(digitalAsset.getAssetDescription());
         assetDetailAssetValue.setText(digitalAsset.getFormattedAvailableBalanceBitcoin() + " BTC");
-        assetDetailDate.setText(digitalAsset.getDate()+"");
+        assetDetailDate.setText(DAPStandardFormats.DATE_FORMAT.format(digitalAsset.getDate()));
 
         Bitmap bitmap;
         if (digitalAsset.getImageActorIssuerFrom() != null && digitalAsset.getImageActorIssuerFrom().length > 0) {
