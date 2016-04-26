@@ -37,6 +37,7 @@ public class DigitalAsset {
     private byte[] imageActorUserFrom;
     private byte[] imageActorIssuerFrom;
     private Status status;
+    private String assetDescription;
 
     public enum Status{
         PENDING("PENDING"),
@@ -222,5 +223,13 @@ public class DigitalAsset {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getAssetDescription() {
+        return assetDescription;
+    }
+
+    public void setAssetDescription(String assetDescription) {
+        this.assetDescription = assetDescription;
     }
 }

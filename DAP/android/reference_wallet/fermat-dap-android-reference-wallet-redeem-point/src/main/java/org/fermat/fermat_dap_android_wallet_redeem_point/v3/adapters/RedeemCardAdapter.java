@@ -84,6 +84,15 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
 
         holder.cardActorName.setText(asset.getActorUserNameFrom());
 
+        holder.cardActorUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assetRedeemSession.setData("asset_data", asset);
+                fragment.activityChange();
+
+            }
+        });
+
         if(asset.getStatus() == DigitalAsset.Status.PENDING){
 
             holder.redeemNegotiationV3Asset.setVisibility(View.VISIBLE);
