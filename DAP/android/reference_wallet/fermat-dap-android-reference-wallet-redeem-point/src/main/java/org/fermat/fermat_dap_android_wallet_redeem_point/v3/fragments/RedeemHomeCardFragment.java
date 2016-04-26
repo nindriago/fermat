@@ -28,6 +28,7 @@ import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantGetSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
@@ -419,6 +420,9 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         return assets;
     }
 
+    public void activityChange(){
+        changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
+    }
     public void doAcceptAsset(){}
 
     public void doRejectAsset(){}
