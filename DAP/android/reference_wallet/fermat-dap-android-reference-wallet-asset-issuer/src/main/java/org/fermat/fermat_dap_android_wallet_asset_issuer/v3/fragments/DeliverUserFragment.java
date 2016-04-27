@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,8 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.Un
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
+import org.fermat.fermat_dap_android_wallet_asset_issuer.common.adapters.MyAssetsAdapter;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.common.filters.MyAssetsAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Data;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.User;
@@ -42,6 +45,7 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSes
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.SessionConstantsAssetIssuer;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.util.CommonLogger;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverUserAdapter;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.filters.DeliverUserAdapterFilter;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
@@ -74,6 +78,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     //UI
     private View noUsersView;
     private DigitalAsset digitalAsset;
+    private SearchView searchView;
 
     public static DeliverUserFragment newInstance() {
         return new DeliverUserFragment();
@@ -152,11 +157,28 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+//        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.dap_asset_issuer_deliver_menu, menu);
+        searchView = (SearchView) menu.findItem(R.id.action_wallet_issuer_deliver_search).getActionView();
+        searchView.setQueryHint(getResources().getString(R.string.dap_issuer_wallet_search_deliver_user_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.equals(searchView.getQuery().toString())) {
+                    ((DeliverUserAdapterFilter) ((DeliverUserAdapter) getAdapter()).getFilter()).filter(s);
+                }
+                return false;
+            }
+        });
         menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_USER, 0, "Help")
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER, 1, "")
-                .setIcon(R.drawable.ic_distribute)
+                .setIcon(R.drawable.ic_send)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 

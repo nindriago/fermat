@@ -34,7 +34,7 @@
     <color name="dap_issuer_wallet_delivered_list_unused"></color>
     -->
 
-    <color name="card_toolbar_trans">#aa1371a7</color>
+    <color name="card_toolbar_trans">#AAFAFAFA</color>
     <color name="dap_issuer_wallet_v3_toolbar_top">#161616</color>
     <color name="dap_issuer_wallet_v3_toolbar">#212121</color>
     <color name="dap_issuer_wallet_v3_tabs">#212121</color>

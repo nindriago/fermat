@@ -1504,9 +1504,10 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         runtimeWalletNavigationStructure.addActivity(runtimeActivity);
 
         runtimeTabStrip = new TabStrip();
-        runtimeTabStrip.setTabsColor("#212121");//808A96
-        runtimeTabStrip.setTabsTextColor("#FFFFFF");
-        runtimeTabStrip.setTabsIndicateColor("#FFFFFF");
+        runtimeTabStrip.setTabsColor("#F5F5F5");//808A96
+        runtimeTabStrip.setTabsTextColor("#424242");
+        runtimeTabStrip.setSelectTabTextColor("#424242");
+        runtimeTabStrip.setTabsIndicateColor("#FF5252");
 //        runtimeTabStrip.setBackgroundColor(8424086);
 //        runtimeTabStrip.setDividerColor(16777215);
         runtimeActivity.setTabStrip(runtimeTabStrip);

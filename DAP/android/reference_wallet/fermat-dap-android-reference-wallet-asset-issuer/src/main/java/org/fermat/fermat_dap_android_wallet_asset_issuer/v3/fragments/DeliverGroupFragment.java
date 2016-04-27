@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +43,7 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSes
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.SessionConstantsAssetIssuer;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.util.CommonLogger;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverGroupAdapter;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.filters.DeliverGroupAdapterFilter;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
@@ -72,6 +74,7 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
     //UI
     private View noGroupsView;
     private DigitalAsset digitalAsset;
+    private SearchView searchView;
 
     public static DeliverGroupFragment newInstance() {
         return new DeliverGroupFragment();
@@ -140,11 +143,28 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+//        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.dap_asset_issuer_deliver_menu, menu);
+        searchView = (SearchView) menu.findItem(R.id.action_wallet_issuer_deliver_search).getActionView();
+        searchView.setQueryHint(getResources().getString(R.string.dap_issuer_wallet_search_deliver_group_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.equals(searchView.getQuery().toString())) {
+                    ((DeliverGroupAdapterFilter) ((DeliverGroupAdapter) getAdapter()).getFilter()).filter(s);
+                }
+                return false;
+            }
+        });
         menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_GROUP, 0, "Help")
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER, 1, "")
-                .setIcon(R.drawable.ic_distribute)
+                .setIcon(R.drawable.ic_send)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 

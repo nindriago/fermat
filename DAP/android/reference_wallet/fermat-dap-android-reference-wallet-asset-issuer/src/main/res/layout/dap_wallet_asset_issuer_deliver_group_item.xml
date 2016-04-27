@@ -40,17 +40,10 @@
         android:layout_height="wrap_content"
         android:text="Grupo de Frank"
         android:textColor="@color/dap_issuer_wallet_v3_deliver_text"
-        android:textSize="16dp"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif"
         android:layout_toRightOf="@+id/userImageLayout"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"/>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/dap_issuer_wallet_v3_deliver_line"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/view"
-        android:layout_marginLeft="60dp"/>
 
 </RelativeLayout>
