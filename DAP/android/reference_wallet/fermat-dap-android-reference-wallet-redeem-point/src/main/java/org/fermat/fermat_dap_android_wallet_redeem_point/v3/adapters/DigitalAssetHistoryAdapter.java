@@ -32,12 +32,12 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
     private AssetRedeemPointWalletSubAppModule manager;
     private LinkedHashMap<String, Integer> mapIndex;
     private LinkedHashMap<String, Integer> mapAssetQuantity;
-    private ArrayList<String> sectionList;
-    private String[] sections;
+    List<DigitalAssetHistory> allDigitalAssets;
 
     public DigitalAssetHistoryAdapter(Context context, List<DigitalAssetHistory> dataSet, AssetRedeemPointWalletSubAppModule manager) {
         super(context, dataSet);
         this.manager = manager;
+        this.allDigitalAssets = dataSet;
         fillSections();
     }
 
@@ -81,7 +81,7 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
 
     @Override
     public Filter getFilter() {
-        return new DigitalAssetHistoryAdapterFilter(this.dataSet, this);
+        return new DigitalAssetHistoryAdapterFilter(this.allDigitalAssets, this);
     }
 
     @Override

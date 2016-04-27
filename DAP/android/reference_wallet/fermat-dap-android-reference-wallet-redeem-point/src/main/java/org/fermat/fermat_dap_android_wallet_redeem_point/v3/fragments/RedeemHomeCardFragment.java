@@ -199,7 +199,8 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
                 assets = (ArrayList) result[0];
                 if (adapter != null) {
                     adapter.changeDataSet(assets);
-                    //((RedeemHomeCardAdapterFilter) ((RedeemCardAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                    if (!searchView.getQuery().toString().isEmpty())
+                    ((RedeemHomeCardAdapterFilter) ((RedeemCardAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
                 }
                 showOrHideNoAssetsView(assets.isEmpty());
             }

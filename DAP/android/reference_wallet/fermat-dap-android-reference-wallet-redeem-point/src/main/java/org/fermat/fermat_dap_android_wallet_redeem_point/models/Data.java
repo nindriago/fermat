@@ -181,7 +181,7 @@ public class Data {
 
         digitalAsset = new DigitalAsset();
         digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
-        digitalAsset.setName("Combo " + (2) + "pizza");
+        digitalAsset.setName("Combo " + (2) + " pizza");
         digitalAsset.setAssetDescription("Pizza Full" +
                 "con doble relleno de algun ingrediente random");
         digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
@@ -269,7 +269,7 @@ public class Data {
         for (int i = 0; i < 5; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            calendar.add(Calendar.DATE,i);
+            calendar.add(Calendar.DATE,-i);
 
             digitalAsset = new DigitalAssetHistory();
             digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
