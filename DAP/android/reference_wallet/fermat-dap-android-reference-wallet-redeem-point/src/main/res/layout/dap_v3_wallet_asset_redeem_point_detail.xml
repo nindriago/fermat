@@ -110,10 +110,20 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/shadowLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow"
+            >
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="-30dp"
             android:id="@+id/secondSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/firstSection">
+            >
 
             <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                 android:id="@+id/assetDetailDescriptionText"
