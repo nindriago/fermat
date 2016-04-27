@@ -2029,15 +2029,12 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         runtimeWalletNavigationStructure.setPublicKey(publicKey);
         lstWalletNavigationStructureOpen.put(publicKey,runtimeWalletNavigationStructure);
 
-
-
-
         // Activity: HOME OLD
 
         runtimeActivity = new Activity();
         runtimeActivity.setType(Activities.DAP_WALLET_REDEEM_POINT_MAIN_ACTIVITY);
         runtimeActivity.setActivityType(Activities.DAP_WALLET_REDEEM_POINT_MAIN_ACTIVITY.getCode());
-//        runtimeActivity.setColor("#627284");
+    //       runtimeActivity.setColor("#627284");
         runtimeActivity.setSideMenu(loadSideMenuAssetRedeemPoint(publicKey));
         runtimeWalletNavigationStructure.addActivity(runtimeActivity);
         runtimeWalletNavigationStructure.changeActualStartActivity(Activities.DAP_WALLET_REDEEM_POINT_MAIN_ACTIVITY.getCode());
@@ -2117,7 +2114,8 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         runtimeWalletNavigationStructure.addActivity(runtimeActivity);
 
         runtimeTitleBar = new TitleBar();
-        //runtimeTitleBar.setLabel("Detail");
+        runtimeTitleBar.setLabel("");
+        runtimeTitleBar.setIconName("back");
         runtimeTitleBar.setTitleColor(titleBarLabelColor);
         runtimeTitleBar.setColor(statusBarColor);
         runtimeTitleBar.setLabelSize(titleBarLabelSize);
