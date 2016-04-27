@@ -11,6 +11,7 @@
 
     <!-- empty list views -->
     <string name="no_assets_issuer">No Assets?</string>
+    <string name="no_assets_issuer_v3">NO ASSETS</string>
     <string name="no_assets_issuer_message">Don\'t  worry!\nAs an Asset Issuer you are able to create new ones using the Asset Factory.\nOnce created, all the assets you publish there, will be stored in this Asset Issuer Wallet.</string>
     <string name="no_assets_user">No Assets?</string>
     <string name="no_assets_user_message">Don\'t worry!\nUse the community app to connect to Asset Issuers and/or other Asset Users like you, and then you will be able to receive assets from them !</string>

@@ -32,9 +32,8 @@
         android:visibility="gone">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_no_asset"/>
 
@@ -42,20 +41,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/no_assets_issuer"
+            android:text="@string/no_assets_issuer_v3"
             android:textColor="@color/dap_issuer_wallet_v3_no_assets_text"
-            android:textSize="32sp"/>
-
-        <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/no_assets_issuer_message"
-            android:textColor="@color/dap_issuer_wallet_v3_no_assets_text"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:textSize="40sp"
+            android:fontFamily="sans-serif"/>
 
     </LinearLayout>
 
