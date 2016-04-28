@@ -110,16 +110,18 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
 
         digitalAsset = (DigitalAsset) appSession.getData("asset_data");
 
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    onRefresh();
-                }
-            });
-        }
+//        if (swipeRefreshLayout != null) {
+//            swipeRefreshLayout.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    onRefresh();
+//                }
+//            });
+//        }
 
         showOrHideNoUsersView(groups.isEmpty());
+
+        onRefresh();
     }
 
     private void setUpHelpAssetDeliverUsers(boolean checkButton) {
@@ -294,6 +296,8 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
         if (adapter == null) {
             adapter = new DeliverGroupAdapter(getActivity(), groups, moduleManager);
             adapter.setFermatListEventListener(this);
+        } else {
+            adapter.changeDataSet(groups);
         }
         return adapter;
     }

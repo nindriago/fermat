@@ -114,16 +114,18 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
         digitalAsset = (DigitalAsset) appSession.getData("asset_data");
 
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    onRefresh();
-                }
-            });
-        }
+//        if (swipeRefreshLayout != null) {
+//            swipeRefreshLayout.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    onRefresh();
+//                }
+//            });
+//        }
 
         showOrHideNoUsersView(users.isEmpty());
+
+        onRefresh();
     }
 
     private void showOrHideNoUsersView(boolean show) {
@@ -308,6 +310,8 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         if (adapter == null) {
             adapter = new DeliverUserAdapter(getActivity(), users, moduleManager);
             adapter.setFermatListEventListener(this);
+        } else {
+            adapter.changeDataSet(users);
         }
         return adapter;
     }
