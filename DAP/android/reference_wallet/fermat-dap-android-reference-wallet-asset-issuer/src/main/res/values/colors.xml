@@ -58,4 +58,5 @@
     <color name="dap_issuer_wallet_v3_no_assets_text">#939598</color>
     <color name="dap_issuer_wallet_v3_stats_text_sec_1">#757575</color>
     <color name="dap_issuer_wallet_v3_stats_text_sec_2">#BDBDBD</color>
+    <color name="dap_issuer_wallet_v3_transactions_line">#F5F5F5</color>
 </resources>

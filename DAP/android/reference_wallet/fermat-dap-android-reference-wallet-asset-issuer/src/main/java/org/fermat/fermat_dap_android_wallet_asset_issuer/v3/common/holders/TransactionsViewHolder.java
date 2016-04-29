@@ -2,9 +2,12 @@ package org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.holders;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bitdubai.fermat_android_api.layer.definition.wallet.utils.ImagesUtils;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
@@ -59,9 +62,24 @@ public class TransactionsViewHolder extends FermatViewHolder {
     }
 
     public void bind(final Transaction transaction) {
-        byte[] img = (transaction.getActorImage() == null) ? new byte[0] : transaction.getActorImage();
-        BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(actorImage, res, R.drawable.img_asset_without_image, false);
-        bitmapWorkerTask.execute(img);
+//        byte[] img = (transaction.getActorImage() == null) ? new byte[0] : transaction.getActorImage();
+//        BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(actorImage, res, R.drawable.img_asset_without_image, false);
+//        bitmapWorkerTask.execute(img);
+
+        if (transaction.getActorImage() != null && transaction.getActorImage().length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(transaction.getActorImage(), 0, transaction.getActorImage().length);
+            bitmap = Bitmap.createScaledBitmap(bitmap, 120, 120, true);
+            actorImage.setImageDrawable(ImagesUtils.getRoundedBitmap(res, bitmap));
+        }
+
+//        Bitmap bitmap;
+//        if (transaction.getActorImage() != null && transaction.getActorImage().length > 0) {
+//            bitmap = BitmapFactory.decodeByteArray(transaction.getActorImage(), 0, transaction.getActorImage().length);
+//        } else {
+//            bitmap = BitmapFactory.decodeResource(res, R.drawable.img_detail_without_image);
+//        }
+//        bitmap = Bitmap.createScaledBitmap(bitmap, 45, 45, true);
+//        actorImage.setImageDrawable(ImagesUtils.getRoundedBitmap(res, bitmap));
 
         actorNameText.setText(transaction.getActorName());
         typeByText.setText((transaction.getTransactionType() == TransactionType.CREDIT) ? "Received by" : "Sent to");
