@@ -51,6 +51,7 @@
     <color name="dap_issuer_wallet_v3_deliver_button">#FAFAFA</color>
     <color name="dap_issuer_wallet_v3_deliver_button_text">#536DFE</color>
     <color name="dap_issuer_wallet_v3_deliver_button_outside_background">#F4F4F4</color>
+    <color name="dap_issuer_wallet_v3_deliver_button_background">#FAFAFA</color>
     <color name="dap_issuer_wallet_v3_deliver_button_border">#616161</color>
     <color name="dap_issuer_wallet_v3_deliver_line">#BDBDBD</color>
     <color name="dap_issuer_wallet_v3_dialog">#212121</color>

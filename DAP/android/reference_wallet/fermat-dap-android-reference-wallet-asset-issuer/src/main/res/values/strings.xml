@@ -21,6 +21,8 @@
     <string name="no_assets_redeem_point_message">Don\'t worry!\nTo act as a Redeem Point you need to use the Community App to connect your device to an Assets Issuer whose assets you want to redeem.</string>
     <string name="no_users">No Users</string>
     <string name="no_groups">No Groups</string>
+    <string name="no_users_v3">NO USERS</string>
+    <string name="no_groups_v3">NO GROUPS</string>
     <string name="no_transactions">No Transactions</string>
     <!-- -->
 
