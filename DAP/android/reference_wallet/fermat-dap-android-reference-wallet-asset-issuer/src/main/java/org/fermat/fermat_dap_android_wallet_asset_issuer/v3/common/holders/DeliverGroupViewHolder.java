@@ -24,6 +24,8 @@ public class DeliverGroupViewHolder extends FermatViewHolder {
     private FermatTextView groupNameText;
     private ImageView groupImage;
     private RelativeLayout selectedGroup;
+    private RelativeLayout deliverGroupHeaderLayout;
+    private FermatTextView letterText;
 
 
 
@@ -41,11 +43,15 @@ public class DeliverGroupViewHolder extends FermatViewHolder {
         groupNameText = (FermatTextView) itemView.findViewById(R.id.groupNameText);
         groupImage = (ImageView) itemView.findViewById(R.id.groupImage);
         selectedGroup = (RelativeLayout) itemView.findViewById(R.id.selectedGroup);
+        deliverGroupHeaderLayout = (RelativeLayout) itemView.findViewById(R.id.deliverGroupHeaderLayout);
+        letterText = (FermatTextView) itemView.findViewById(R.id.letterGroupText);
     }
 
     public void bind(final Group group) {
         groupNameText.setText(group.getName());
         selectedGroup.setVisibility(group.isSelected() ? View.VISIBLE : View.INVISIBLE);
+        letterText.setText(group.getName().substring(0, 1).toUpperCase());
+        deliverGroupHeaderLayout.setVisibility(group.isFirst() ? View.VISIBLE : View.GONE);
 
 //        if (group.getActorAssetUserGroup().getProfileImage() != null && group.getActorAssetUserGroup().getProfileImage().length > 0) {
 //            Bitmap bitmap = BitmapFactory.decodeByteArray(group.getActorAssetUserGroup().getProfileImage(), 0, group.getActorAssetUserGroup().getProfileImage().length);

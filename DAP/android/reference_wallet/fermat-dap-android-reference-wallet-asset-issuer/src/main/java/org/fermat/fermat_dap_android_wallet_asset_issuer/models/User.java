@@ -7,7 +7,9 @@ import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAsse
  */
 public class User {
     private String name;
+    private byte[] image;
     private boolean selected;
+    private boolean first;
 
     private ActorAssetUser actorAssetUser;
 
@@ -16,6 +18,7 @@ public class User {
 
     public User(String name, ActorAssetUser actorAssetUser) {
         this.name = name;
+        this.image = actorAssetUser.getProfileImage();
         this.setActorAssetUser(actorAssetUser);
     }
 
@@ -41,6 +44,22 @@ public class User {
 
     public void setActorAssetUser(ActorAssetUser actorAssetUser) {
         this.actorAssetUser = actorAssetUser;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
     }
 
     @Override

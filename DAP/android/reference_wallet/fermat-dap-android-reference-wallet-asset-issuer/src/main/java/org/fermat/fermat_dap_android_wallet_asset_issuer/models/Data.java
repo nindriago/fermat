@@ -20,6 +20,8 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWall
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -131,21 +133,74 @@ public class Data {
     }
 
     public static List<User> getConnectedUsers(AssetIssuerWalletSupAppModuleManager moduleManager, List<User> usersSelected) throws CantGetAssetUserActorsException {
-//        List<User> users = new ArrayList<>();
-//        users.add(new User("Frank Contreras"));
-//        users.add(new User("Victor Mars"));
-//        users.add(new User("Nerio Indriago"));
-//        users.add(new User("Rodrigo Acosta"));
         List<User> users = new ArrayList<>();
         List<ActorAssetUser> actorAssetUsers = moduleManager.getAllAssetUserActorConnected();
         for (ActorAssetUser actorAssetUser:actorAssetUsers) {
             User newUser = new User(actorAssetUser.getName(), actorAssetUser);
-//            int index = usersSelected.indexOf(newUser);
-//            if (index > 0) newUser.setSelected(usersSelected.get(index).isSelected());
             users.add(newUser);
         }
+
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User lhs, User rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+
+        String lastLetter = "";
+        for (User user : users) {
+            String letter = user.getName().substring(0, 1);
+            if (!letter.equals(lastLetter)) {
+                user.setFirst(true);
+                lastLetter = letter;
+            }
+        }
+
         return users;
     }
+
+//    public static List<User> getConnectedUsers(AssetIssuerWalletSupAppModuleManager moduleManager, List<User> usersSelected) throws CantGetAssetUserActorsException {
+//        List<User> users = new ArrayList<>();
+//
+//        User u1 = new User("Arnaldo Sequera", null);
+//        User u2 = new User("Frank Contreras", null);
+//        User u3 = new User("Jean Segura", null);
+//        User u4 = new User("John Macdonalds", null);
+//        User u5 = new User("Christian Contreras", null);
+//        User u6 = new User("Francisco Cardenas", null);
+//        User u7 = new User("Daniel Zamudio", null);
+//        User u8 = new User("Carlos Lopez", null);
+//        User u9 = new User("Juan Bimba", null);
+//        User u10 = new User("Juan Bimbo", null);
+//        users.add(u1);
+//        users.add(u2);
+//        users.add(u3);
+//        users.add(u4);
+//        users.add(u5);
+//        users.add(u6);
+//        users.add(u7);
+//        users.add(u8);
+//        users.add(u9);
+//        users.add(u10);
+//
+//        Collections.sort(users, new Comparator<User>() {
+//            @Override
+//            public int compare(User lhs, User rhs) {
+//                return lhs.getName().compareTo(rhs.getName());
+//            }
+//        });
+//
+//        String lastLetter = "";
+//        for (User user : users) {
+//            String letter = user.getName().substring(0, 1);
+//            if (!letter.equals(lastLetter)) {
+//                user.setFirst(true);
+//                lastLetter = letter;
+//            }
+//        }
+//
+//        return users;
+//    }
 
     public static List<Group> getGroups(AssetIssuerWalletSupAppModuleManager moduleManager, List<Group> groupsSelected) throws CantGetAssetUserGroupException, CantGetAssetUserActorsException {
         List<Group> groups = new ArrayList<>();
@@ -158,12 +213,70 @@ public class Data {
                 users.add(new User(actorAssetUser.getName(), actorAssetUser));
             }
             newGroup.setUsers(users);
-//            int index = usersSelected.indexOf(newUser);
-//            if (index > 0) newUser.setSelected(usersSelected.get(index).isSelected());
             groups.add(newGroup);
         }
+
+        Collections.sort(groups, new Comparator<Group>() {
+            @Override
+            public int compare(Group lhs, Group rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+
+        String lastLetter = "";
+        for (Group group : groups) {
+            String letter = group.getName().substring(0, 1);
+            if (!letter.equals(lastLetter)) {
+                group.setFirst(true);
+                lastLetter = letter;
+            }
+        }
+
         return groups;
     }
+
+//    public static List<Group> getGroups(AssetIssuerWalletSupAppModuleManager moduleManager, List<Group> usersSelected) throws CantGetAssetUserActorsException {
+//        List<Group> groups = new ArrayList<>();
+//
+//        Group u1 = new Group("Arnaldo Sequera Grupo", null);
+//        Group u2 = new Group("Frank Contreras Grupo", null);
+//        Group u3 = new Group("Jean Segura Grupo", null);
+//        Group u4 = new Group("John Macdonalds Grupo", null);
+//        Group u5 = new Group("Christian Contreras Grupo", null);
+//        Group u6 = new Group("Francisco Cardenas Grupo", null);
+//        Group u7 = new Group("Daniel Zamudio Grupo", null);
+//        Group u8 = new Group("Carlos Lopez Grupo", null);
+//        Group u9 = new Group("Juan Bimba Grupo", null);
+//        Group u10 = new Group("Juan Bimbo Grupo", null);
+//        groups.add(u1);
+//        groups.add(u2);
+//        groups.add(u3);
+//        groups.add(u4);
+//        groups.add(u5);
+//        groups.add(u6);
+//        groups.add(u7);
+//        groups.add(u8);
+//        groups.add(u9);
+//        groups.add(u10);
+//
+//        Collections.sort(groups, new Comparator<Group>() {
+//            @Override
+//            public int compare(Group lhs, Group rhs) {
+//                return lhs.getName().compareTo(rhs.getName());
+//            }
+//        });
+//
+//        String lastLetter = "";
+//        for (Group group : groups) {
+//            String letter = group.getName().substring(0, 1);
+//            if (!letter.equals(lastLetter)) {
+//                group.setFirst(true);
+//                lastLetter = letter;
+//            }
+//        }
+//
+//        return groups;
+//    }
 
     public static void setStatistics(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) throws CantGetAssetStatisticException, CantLoadWalletException {
         int unused = moduleManager.getWalletStatisticsByAssetAndStatus(walletPublicKey, digitalAsset.getName(), AssetCurrentStatus.ASSET_UNUSED).size();

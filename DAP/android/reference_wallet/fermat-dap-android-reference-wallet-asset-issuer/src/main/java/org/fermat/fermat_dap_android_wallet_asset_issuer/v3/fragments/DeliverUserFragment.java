@@ -16,8 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton;
 import com.bitdubai.fermat_android_api.ui.Views.ConfirmDialog;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
@@ -79,6 +81,8 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
     private View noUsersView;
     private DigitalAsset digitalAsset;
     private SearchView searchView;
+    private RelativeLayout buttonPanelLayout;
+    private FermatButton okButton;
 
     public static DeliverUserFragment newInstance() {
         return new DeliverUserFragment();
@@ -110,6 +114,16 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
         noUsersView = layout.findViewById(R.id.dap_wallet_asset_issuer_delivery_user_no_users);
 
+        buttonPanelLayout = (RelativeLayout) layout.findViewById(R.id.buttonPanelLayout);
+        okButton = (FermatButton) layout.findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+            }
+        });
+
         users = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
 
         digitalAsset = (DigitalAsset) appSession.getData("asset_data");
@@ -122,6 +136,8 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 //                }
 //            });
 //        }
+
+        buttonPanelLayout.setVisibility(View.GONE);
 
         showOrHideNoUsersView(users.isEmpty());
 
@@ -171,6 +187,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
             @Override
             public boolean onQueryTextChange(String s) {
+                buttonPanelLayout.setVisibility((s.length() > 0) ? View.VISIBLE : View.GONE);
                 if (s.equals(searchView.getQuery().toString())) {
                     ((DeliverUserAdapterFilter) ((DeliverUserAdapter) getAdapter()).getFilter()).filter(s);
                 }

@@ -27,6 +27,8 @@ public class DeliverUserViewHolder extends FermatViewHolder {
     private FermatTextView userNameText;
     private ImageView userImage;
     private RelativeLayout selectedUser;
+    private RelativeLayout deliverUserHeaderLayout;
+    private FermatTextView letterText;
 
 
 
@@ -44,14 +46,18 @@ public class DeliverUserViewHolder extends FermatViewHolder {
         userNameText = (FermatTextView) itemView.findViewById(R.id.userNameText);
         userImage = (ImageView) itemView.findViewById(R.id.userImage);
         selectedUser = (RelativeLayout) itemView.findViewById(R.id.selectedUser);
+        deliverUserHeaderLayout = (RelativeLayout) itemView.findViewById(R.id.deliverUserHeaderLayout);
+        letterText = (FermatTextView) itemView.findViewById(R.id.letterText);
     }
 
     public void bind(final User user) {
         userNameText.setText(user.getName());
         selectedUser.setVisibility(user.isSelected() ? View.VISIBLE : View.INVISIBLE);
+        letterText.setText(user.getName().substring(0, 1).toUpperCase());
+        deliverUserHeaderLayout.setVisibility(user.isFirst() ? View.VISIBLE : View.GONE);
 
-        if (user.getActorAssetUser().getProfileImage() != null && user.getActorAssetUser().getProfileImage().length > 0) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(user.getActorAssetUser().getProfileImage(), 0, user.getActorAssetUser().getProfileImage().length);
+        if (user.getImage() != null && user.getImage().length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(user.getImage(), 0, user.getImage().length);
             bitmap = Bitmap.createScaledBitmap(bitmap, 120, 120, true);
             userImage.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), bitmap));
         }

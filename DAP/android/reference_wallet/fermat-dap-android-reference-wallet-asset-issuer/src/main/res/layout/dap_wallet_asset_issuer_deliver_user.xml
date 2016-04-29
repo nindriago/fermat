@@ -6,48 +6,83 @@
     android:background="#ffffff"
     tools:context="org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.DeliverUserFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+    <RelativeLayout
+        android:id="@+id/contentLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/dap_wallet_asset_issuer_delivery_user_recycler_view"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"/>
+            android:visibility="visible">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dap_wallet_asset_issuer_delivery_user_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"/>
 
-    <LinearLayout
-        android:id="@+id/dap_wallet_asset_issuer_delivery_user_no_users"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginBottom="16dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/sad_face"/>
-
-        <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/dap_wallet_asset_issuer_delivery_user_no_users"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/no_users"
-            android:textColor="#2d3e50"
-            android:textSize="20sp"
-            android:fontFamily="sans-serif"/>
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/sad_face"/>
+
+            <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_users"
+                android:textColor="#2d3e50"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/buttonPanelLayout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/dap_issuer_wallet_v3_deliver_button_outside_background"
+            android:layout_alignParentBottom="true"
+            android:visibility="visible">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/dap_issuer_wallet_v3_deliver_button_border"
+                android:layout_alignParentTop="true"/>
+
+            <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton
+                android:id="@+id/okButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/dap_issuer_wallet_v3_deliver_button"
+                android:text="DONE"
+                android:fontFamily="sans-serif"
+                android:textSize="13sp"
+                android:textColor="@color/dap_issuer_wallet_v3_deliver_button_text"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </FrameLayout>
