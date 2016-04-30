@@ -2,6 +2,7 @@ package org.fermat.fermat_dap_android_wallet_asset_issuer.models;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.util.Utils;
 import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
+import org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetStatistic;
 
 import java.sql.Timestamp;
 
@@ -13,16 +14,28 @@ public class UserDelivery {
     private String userName;
     private Timestamp deliveryDate;
     private String deliveryStatus;
+    private String deliveryStatusDescription;
+
+    AssetStatistic assetStatistic;
 
     public UserDelivery() {
     }
 
-    public UserDelivery(byte[] profileImage, String name, Timestamp timestamp, String description) {
-        this(name, timestamp, description);
+    public UserDelivery(AssetStatistic assetStatistic) {
+        setUserImage(assetStatistic.getOwner().getProfileImage());
+        setUserName(assetStatistic.getOwner().getName());
+        setDeliveryDate(new Timestamp(assetStatistic.getDistributionDate().getTime()));
+        setDeliveryStatus(assetStatistic.getStatus().getCode());
+        setDeliveryStatusDescription(assetStatistic.getStatus().getDescription());
+    }
+
+    public UserDelivery(byte[] profileImage, String name, Timestamp timestamp, String deliveryStatus, String deliveryStatusDescription) {
+        this(name, timestamp, deliveryStatus);
+        this.deliveryStatusDescription = deliveryStatusDescription;
         this.userImage = profileImage;
     }
 
-    public UserDelivery(String name, Timestamp timestamp, String description) {
+    public UserDelivery(String userName, Timestamp deliveryDate, String deliveryStatus) {
         this.userName = userName;
         this.deliveryDate = deliveryDate;
         this.deliveryStatus = deliveryStatus;
@@ -63,5 +76,13 @@ public class UserDelivery {
 
     public void setUserImage(byte[] userImage) {
         this.userImage = userImage;
+    }
+
+    public String getDeliveryStatusDescription() {
+        return deliveryStatusDescription;
+    }
+
+    public void setDeliveryStatusDescription(String deliveryStatusDescription) {
+        this.deliveryStatusDescription = deliveryStatusDescription;
     }
 }

@@ -24,6 +24,8 @@
     <string name="no_users_v3">NO USERS</string>
     <string name="no_groups_v3">NO GROUPS</string>
     <string name="no_transactions">No Transactions</string>
+    <string name="no_stats_v3">NO STATS</string>
+    <string name="no_transactions_v3">NO TRANSACTIONS</string>
     <!-- -->
 
     <!-- error messages -->

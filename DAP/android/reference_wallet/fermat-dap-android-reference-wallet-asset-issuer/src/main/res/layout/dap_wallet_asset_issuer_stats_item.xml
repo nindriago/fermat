@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="55dp"
-    android:background="@color/dap_issuer_wallet_v3_card_outside_background">
+    android:layout_height="72dp"
+    android:background="@color/color_white">
 
     <RelativeLayout
         android:id="@+id/statsUserImageLayout"
@@ -12,7 +12,7 @@
         android:layout_height="42dp"
         android:background="@drawable/bg_circular_user_list"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="16dp">
 
         <ImageView
             android:id="@+id/statsUserImage"
@@ -31,16 +31,17 @@
         android:layout_height="wrap_content"
         android:text="30 minutes ago"
         android:textColor="@color/dap_issuer_wallet_v3_stats_text_sec_2"
-        android:textSize="12dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="7dp"
         android:layout_alignParentRight="true"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/statsUserImageLayout"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="22dp"
         android:layout_centerVertical="true">
 
         <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
@@ -49,25 +50,19 @@
             android:layout_height="wrap_content"
             android:text="Frank Contreras"
             android:textColor="@color/dap_issuer_wallet_v3_stats_text_sec_1"
-            android:textSize="14dp" />
+            android:fontFamily="sans-serif"
+            android:textSize="16sp" />
 
         <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
             android:id="@+id/statsStatusText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Unused"
-            android:textColor="@color/black"
-            android:textSize="12dp"
+            android:textColor="@color/dap_issuer_wallet_v3_stats_text_inactive"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif"
             android:layout_below="@+id/statsUserNameText"/>
 
     </RelativeLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/dap_issuer_wallet_v3_deliver_line"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/view"
-        android:layout_marginLeft="60dp"/>
 
 </RelativeLayout>

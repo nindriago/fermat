@@ -102,6 +102,7 @@ public class StatsFragment extends FermatWalletListFragment<UserDelivery> {
         configureToolbar();
         noUsersView = layout.findViewById(R.id.dap_wallet_asset_issuer_stats_no_users);
         showOrHideNoUsersView(users.isEmpty());
+        onRefresh();
     }
 
     private void setUpHelpAssetDeliveryList(boolean checkButton) {
