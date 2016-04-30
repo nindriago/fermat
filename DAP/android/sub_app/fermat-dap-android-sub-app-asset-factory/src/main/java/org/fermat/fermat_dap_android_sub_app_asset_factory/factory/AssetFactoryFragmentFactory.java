@@ -12,6 +12,8 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFac
 import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFactoryNetworkFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFactoryNotificationFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment;
+
 import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
 
 /**
@@ -27,6 +29,8 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_EDITABLE_TAB_FRAGMENT))
                 return EditableAssetsFragment.newInstance();
                 //return DraftAssetsHomeFragment.newInstance();
+//                    return DraftAssetsHomeFragment.newInstance();
+//        descomenta el ultimo
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_PUBLISHED_TAB_FRAGMENT))
                 return PublishedAssetsFragment.newInstance();
                 //return PublishedAssetsHomeFragment.newInstance();
