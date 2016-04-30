@@ -52,6 +52,7 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConst
 import org.fermat.fermat_dap_android_sub_app_asset_factory.util.CommonLogger;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.util.Utils;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.adapters.AssetFactoryDraftAdapter;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.filters.AssetFactoryDraftAdapterFilter;
 import org.fermat.fermat_dap_api.layer.all_definition.DAPConstants;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.State;
 import org.fermat.fermat_dap_api.layer.dap_identity.asset_issuer.interfaces.IdentityAssetIssuer;
@@ -75,7 +76,7 @@ import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter
  */
 public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFactory> implements FermatListItemListeners{
 
-    private static AssetFactory selectedAsset;
+
     private AssetFactoryModuleManager manager;
     private ErrorManager errorManager;
     private SettingsManager<AssetFactorySettings> settingsManager;
@@ -88,8 +89,11 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     private boolean isRefreshing = false;
     private SearchView searchView;
 
-    public static AssetFactory getAssetForEdit() {
-        return selectedAsset;
+//    public AssetFactory getAssetForEdit() {
+//        return selectedAsset;
+//    }
+    public static DraftAssetsHomeFragment newInstance(){
+        return new DraftAssetsHomeFragment();
     }
 
     @Override
@@ -97,7 +101,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         super.onCreate(savedInstanceState);
 
         try {
-            selectedAsset = null;
+            appSession.setData("asset_data", null);
             appSession.setData("redeem_points", null);
 
             manager = ((AssetFactorySession) appSession).getModuleManager();
@@ -113,7 +117,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     @Override
     protected void initViews(View layout) {
         super.initViews(layout);
-        initSettings();
+
 
         activity = new Activity();
 
@@ -125,7 +129,8 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         } catch (Exception e) {
             CommonLogger.exception(TAG, e.getMessage(), e);
         }
-
+        /*test*/
+        if(dataSet != null)
         showOrHideNoAssetsView(dataSet.isEmpty());
 
         try {
@@ -139,20 +144,22 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
 
         // fab action button create
-        create = (ActionButton) layout.findViewById(R.id.create);
+        create = (ActionButton) layout.findViewById(R.id.draftCreateButton);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /* create new asset factory project */
-                selectedAsset = null;
+                appSession.setData("asset_data", null);
 //                menuHelp = menu.findItem(R.id.action_asset_factory_help);
 //                menuHelp.setVisible(false);
-//                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), getAssetForEdit());
+                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(),(AssetFactory) appSession.getData("asset_data"));
             }
         });
         create.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fab_jump_from_down));
         create.setVisibility(View.VISIBLE);
         create.setEnabled(false);
+
+        initSettings();
     }
 
     private void initSettings() {
@@ -274,7 +281,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             @Override
             public boolean onQueryTextChange(String s) {
                 if (s.equals(searchView.getQuery().toString())) {
-                    (/*(HomeCardAdapterFilter)*/ ((AssetFactoryDraftAdapter) getAdapter()).getFilter()).filter(s);
+                    ((AssetFactoryDraftAdapterFilter) ((AssetFactoryDraftAdapter) getAdapter()).getFilter()).filter(s);
                 }
                 return false;
             }
@@ -341,7 +348,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                 dataSet = (ArrayList) result[0];
                 if (adapter != null) {
                     adapter.changeDataSet(dataSet);
-                    (/*(HomeCardAdapterFilter)*/ ((AssetFactoryDraftAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                    ((AssetFactoryDraftAdapterFilter) ((AssetFactoryDraftAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
                 }
                 showOrHideNoAssetsView(dataSet.isEmpty());
             }
@@ -386,7 +393,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
     }
 
-    public List<AssetFactory> getMoreDataAsync() throws CantGetAssetFactoryException, CantCreateFileException, FileNotFoundException {
+    public List<AssetFactory> getMoreDataAsync(FermatRefreshTypes refreshType, int pos) throws CantGetAssetFactoryException, CantCreateFileException, FileNotFoundException {
         List<AssetFactory> items = new ArrayList<>();
         List<AssetFactory> draftItems = manager.getAssetFactoryByState(State.DRAFT);
         List<AssetFactory> pendingFinalItems = manager.getAssetFactoryByState(State.PENDING_FINAL);
@@ -404,7 +411,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         return items;
     }
 
-    @Override
+    /*@Override
     public void onRefresh() {
         if (!isRefreshing) {
             isRefreshing = true;
@@ -418,7 +425,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             };
             worker.execute();
         }
-    }
+    }*/
 
     @Override
     public void onUpdateViewOnUIThread(String code) {
@@ -435,7 +442,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
     private boolean validate() {
         try {
-            AssetFactory assetFactory = getAssetForEdit();
+            AssetFactory assetFactory = (AssetFactory) appSession.getData("asset_data");
             long satoshis = assetFactory.getAmount();
             if (CryptoVault.isDustySend(satoshis)) {
                 Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
@@ -471,15 +478,19 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         return false;
     }
 
-    private void editAsset() {
-        if (getAssetForEdit() != null && getAssetForEdit().getState() == State.DRAFT) {
-//            changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), getAssetForEdit());
+    public void doEditAsset() {
+        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
+       if (selectedAsset != null ) {
+            changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), selectedAsset);
         }else {
-            selectedAsset = null;
-        }
+            appSession.setData("asset_data", null);
+       }
     }
 
-    private void publishAsset() {
+    public void doPublishAsset() {
+
+        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
+
         try {
             if (manager.isReadyToPublish(selectedAsset.getAssetPublicKey())) {
                 final ProgressDialog dialog = new ProgressDialog(getActivity());
@@ -495,8 +506,8 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                             selectedAsset.setWalletPublicKey(wallet.getWalletPublicKey());
                             break;
                         }
-                        manager.publishAsset(getAssetForEdit());
-                        selectedAsset = null;
+                        manager.publishAsset(selectedAsset);
+                        appSession.setData("asset_data", null);
                         return true;
                     }
                 };
@@ -505,7 +516,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                     @Override
                     public void onPostExecute(Object... result) {
                         dialog.dismiss();
-                        selectedAsset = null;
+                        appSession.setData("asset_data", null);
                         if (getActivity() != null) {
                             onRefresh();
                         }
@@ -516,7 +527,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                     @Override
                     public void onErrorOccurred(Exception ex) {
                         dialog.dismiss();
-                        selectedAsset = null;
+                        appSession.setData("asset_data", null);
 
                         /**
                          * If there was an exception, I will search first if I ran out of keys
@@ -545,8 +556,9 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         }
     }
 
-    private void deleteAsset() {
+    public void doDeleteAsset() {
         final ProgressDialog dialog = new ProgressDialog(getActivity());
+        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
         dialog.setTitle("Deleting asset");
         dialog.setMessage("Please wait...");
         dialog.setCancelable(false);
