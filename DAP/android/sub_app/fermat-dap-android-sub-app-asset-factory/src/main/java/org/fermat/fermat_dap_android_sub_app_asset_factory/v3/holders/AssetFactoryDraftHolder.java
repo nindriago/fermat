@@ -14,6 +14,7 @@ import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 public class AssetFactoryDraftHolder extends FermatViewHolder {
 
     public FermatTextView draftItemQuantity;
+    public FermatTextView draftItemState;
     public ImageView draftAssetImage;
 
     public FermatTextView draftItemAssetName;
@@ -25,6 +26,8 @@ public class AssetFactoryDraftHolder extends FermatViewHolder {
     public ImageButton draftItemEraseButton;
     public ImageButton draftItemPublishButton;
 
+    public View draftSeparatorLine;
+
     public View publishedAssetButtons;
     public ImageButton publishedItemEditButton;
     public ImageButton publishedItemEraseButton;
@@ -35,6 +38,7 @@ public class AssetFactoryDraftHolder extends FermatViewHolder {
         super(itemView);
 
         draftItemQuantity = (FermatTextView) itemView.findViewById(R.id.draftItemQuantity);
+        draftItemState = (FermatTextView) itemView.findViewById(R.id.draftItemState);
         draftAssetImage = (ImageView) itemView.findViewById(R.id.draftAssetImage);
 
         draftItemAssetName = (FermatTextView) itemView.findViewById(R.id.draftItemAssetName);
@@ -45,6 +49,8 @@ public class AssetFactoryDraftHolder extends FermatViewHolder {
         draftItemEditButton = (ImageButton) itemView.findViewById(R.id.draftItemEditButton);
         draftItemEraseButton = (ImageButton) itemView.findViewById(R.id.draftItemEraseButton);
         draftItemPublishButton = (ImageButton) itemView.findViewById(R.id.draftItemPublishButton);
+
+        draftSeparatorLine = itemView.findViewById(R.id.draftSeparatorLine);
 
         publishedAssetButtons = itemView.findViewById(R.id.publishedAssetButtons);
         publishedItemEditButton  = (ImageButton) itemView.findViewById(R.id.publishedItemEditButton);
