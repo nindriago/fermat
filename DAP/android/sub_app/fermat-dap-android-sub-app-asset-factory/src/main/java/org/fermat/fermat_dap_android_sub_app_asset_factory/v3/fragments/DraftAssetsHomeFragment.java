@@ -125,7 +125,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         noAssetsView = layout.findViewById(R.id.dap_v3_factory_draft_assets_home_fragment_no_assets);
 
         try {
-            dataSet = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
+            dataSet = (List) getMoreDataAsync();
         } catch (Exception e) {
             CommonLogger.exception(TAG, e.getMessage(), e);
         }
@@ -393,7 +393,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
     }
 
-    public List<AssetFactory> getMoreDataAsync(FermatRefreshTypes refreshType, int pos) throws CantGetAssetFactoryException, CantCreateFileException, FileNotFoundException {
+    public List<AssetFactory> getMoreDataAsync() throws CantGetAssetFactoryException, CantCreateFileException, FileNotFoundException {
         List<AssetFactory> items = new ArrayList<>();
         List<AssetFactory> draftItems = manager.getAssetFactoryByState(State.DRAFT);
         List<AssetFactory> pendingFinalItems = manager.getAssetFactoryByState(State.PENDING_FINAL);
@@ -411,7 +411,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         return items;
     }
 
-    /*@Override
+    @Override
     public void onRefresh() {
         if (!isRefreshing) {
             isRefreshing = true;
@@ -425,7 +425,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             };
             worker.execute();
         }
-    }*/
+    }
 
     @Override
     public void onUpdateViewOnUIThread(String code) {
@@ -440,7 +440,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
 
 
-    private boolean validate() {
+    public boolean validate() {
         try {
             AssetFactory assetFactory = (AssetFactory) appSession.getData("asset_data");
             long satoshis = assetFactory.getAmount();
