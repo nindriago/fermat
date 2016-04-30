@@ -177,6 +177,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
             @Override
             public void onClick(View v) {
                 assetFactorySession.setData("asset_data", data);
+                if(fragment.validate())
                 fragment.doPublishAsset();
             }
         });
