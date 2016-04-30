@@ -42,6 +42,18 @@
                     android:text="15 Assets"
                     android:textColor="@color/card_text"
                     android:textSize="10sp" />
+                <!--Temporal-->
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:id="@+id/draftItemState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="State"
+                    android:textColor="@color/card_text"
+                    android:textSize="10sp" />
 
             </RelativeLayout>
 
@@ -116,6 +128,7 @@
 
 
                 <View
+                    android:id="@+id/draftSeparatorLine"
                     android:layout_width="fill_parent"
                     android:layout_height="1dip"
                     android:layout_below="@+id/draftItemAssetValue"
