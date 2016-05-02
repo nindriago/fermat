@@ -29,8 +29,6 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_EDITABLE_TAB_FRAGMENT))
                 return EditableAssetsFragment.newInstance();
                 //return DraftAssetsHomeFragment.newInstance();
-//                    return DraftAssetsHomeFragment.newInstance();
-//        descomenta el ultimo
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_PUBLISHED_TAB_FRAGMENT))
                 return PublishedAssetsFragment.newInstance();
                 //return PublishedAssetsHomeFragment.newInstance();
