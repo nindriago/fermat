@@ -37,6 +37,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
     private final AssetFactorySession assetFactorySession;
     private DraftAssetsHomeFragment fragment;
     private AssetFactoryModuleManager manager;
+    private  List<AssetFactory> allAssets;
 
     public AssetFactoryDraftAdapter(DraftAssetsHomeFragment fragment, Context context, List<AssetFactory> dataSet, AssetFactoryModuleManager manager,
                                     FermatSession appSession) {
@@ -46,6 +47,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         this.manager = manager;
         this.dataSet = dataSet;
         this.assetFactorySession = (AssetFactorySession) appSession;
+        this.allAssets = dataSet;
     }
 
     @Override
@@ -65,14 +67,14 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
 
     @Override
     public Filter getFilter() {
-        return new AssetFactoryDraftAdapterFilter(this.dataSet, this);
+        return new AssetFactoryDraftAdapterFilter(this.allAssets, this);
     }
 
     public void bind(AssetFactoryDraftHolder holder, final AssetFactory data) {
 
         double amountTotal = BitcoinConverter.convert(Double.valueOf(data.getAmount() * data.getQuantity()), SATOSHI, BITCOIN);
         double amountPerAsset = BitcoinConverter.convert(Double.valueOf(data.getAmount()), SATOSHI, BITCOIN);
-        holder.draftItemQuantity.setText(data.getQuantity());
+        holder.draftItemQuantity.setText(""+data.getQuantity());
 
         List<Resource> resources = data.getResources();
         if (resources != null && resources.size() > 0) {
