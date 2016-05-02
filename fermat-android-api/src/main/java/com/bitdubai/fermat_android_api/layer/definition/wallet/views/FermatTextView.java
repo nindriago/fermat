@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.bitdubai.android_api.R;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.enums.FontType;
 
+import java.sql.Timestamp;
+
 /**
  * Custom TextView
  *
@@ -70,6 +72,7 @@ public class FermatTextView extends TextView {
             ex.printStackTrace();
         }
     }
+
 
 
 }
