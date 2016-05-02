@@ -29,6 +29,7 @@ import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
@@ -42,6 +43,7 @@ import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exc
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exceptions.CantListLossProtectedTransactionsException;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
 import com.software.shell.fab.ActionButton;
@@ -74,8 +76,9 @@ import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter
 /**
  * Created by Jinmy Bohorquez on 19/04/16.
  */
-public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFactory> implements FermatListItemListeners{
+public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFactory> implements FermatListItemListeners<AssetFactory>{
 
+    private static AssetFactory selectedAsset;
 
     private AssetFactoryModuleManager manager;
     private ErrorManager errorManager;
@@ -86,12 +89,11 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     private long satoshisWalletBalance;
     private View noAssetsView;
     private Activity activity;
-    private boolean isRefreshing = false;
     private SearchView searchView;
 
-//    public AssetFactory getAssetForEdit() {
-//        return selectedAsset;
-//    }
+    public static AssetFactory getAssetForEdit() {
+        return selectedAsset;
+    }
     public static DraftAssetsHomeFragment newInstance(){
         return new DraftAssetsHomeFragment();
     }
@@ -99,14 +101,15 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         try {
             appSession.setData("asset_data", null);
             appSession.setData("redeem_points", null);
-
             manager = ((AssetFactorySession) appSession).getModuleManager();
             errorManager = appSession.getErrorManager();
             settingsManager = appSession.getModuleManager().getSettingsManager();
+            dataSet = (List) getMoreDataAsync(FermatRefreshTypes.NEW, 0);
 
 
         } catch (Exception ex) {
@@ -118,41 +121,14 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     protected void initViews(View layout) {
         super.initViews(layout);
 
-
         activity = new Activity();
 
-        configureToolbar();
-        noAssetsView = layout.findViewById(R.id.dap_v3_factory_draft_assets_home_fragment_no_assets);
-
-        try {
-            dataSet = (List) getMoreDataAsync();
-        } catch (Exception e) {
-            CommonLogger.exception(TAG, e.getMessage(), e);
-        }
-        /*test*/
-        if(dataSet != null)
-        showOrHideNoAssetsView(dataSet.isEmpty());
-
-        try {
-            satoshisWalletBalance = manager.getBitcoinWalletBalance(Utils.getBitcoinWalletPublicKey(manager));
-        } catch (Exception e) {
-            CommonLogger.exception(TAG, e.getMessage(), e);
-            // bitcoinBalanceText.setText(getResources().getString(R.string.dap_user_wallet_buy_no_available));
-        }
-
-        onRefresh();
-
-
-        // fab action button create
         create = (ActionButton) layout.findViewById(R.id.draftCreateButton);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /* create new asset factory project */
                 appSession.setData("asset_data", null);
-//                menuHelp = menu.findItem(R.id.action_asset_factory_help);
-//                menuHelp.setVisible(false);
-                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(),(AssetFactory) appSession.getData("asset_data"));
+                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_data"));
             }
         });
         create.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fab_jump_from_down));
@@ -160,6 +136,20 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         create.setEnabled(false);
 
         initSettings();
+        configureToolbar();
+        noAssetsView = layout.findViewById(R.id.dap_v3_factory_draft_assets_home_fragment_no_assets);
+
+        try {
+
+        /*test*/
+        if(dataSet != null)
+            showOrHideNoAssetsView(dataSet.isEmpty());
+
+            satoshisWalletBalance = manager.getBitcoinWalletBalance(Utils.getBitcoinWalletPublicKey(manager));
+        } catch (Exception e) {
+            CommonLogger.exception(TAG, e.getMessage(), e);
+        }
+
     }
 
     private void initSettings() {
@@ -348,7 +338,10 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                 dataSet = (ArrayList) result[0];
                 if (adapter != null) {
                     adapter.changeDataSet(dataSet);
-                    ((AssetFactoryDraftAdapterFilter) ((AssetFactoryDraftAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                    if (searchView != null) {
+                        if (!searchView.getQuery().toString().isEmpty())
+                            ((AssetFactoryDraftAdapterFilter) ((AssetFactoryDraftAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                    }
                 }
                 showOrHideNoAssetsView(dataSet.isEmpty());
             }
@@ -369,8 +362,6 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         if (adapter == null) {
             adapter = new AssetFactoryDraftAdapter(this, getActivity(), dataSet, manager, appSession);
             adapter.setFermatListEventListener(this);
-        } else {
-            adapter.changeDataSet(dataSet);
         }
         return adapter;
     }
@@ -383,48 +374,35 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         return layoutManager;
     }
 
-    @Override
-    public void onItemClickListener(Object data, int position) {
-
-    }
 
     @Override
-    public void onLongItemClickListener(Object data, int position) {
+    public List<AssetFactory> getMoreDataAsync(FermatRefreshTypes refreshType, int pos) {
 
-    }
-
-    public List<AssetFactory> getMoreDataAsync() throws CantGetAssetFactoryException, CantCreateFileException, FileNotFoundException {
         List<AssetFactory> items = new ArrayList<>();
-        List<AssetFactory> draftItems = manager.getAssetFactoryByState(State.DRAFT);
-        List<AssetFactory> pendingFinalItems = manager.getAssetFactoryByState(State.PENDING_FINAL);
-        if (draftItems != null && !draftItems.isEmpty())
-            items.addAll(draftItems);
-        if (pendingFinalItems != null && !pendingFinalItems.isEmpty())
-            items.addAll(pendingFinalItems);
-        List<Resource> resources;
-        for (AssetFactory item : items) {
-            resources = item.getResources();
-            for (Resource resource : resources) {
-                resource.setResourceBinayData(manager.getAssetFactoryResource(resource).getContent());
+        try {
+            List<AssetFactory> draftItems = manager.getAssetFactoryByState(State.DRAFT);
+            List<AssetFactory> pendingFinalItems = manager.getAssetFactoryByState(State.PENDING_FINAL);
+            if (draftItems != null && !draftItems.isEmpty())
+                items.addAll(draftItems);
+            if (pendingFinalItems != null && !pendingFinalItems.isEmpty())
+                items.addAll(pendingFinalItems);
+            List<Resource> resources;
+            for (AssetFactory item : items) {
+                resources = item.getResources();
+                for (Resource resource : resources) {
+                    resource.setResourceBinayData(manager.getAssetFactoryResource(resource).getContent());
+                }
             }
         }
-        return items;
-    }
-
-    @Override
-    public void onRefresh() {
-        if (!isRefreshing) {
-            isRefreshing = true;
-            if (swipeRefreshLayout != null)
-                swipeRefreshLayout.setRefreshing(true);
-            FermatWorker worker = new FermatWorker(getActivity(), this) {
-                @Override
-                protected Object doInBackground() throws Exception {
-                    return getMoreDataAsync();
-                }
-            };
-            worker.execute();
+        catch (Exception ex) {
+            CommonLogger.exception(TAG, ex.getMessage(), ex);
+            if (errorManager != null)
+                errorManager.reportUnexpectedWalletException(
+                        Wallets.DAP_ASSET_ISSUER_WALLET,
+                        UnexpectedWalletExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_FRAGMENT,
+                        ex);
         }
+        return items;
     }
 
     @Override
@@ -479,7 +457,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     }
 
     public void doEditAsset() {
-        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
+        selectedAsset = (AssetFactory) appSession.getData("asset_data");
        if (selectedAsset != null ) {
             changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), selectedAsset);
         }else {
@@ -489,7 +467,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
     public void doPublishAsset() {
 
-        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
+        selectedAsset = (AssetFactory) appSession.getData("asset_data");
 
         try {
             if (manager.isReadyToPublish(selectedAsset.getAssetPublicKey())) {
@@ -577,7 +555,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                 dialog.dismiss();
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), "Asset deleted successfully", Toast.LENGTH_SHORT).show();
-                    changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                    onRefresh();
                 }
             }
 
@@ -591,5 +569,15 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             }
         });
         worker.execute();
+    }
+
+    @Override
+    public void onItemClickListener(AssetFactory data, int position) {
+
+    }
+
+    @Override
+    public void onLongItemClickListener(AssetFactory data, int position) {
+
     }
 }
