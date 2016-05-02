@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="org.fermat.fermat_dap_android_wallet_asset_user.v3.fragments.HomeCardFragment"
+    tools:context="org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment"
     android:background="@color/bg_asset_factory">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -31,32 +31,6 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
-
-        <!--<ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/no_assets"/>
-
-        <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/no_assets_user"
-            android:textColor="@color/dap_user_wallet_black_text"
-            android:textSize="20sp"/>
-
-        <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/no_assets_user_message"
-            android:textColor="@color/dap_user_wallet_black_text"
-            android:textSize="15sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>-->
 
     </LinearLayout>
 
