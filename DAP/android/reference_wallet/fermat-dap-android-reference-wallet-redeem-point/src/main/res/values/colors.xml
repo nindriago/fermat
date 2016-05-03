@@ -46,7 +46,8 @@
     <color name="redeem_card_background">#ffffff</color>
     <color name="redeem_card_text_top_primary">#ffffff</color>
     <color name="redeem_card_text_top_time">#A7FFEB</color>
-    <color name="redeem_card_background_back">#ECECEC</color>
+    <color name="redeem_card_background_back">#F5F6F7</color>
+    <color name="redeem_card_no_assets">#546E7A</color>
 
     <!--cambiar popr los colores que son-->
     <color name="redeem_card_toolbar">#ECECEC</color>
