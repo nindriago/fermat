@@ -128,6 +128,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             @Override
             public void onClick(View view) {
                 appSession.setData("asset_data", null);
+                selectedAsset = null;
                 changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_data"));
             }
         });
@@ -495,6 +496,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                     public void onPostExecute(Object... result) {
                         dialog.dismiss();
                         appSession.setData("asset_data", null);
+                        selectedAsset = null;
                         if (getActivity() != null) {
                             onRefresh();
                         }
@@ -506,6 +508,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                     public void onErrorOccurred(Exception ex) {
                         dialog.dismiss();
                         appSession.setData("asset_data", null);
+                        selectedAsset = null;
 
                         /**
                          * If there was an exception, I will search first if I ran out of keys
@@ -553,6 +556,8 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             @Override
             public void onPostExecute(Object... result) {
                 dialog.dismiss();
+                appSession.setData("asset_data", null);
+
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), "Asset deleted successfully", Toast.LENGTH_SHORT).show();
                     onRefresh();
@@ -562,6 +567,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             @Override
             public void onErrorOccurred(Exception ex) {
                 dialog.dismiss();
+                appSession.setData("asset_data", null);
                 if (getActivity() != null) {
                     CommonLogger.exception(TAG, ex.getMessage(), ex);
                     Toast.makeText(getActivity(), "There was an error deleting this asset", Toast.LENGTH_SHORT).show();

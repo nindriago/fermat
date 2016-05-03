@@ -82,6 +82,7 @@
                 android:layout_below="@id/AssetImage"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:paddingBottom="10dp"
                 android:visibility="visible">
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
