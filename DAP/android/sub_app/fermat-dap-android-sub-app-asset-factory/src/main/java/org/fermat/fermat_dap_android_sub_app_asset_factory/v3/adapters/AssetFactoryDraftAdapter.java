@@ -95,7 +95,8 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         }
 
         holder.draftItemAssetName.setText(data.getName());
-        holder.draftItemAssetValue.setText(amountPerAsset + " BTC");
+        //holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountTotal));
+        holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountPerAsset));
         holder.draftItemExpDate.setText((data.getExpirationDate() == null)?"No exp date":data.getExpirationDate()+"");
 
         switch (data.getState()) {
