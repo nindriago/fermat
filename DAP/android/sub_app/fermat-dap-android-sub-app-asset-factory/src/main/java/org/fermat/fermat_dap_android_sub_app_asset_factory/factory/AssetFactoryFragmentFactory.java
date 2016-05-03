@@ -13,6 +13,7 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFac
 import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFactoryNotificationFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.PublishedAssetsHomeFragment;
 
 import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
 
@@ -33,8 +34,13 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
                 return PublishedAssetsFragment.newInstance();
                 //return PublishedAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_EDITOR_ACTIVITY))
-                return AssetEditorFragment.newInstance(EditableAssetsFragment.getAssetForEdit());
-                //return CreateEditorAssetFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
+            return AssetEditorFragment.newInstance(EditableAssetsFragment.getAssetForEdit());
+
+            //Use this for testing
+            //return AssetEditorFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
+
+            //Use this when new Wizard fragment is ready
+            //return CreateEditorAssetFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS))
             return SettingsFactoryFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS_NETWORK_MAIN))
@@ -49,7 +55,7 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_PUBLISHED_TAB_FRAGMENT))
             return PublishedAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_EDITOR_FRAGMENT))
-            return CreateEditorAssetFragment.newInstance(EditableAssetsFragment.getAssetForEdit());
+            return CreateEditorAssetFragment.newInstance(DraftAssetsHomeFragment.newInstance());
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS_FRAGMENT))
             return SettingsFactoryFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS_NETWORK_MAIN_FRAGMENT))
