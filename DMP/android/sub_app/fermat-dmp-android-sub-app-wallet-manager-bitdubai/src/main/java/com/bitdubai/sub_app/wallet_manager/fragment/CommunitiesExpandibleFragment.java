@@ -63,6 +63,13 @@ public class CommunitiesExpandibleFragment extends FermatWalletExpandableListFra
         RecyclerView.ItemDecoration itemDecoration = new FermatDividerItemDecoration(getActivity(), R.drawable.divider_shape);
         recyclerView.addItemDecoration(itemDecoration);
 
+        layout.findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
 //        if (intalledAppsList.isEmpty()) {
 //            recyclerView.setVisibility(View.GONE);
 //            emptyListViewsContainer =(LinearLayout) layout.findViewById(R.id.empty);
