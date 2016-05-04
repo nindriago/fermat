@@ -79,44 +79,44 @@ public class Data {
         return null;
     }
 
-    public static List<UserDelivery> getStats(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) throws Exception {
-        List<UserDelivery> users = new ArrayList<>();
-        UserDelivery userDelivery;
-        List<AssetStatistic> stats = moduleManager.getWalletStatisticsByAsset(walletPublicKey, digitalAsset.getName());
-        for (AssetStatistic stat : stats) {
-            if (!stat.getStatus().equals(AssetCurrentStatus.ASSET_CREATED)) {
-                userDelivery = new UserDelivery(stat.getOwner().getProfileImage(), stat.getOwner().getName(), new Timestamp(stat.getDistributionDate().getTime()), stat.getStatus().getCode(), stat.getStatus().getDescription());
-                users.add(userDelivery);
-            }
-        }
-        return users;
-    }
-
-//    public static List<UserDelivery> getStats(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) {
-//        List<UserDelivery> stats = new ArrayList<>();
-//        Timestamp timestamp = new Timestamp(new Date().getTime());
-//        UserDelivery u1 = new UserDelivery(null, "Frank Contreras", timestamp, "ASUN", "Unused");
-//        UserDelivery u2 = new UserDelivery(null, "Flor Naveda", timestamp, "ASUN", "Unused");
-//        UserDelivery u3 = new UserDelivery(null, "Victor Mars", timestamp, "ASUN", "Unused");
-//        UserDelivery u4 = new UserDelivery(null, "Nerio Indriago", timestamp, "ASRE", "Redeemed");
-//        UserDelivery u5 = new UserDelivery(null, "Francisco Rodriguez", timestamp, "ASRE", "Redeemed");
-//        UserDelivery u6 = new UserDelivery(null, "Humberto Perdomo", timestamp, "ASRE", "Redeemed");
-//        UserDelivery u7 = new UserDelivery(null, "Lisa Loeb", timestamp, "ASAP", "Appropriated");
-//        UserDelivery u8 = new UserDelivery(null, "Armando Manzanero", timestamp, "ASAP", "Appropriated");
-//        UserDelivery u9 = new UserDelivery(null, "Francisca Main", timestamp, "ASAP", "Appropriated");
-//        UserDelivery u10 = new UserDelivery(null, "Superman Rodriguez", timestamp, "ASAP", "Appropriated");
-//        stats.add(u1);
-//        stats.add(u2);
-//        stats.add(u3);
-//        stats.add(u4);
-//        stats.add(u5);
-//        stats.add(u6);
-//        stats.add(u7);
-//        stats.add(u8);
-//        stats.add(u9);
-//        stats.add(u10);
-//        return stats;
+//    public static List<UserDelivery> getStats(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) throws Exception {
+//        List<UserDelivery> users = new ArrayList<>();
+//        UserDelivery userDelivery;
+//        List<AssetStatistic> stats = moduleManager.getWalletStatisticsByAsset(walletPublicKey, digitalAsset.getName());
+//        for (AssetStatistic stat : stats) {
+//            if (!stat.getStatus().equals(AssetCurrentStatus.ASSET_CREATED)) {
+//                userDelivery = new UserDelivery(stat.getOwner().getProfileImage(), stat.getOwner().getName(), new Timestamp(stat.getDistributionDate().getTime()), stat.getStatus().getCode(), stat.getStatus().getDescription());
+//                users.add(userDelivery);
+//            }
+//        }
+//        return users;
 //    }
+
+    public static List<UserDelivery> getStats(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) {
+        List<UserDelivery> stats = new ArrayList<>();
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        UserDelivery u1 = new UserDelivery(null, "Frank Contreras", timestamp, "ASUN", "Unused");
+        UserDelivery u2 = new UserDelivery(null, "Flor Naveda", timestamp, "ASUN", "Unused");
+        UserDelivery u3 = new UserDelivery(null, "Victor Mars", timestamp, "ASUN", "Unused");
+        UserDelivery u4 = new UserDelivery(null, "Nerio Indriago", timestamp, "ASRE", "Redeemed");
+        UserDelivery u5 = new UserDelivery(null, "Francisco Rodriguez", timestamp, "ASRE", "Redeemed");
+        UserDelivery u6 = new UserDelivery(null, "Humberto Perdomo", timestamp, "ASRE", "Redeemed");
+        UserDelivery u7 = new UserDelivery(null, "Lisa Loeb", timestamp, "ASAP", "Appropriated");
+        UserDelivery u8 = new UserDelivery(null, "Armando Manzanero", timestamp, "ASAP", "Appropriated");
+        UserDelivery u9 = new UserDelivery(null, "Francisca Main", timestamp, "ASAP", "Appropriated");
+        UserDelivery u10 = new UserDelivery(null, "Superman Rodriguez", timestamp, "ASAP", "Appropriated");
+        stats.add(u1);
+        stats.add(u2);
+        stats.add(u3);
+        stats.add(u4);
+        stats.add(u5);
+        stats.add(u6);
+        stats.add(u7);
+        stats.add(u8);
+        stats.add(u9);
+        stats.add(u10);
+        return stats;
+    }
 
     public static List<UserDelivery> getUserDeliveryList(String walletPublicKey, DigitalAsset digitalAsset, AssetIssuerWalletSupAppModuleManager moduleManager) throws Exception {
         List<UserDelivery> users = new ArrayList<>();
@@ -330,5 +330,15 @@ public class Data {
             transactions.add(transaction);
         }
         return transactions;
+    }
+
+    public static List<String> getStatsOptions() {
+        List<String> arr = new ArrayList<>();
+        arr.add("All");
+        AssetCurrentStatus[] statuses = AssetCurrentStatus.values();
+        for (AssetCurrentStatus status: statuses) {
+            arr.add(status.getDescription());
+        }
+        return arr;
     }
 }

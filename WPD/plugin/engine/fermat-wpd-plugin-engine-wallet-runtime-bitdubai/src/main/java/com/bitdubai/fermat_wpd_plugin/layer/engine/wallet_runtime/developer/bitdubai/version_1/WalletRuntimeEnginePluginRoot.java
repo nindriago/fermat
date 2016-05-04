@@ -1453,7 +1453,7 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         runtimeWalletNavigationStructure.addActivity(runtimeActivity);
 
         runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("Stats");
+        runtimeTitleBar.setLabel("");
         runtimeTitleBar.setLabelSize(titleBarLabelSize);
         runtimeTitleBar.setIconName("back");
         runtimeTitleBar.setTitleColor(titleBarLabelColor);

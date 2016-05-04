@@ -1,11 +1,6 @@
 package org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,12 +10,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.enums.FermatRefreshTypes;
@@ -34,7 +29,6 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.Un
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
-import org.fermat.fermat_dap_android_wallet_asset_issuer.common.adapters.UserDeliveryListAdapter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Data;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.UserDelivery;
@@ -42,12 +36,12 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSes
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.SessionConstantsAssetIssuer;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.util.CommonLogger;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.StatsAdapter;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.StatsSpinnerAdapter;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.filters.StatsAdapterFilter;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 
-import java.io.ByteArrayInputStream;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +65,7 @@ public class StatsFragment extends FermatWalletListFragment<UserDelivery> {
 
     //UI
     private View noUsersView;
+    private Spinner spinner;
 
     public static StatsFragment newInstance() {
         return new StatsFragment();
@@ -156,6 +151,24 @@ public class StatsFragment extends FermatWalletListFragment<UserDelivery> {
 
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
+
+        spinner = new Spinner(getActivity());
+        ArrayAdapter<String> myAdapter = new StatsSpinnerAdapter(getActivity(), R.layout.dap_wallet_asset_issuer_stats_spinner_item, Data.getStatsOptions());
+        spinner.setAdapter(myAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getAdapter().changeDataSet(users);
+                ((StatsAdapterFilter) ((StatsAdapter) getAdapter()).getFilter()).filter((CharSequence) spinner.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        toolbar.addView(spinner);
         if (toolbar != null) {
             toolbar.setBackgroundColor(getResources().getColor(R.color.dap_issuer_wallet_v3_toolbar));
             toolbar.setTitleTextColor(Color.WHITE);
@@ -199,8 +212,10 @@ public class StatsFragment extends FermatWalletListFragment<UserDelivery> {
             swipeRefreshLayout.setRefreshing(false);
             if (result != null && result.length > 0) {
                 users = (ArrayList) result[0];
-                if (adapter != null)
+                if (adapter != null) {
                     adapter.changeDataSet(users);
+                    ((StatsAdapterFilter) ((StatsAdapter) getAdapter()).getFilter()).filter(spinner.getSelectedItem().toString());
+                }
 
                 showOrHideNoUsersView(users.isEmpty());
             }
