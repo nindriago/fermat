@@ -8,6 +8,7 @@ import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.holders.AssetDetailTransactionHolder;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Transaction;
+import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.holders.TransactionsViewHolder;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Created by frank on 12/8/15.
  */
-public class TransactionsAdapter extends FermatAdapter<Transaction, AssetDetailTransactionHolder> {
+public class TransactionsAdapter extends FermatAdapter<Transaction, TransactionsViewHolder> {
 
     private AssetIssuerWalletSupAppModuleManager manager;
 
@@ -25,8 +26,8 @@ public class TransactionsAdapter extends FermatAdapter<Transaction, AssetDetailT
     }
 
     @Override
-    protected AssetDetailTransactionHolder createHolder(View itemView, int type) {
-        return new AssetDetailTransactionHolder(itemView, manager, context);
+    protected TransactionsViewHolder createHolder(View itemView, int type) {
+        return new TransactionsViewHolder(itemView, manager, context);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class TransactionsAdapter extends FermatAdapter<Transaction, AssetDetailT
     }
 
     @Override
-    protected void bindHolder(AssetDetailTransactionHolder holder, Transaction data, int position) {
+    protected void bindHolder(TransactionsViewHolder holder, Transaction data, int position) {
         holder.bind(data);
     }
 }
