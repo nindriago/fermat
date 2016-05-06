@@ -28,21 +28,36 @@
             <RelativeLayout
                 android:id="@+id/draftItemHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="50dp"
+                android:background="@drawable/factory_item_header_bg_card">
 
+                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                    android:id="@+id/draftItemAssetName"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="Asset Name"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/card_header_text"
+                    android:textSize="22sp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"/>
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                     android:id="@+id/draftItemQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:text="15 Assets"
-                    android:textColor="@color/card_text"
-                    android:textSize="10sp" />
+                    android:textColor="@color/card_header_text"
+                    android:textSize="10sp"
+                    android:layout_alignParentBottom="true"/>
+
                 <!--Temporal-->
+
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                     android:id="@+id/draftItemState"
                     android:layout_width="wrap_content"
@@ -52,8 +67,9 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:text="State"
-                    android:textColor="@color/card_text"
-                    android:textSize="10sp" />
+                    android:textColor="@color/card_header_text"
+                    android:textSize="10sp"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 
@@ -84,20 +100,12 @@
                 android:layout_marginRight="15dp"
                 android:visibility="visible">
 
-                <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
-                    android:id="@+id/draftItemAssetName"
-                    android:layout_width="280dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:text="Asset Name"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                     android:id="@+id/draftItemAssetValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/draftItemAssetName"
                     android:text="0.000123 BTC"
                     android:textColor="@color/card_text"
                     android:textSize="10sp" />
@@ -110,11 +118,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginTop="10dp"
                     android:text="EXP"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    android:layout_alignBottom="@+id/draftItemAssetName"/>
+                    android:textColor="@color/card_title_text"
+                    android:textSize="10sp" />
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                     android:id="@+id/draftItemExpDate"
@@ -131,10 +137,10 @@
                     android:id="@+id/draftSeparatorLine"
                     android:layout_width="fill_parent"
                     android:layout_height="1dip"
-                    android:layout_below="@+id/draftItemAssetValue"
+                    android:layout_below="@+id/draftItemExpDate"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:background="@color/card_line" />
 
                 <!--Normal-->
@@ -142,31 +148,31 @@
                     android:id="@+id/normalAssetButtons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/draftItemAssetValue"
+                    android:layout_below="@+id/draftSeparatorLine"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="22dp">
+                    android:layout_margin="4dp">
 
 
                     <ImageButton
                         android:id="@+id/draftItemEditButton"
                         android:layout_width="55dp"
-                        android:layout_height="30dp"
+                        android:layout_height="35dp"
                         android:background="@null"
-                        android:src="@drawable/ic_appropriate" />
+                        android:src="@drawable/ic_v3_edit" />
 
                     <ImageButton
                         android:id="@+id/draftItemEraseButton"
                         android:layout_width="55dp"
-                        android:layout_height="30dp"
+                        android:layout_height="35dp"
                         android:background="@null"
-                        android:src="@drawable/ic_sell" />
+                        android:src="@drawable/ic_v3_delete" />
 
                     <ImageButton
                         android:id="@+id/draftItemPublishButton"
                         android:layout_width="55dp"
-                        android:layout_height="30dp"
+                        android:layout_height="35dp"
                         android:background="@null"
-                        android:src="@drawable/ic_transactions" />
+                        android:src="@drawable/ic_v3_publish" />
 
                 </LinearLayout>
 
