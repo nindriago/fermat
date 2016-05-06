@@ -1,8 +1,17 @@
 package org.fermat.fermat_dap_android_wallet_redeem_point.models;
 
+import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
+import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Genders;
+import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
+import com.bitdubai.fermat_api.layer.osa_android.location_system.Location;
+
+import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
+import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAssetUser;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWallet;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletList;
@@ -15,7 +24,11 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWall
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by frank on 12/9/15.
@@ -34,6 +47,8 @@ public class Data {
             digitalAsset.setBookBalanceQuantity(asset.getQuantityBookBalance());
             digitalAsset.setAvailableBalance(asset.getAvailableBalance());
             digitalAsset.setExpDate((Timestamp) asset.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
+            digitalAsset.setAssetDescription(asset.getDigitalAsset().getDescription());
+
 
             digitalAssets.add(digitalAsset);
 
@@ -109,4 +124,171 @@ public class Data {
         }
         return null;
     }
+    
+//    public static List<DigitalAsset> getAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws CantLoadWalletException {
+//        List<AssetRedeemPointWalletList> assetRedeemPointWalletList = moduleManager.
+//                getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
+//        AssetRedeemPointWallet redeemWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
+//        List<DigitalAsset> assets = new ArrayList<>();
+//        for (AssetRedeemPointWalletList assetRedeemWalletList : assetRedeemPointWalletList) {
+//            List<CryptoAddress> addresses = assetRedeemWalletList.getAddresses();
+//            for (int i = 0; i < assetRedeemWalletList.getQuantityBookBalance(); i++) {
+//                try {
+//                    CryptoAddress address = addresses.get(i);
+//                    assets.add(new DigitalAsset(assetRedeemWalletList, redeemWallet.getActorTransactionSummary(), address));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        Collections.sort(assets, new Comparator<DigitalAsset>() {
+//            @Override
+//            public int compare(DigitalAsset lhs, DigitalAsset rhs) {
+//                if (lhs.getDate().getTime() > rhs.getDate().getTime()) return -1;
+//                else if (lhs.getDate().getTime() < rhs.getDate().getTime()) return 1;
+//                return 0;
+//            }
+//        });
+//
+//        return assets;
+//    }
+    public static List<DigitalAsset> getAllTestAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception{
+        List<DigitalAsset> digitalAssets = new ArrayList<>();
+        DigitalAsset digitalAsset;
+
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, 0);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (0 + 1) + "x1");
+        digitalAsset.setAssetDescription("Hamburguesa Full" +
+                "con doble relleno de algun ingrediente random");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Penelope Quintero");
+        digitalAsset.setAvailableBalance(200000L);
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.PENDING);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Burguer");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Burguer");
+
+        digitalAssets.add(digitalAsset);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (2) + " pizza");
+        digitalAsset.setAssetDescription("Pizza Full" +
+                "con doble relleno de algun ingrediente random");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Jinmy Bohorquez");
+        digitalAsset.setAvailableBalance(3000000L);
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.CONFIRMED);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Pizza");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Pizza");
+
+        digitalAssets.add(digitalAsset);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Sandwich " + (2) + "mix");
+        digitalAsset.setAssetDescription("Sandwich Full" +
+                "con doble relleno de algun ingrediente random");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Nerio Indriago");
+        digitalAsset.setAvailableBalance(60000000L);
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.ACEPTED);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Sandwiches");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Sandwiches");
+
+        digitalAssets.add(digitalAsset);
+
+
+        return digitalAssets;
+    }
+    public static List<DigitalAssetHistory> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+        List<DigitalAssetHistory> digitalAssets = new ArrayList<>();
+        DigitalAssetHistory digitalAsset;
+
+        for (int i = 0; i < 5; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,-i);
+
+            digitalAsset = new DigitalAssetHistory();
+            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+            digitalAsset.setHistoryNameAsset("Combo " + (i + 1) + "x1");
+            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+            digitalAsset.setAcceptedDate(new Timestamp(calendar.getTime().getTime()));
+
+
+
+            digitalAsset.setHistoryNameUser("Penelope Quintero");
+            digitalAsset.setImageActorUserFrom(null);
+            digitalAsset.setImageAsset(null);
+            digitalAsset.setActorUserPublicKey(UUID.randomUUID().toString());
+
+            digitalAssets.add(digitalAsset);
+
+        }
+
+        for (int i = 0; i < 5; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,-i);
+
+            digitalAsset = new DigitalAssetHistory();
+            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+            digitalAsset.setHistoryNameAsset("Combo " + (i + 1) + "x1");
+            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+            digitalAsset.setAcceptedDate(new Timestamp(calendar.getTime().getTime()));
+
+
+
+            digitalAsset.setHistoryNameUser("Jinmy Bohorquez");
+            digitalAsset.setImageActorUserFrom(null);
+            digitalAsset.setImageAsset(null);
+            digitalAsset.setActorUserPublicKey(UUID.randomUUID().toString());
+
+            digitalAssets.add(digitalAsset);
+
+        }
+
+        for (int i = 0; i < 5; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,-i);
+
+            digitalAsset = new DigitalAssetHistory();
+            digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+            digitalAsset.setHistoryNameAsset("Hamburguesa " + (i + 1) + "x1");
+            digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+            digitalAsset.setAcceptedDate(new Timestamp(calendar.getTime().getTime()));
+
+
+            digitalAsset.setHistoryNameUser("Nerio Indriago");
+            digitalAsset.setImageActorUserFrom(null);
+            digitalAsset.setImageAsset(null);
+            digitalAsset.setActorUserPublicKey(UUID.randomUUID().toString());
+
+            digitalAssets.add(digitalAsset);
+
+        }
+        Collections.sort(digitalAssets);
+
+        return digitalAssets;
+    }
+
 }

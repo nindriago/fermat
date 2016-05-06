@@ -40,4 +40,7 @@
     <string name="dap_asset_factory_welcome_identity_button">New Identity</string>
     <string name="dap_asset_factory_welcome_checkbox">Don\'t show this again</string>
     <string name="dap_asset_factory_welcome_close">Close</string>
+
+    <string name="dap_factory_draft_search">Search</string>
+    <string name="dap_factory_draft_search_hint">Asset name</string>
 </resources>
