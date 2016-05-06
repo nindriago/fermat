@@ -43,4 +43,5 @@
 
     <string name="dap_factory_draft_search">Search</string>
     <string name="dap_factory_draft_search_hint">Asset name</string>
+    <string name="dap_factory_no_assets">No Assets</string>
 </resources>
