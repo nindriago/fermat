@@ -85,7 +85,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
 
         double amountTotal = BitcoinConverter.convert(Double.valueOf(data.getAmount() * data.getQuantity()), SATOSHI, BITCOIN);
         double amountPerAsset = BitcoinConverter.convert(Double.valueOf(data.getAmount()), SATOSHI, BITCOIN);
-        holder.draftItemQuantity.setText(""+data.getQuantity());
+        holder.draftItemQuantity.setText((data.getQuantity() == 1)? data.getQuantity()+" Asset":data.getQuantity()+" Assets");
 
         List<Resource> resources = data.getResources();
         if (resources != null && resources.size() > 0) {
