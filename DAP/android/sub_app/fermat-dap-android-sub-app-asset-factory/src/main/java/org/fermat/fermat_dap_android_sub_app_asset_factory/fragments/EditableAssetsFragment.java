@@ -235,7 +235,8 @@ public class EditableAssetsFragment extends AbstractFermatFragment implements
                 selectedAsset = null;
 //                menuHelp = menu.findItem(R.id.action_asset_factory_help);
 //                menuHelp.setVisible(false);
-                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), getAssetForEdit());
+//                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), getAssetForEdit());
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
             }
         });
         create.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fab_jump_from_down));

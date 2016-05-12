@@ -1496,6 +1496,102 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
 
         dapFactory.addActivity(runtimeActivity);
 
+        //DAP FACTORY WIZARD MULTIMEDIA
+        runtimeActivity = new Activity();
+        runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA);
+        runtimeActivity.setBackActivity(Activities.DAP_MAIN);
+        runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
+        runtimeActivity.setColor("#1d1d25");
+
+        statusBar = new StatusBar();
+        statusBar.setColor("#1d1d25");
+
+        runtimeTitleBar = new TitleBar();
+        runtimeTitleBar.setLabel("Multimedia");
+        runtimeTitleBar.setColor("#1d1d25");
+        runtimeTitleBar.setIconName("Back");
+        runtimeActivity.setTitleBar(runtimeTitleBar);
+
+        runtimeActivity.setStartFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getKey());
+
+        runtimeFragment = new Fragment();
+        runtimeFragment.setType(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getKey());
+        runtimeActivity.addFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getKey(), runtimeFragment);
+
+        dapFactory.addActivity(runtimeActivity);
+
+        //DAP FACTORY WIZARD PROPERTIES
+        runtimeActivity = new Activity();
+        runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES);
+        runtimeActivity.setBackActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA);
+        runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
+        runtimeActivity.setColor("#1d1d25");
+
+        statusBar = new StatusBar();
+        statusBar.setColor("#1d1d25");
+
+        runtimeTitleBar = new TitleBar();
+        runtimeTitleBar.setLabel("Properties");
+        runtimeTitleBar.setColor("#1d1d25");
+        runtimeTitleBar.setIconName("Back");
+        runtimeActivity.setTitleBar(runtimeTitleBar);
+
+        runtimeActivity.setStartFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getKey());
+
+        runtimeFragment = new Fragment();
+        runtimeFragment.setType(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getKey());
+        runtimeActivity.addFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getKey(), runtimeFragment);
+
+        dapFactory.addActivity(runtimeActivity);
+
+        //DAP FACTORY WIZARD CRYPTO
+        runtimeActivity = new Activity();
+        runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO);
+        runtimeActivity.setBackActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES);
+        runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
+        runtimeActivity.setColor("#1d1d25");
+
+        statusBar = new StatusBar();
+        statusBar.setColor("#1d1d25");
+
+        runtimeTitleBar = new TitleBar();
+        runtimeTitleBar.setLabel("Crypto");
+        runtimeTitleBar.setColor("#1d1d25");
+        runtimeTitleBar.setIconName("Back");
+        runtimeActivity.setTitleBar(runtimeTitleBar);
+
+        runtimeActivity.setStartFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getKey());
+
+        runtimeFragment = new Fragment();
+        runtimeFragment.setType(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getKey());
+        runtimeActivity.addFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getKey(), runtimeFragment);
+
+        dapFactory.addActivity(runtimeActivity);
+
+        //DAP FACTORY WIZARD VERIFY
+        runtimeActivity = new Activity();
+        runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY);
+        runtimeActivity.setBackActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO);
+        runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
+        runtimeActivity.setColor("#1d1d25");
+
+        statusBar = new StatusBar();
+        statusBar.setColor("#1d1d25");
+
+        runtimeTitleBar = new TitleBar();
+        runtimeTitleBar.setLabel("Verify");
+        runtimeTitleBar.setColor("#1d1d25");
+        runtimeTitleBar.setIconName("Back");
+        runtimeActivity.setTitleBar(runtimeTitleBar);
+
+        runtimeActivity.setStartFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY.getKey());
+
+        runtimeFragment = new Fragment();
+        runtimeFragment.setType(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY.getKey());
+        runtimeActivity.addFragment(Fragments.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY.getKey(), runtimeFragment);
+
+        dapFactory.addActivity(runtimeActivity);
+
         listSubApp.put(dapFactory.getPublicKey(), dapFactory);
     }
 
