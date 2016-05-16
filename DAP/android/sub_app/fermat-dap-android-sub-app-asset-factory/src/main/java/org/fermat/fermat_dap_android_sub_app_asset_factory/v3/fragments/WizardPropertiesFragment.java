@@ -256,11 +256,18 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private void loadProperties() {
         if (asset.getName() != null && asset.getName().length() > 0) {
             wizardPropertiesAssetNameEditText.setText(asset.getName());
+        } else {
+            wizardPropertiesAssetNameEditText.setText("");
         }
         if (asset.getDescription() != null && asset.getDescription().length() > 0) {
             wizardPropertiesAssetDescEditText.setText(asset.getDescription());
+        } else {
+            wizardPropertiesAssetDescEditText.setText("");
         }
         List<ContractProperty> properties = asset.getContractProperties();
+        wizardPropertiesRedeemableCheck.setChecked(false);
+        wizardPropertiesTransfereableCheck.setChecked(false);
+        wizardPropertiesExchangeableCheck.setChecked(false);
         if (properties != null && properties.size() > 0) {
             for (ContractProperty property : properties) {
                 if (property.getName().equals(DigitalAssetContractPropertiesConstants.REDEEMABLE)) {
@@ -276,6 +283,8 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         }
         if (asset.getExpirationDate() != null) {
             wizardPropertiesExpDateEditText.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
+        } else {
+            wizardPropertiesExpDateEditText.setText("");
         }
     }
 

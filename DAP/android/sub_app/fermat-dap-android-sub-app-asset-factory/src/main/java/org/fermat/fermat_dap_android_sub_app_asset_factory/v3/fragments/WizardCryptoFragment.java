@@ -34,7 +34,6 @@ import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
-import org.fermat.fermat_dap_android_sub_app_asset_factory.adapters.BitcoinsSpinnerAdapter;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConstantsAssetFactory;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.util.Utils;
@@ -265,13 +264,15 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
 
         if (appSession.getData("asset_factory") != null) {
             asset = (AssetFactory) appSession.getData("asset_factory");
-            loadProperties(spinnerAdapterFee);
+            loadCrypto(spinnerAdapterFee);
         }
     }
 
-    private void loadProperties(ArrayAdapter<DAPFeeType> spinnerAdapterFee) {
+    private void loadCrypto(ArrayAdapter<DAPFeeType> spinnerAdapterFee) {
         if (asset.getAmount() > 0) {
             wizardCryptoValueEditText.setText(Long.toString(asset.getAmount()));
+        } else {
+            wizardCryptoValueEditText.setText("");
         }
         if (asset.getFee() > 0) {
             try {
@@ -283,6 +284,8 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
         }
         if (asset.getQuantity() > 0) {
             wizardCryptoQuantityEditText.setText(Integer.toString(asset.getQuantity()));
+        } else {
+            wizardCryptoQuantityEditText.setText("");
         }
         updateBitcoins();
     }

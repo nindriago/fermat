@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,6 +26,8 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheck
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatEditText;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
+import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
+import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.exceptions.InvalidParameterException;
@@ -37,16 +40,21 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfac
 
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConstantsAssetFactory;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.util.CommonLogger;
 import org.fermat.fermat_dap_api.layer.all_definition.contracts.ContractProperty;
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPFeeType;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.State;
 import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.enums.AssetBehavior;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static android.widget.Toast.makeText;
 import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.BITCOIN;
@@ -61,6 +69,8 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     private AssetFactorySession assetFactorySession;
     private AssetFactoryModuleManager moduleManager;
     private ErrorManager errorManager;
+
+    private static final String TAG = "Asset Factory";
 
     //UI
     private View rootView;
@@ -82,6 +92,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
 
     SettingsManager<AssetFactorySettings> settingsManager;
     private AssetFactory asset;
+    private boolean isEdit = false;
 
     public WizardVerifyFragment() {
 
@@ -188,9 +199,66 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         wizardVerifyFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO finish action
+                if (asset.getName() != null && asset.getName().length() > 0) {
+                    doFinish();
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private void doFinish() {
+        if (asset != null) {
+            if (asset.getFactoryId() == null) {
+                asset.setFactoryId(UUID.randomUUID().toString());
+            }
+            asset.setTotalQuantity(asset.getQuantity());
+            asset.setIsRedeemable(wizardVerifyRedeemableCheck.isChecked());
+            asset.setState(State.DRAFT);
+            asset.setAssetBehavior(AssetBehavior.REGENERATION_ASSET);
+            asset.setCreationTimestamp(new Timestamp(System.currentTimeMillis()));
+            saveAssetFactoryFinish();
+        }
+    }
+
+    private void saveAssetFactoryFinish() {
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setTitle("Saving asset");
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(false);
+        dialog.show();
+        FermatWorker worker = new FermatWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                moduleManager.saveAssetFactory(asset);
+                return true;
+            }
+        };
+        worker.setContext(getActivity());
+        worker.setCallBack(new FermatWorkerCallBack() {
+            @Override
+            public void onPostExecute(Object... result) {
+                dialog.dismiss();
+                if (getActivity() != null) {
+                    if (!isEdit) {
+                        Toast.makeText(getActivity(), String.format("Asset %s has been created", asset.getName()), Toast.LENGTH_SHORT).show();
+                    }
+                    appSession.setData("asset_factory", null);
+                    changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                }
+            }
+
+            @Override
+            public void onErrorOccurred(Exception ex) {
+                dialog.dismiss();
+                if (getActivity() != null) {
+                    CommonLogger.exception(TAG, ex.getMessage(), ex);
+                    Toast.makeText(getActivity(), "There was an error creating this asset", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        worker.execute();
     }
 
     private void setupUIData() {
@@ -203,9 +271,13 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     private void loadVerify() {
         if (asset.getName() != null && asset.getName().length() > 0) {
             wizardVerifyAssetNameText.setText(asset.getName());
+        } else {
+            wizardVerifyAssetNameText.setText("");
         }
         if (asset.getDescription() != null && asset.getDescription().length() > 0) {
             wizardVerifyDescText.setText(asset.getDescription());
+        } else {
+            wizardVerifyDescText.setText("");
         }
         if (asset.getResources() != null && !asset.getResources().isEmpty()) {
             if (asset.getResources().get(0) != null && asset.getResources().get(0).getResourceBinayData() != null) {
@@ -215,6 +287,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
                     wizardVerifyAssetImage.setImageDrawable(drawable);
             }
         }
+        wizardVerifyFeeValue.setText("");
         if (asset.getFee() > 0) {
             try {
                 wizardVerifyFeeValue.setText(DAPFeeType.findByFeeValue(asset.getFee()).getDescription());
@@ -224,11 +297,18 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         }
         if (asset.getExpirationDate() != null) {
             wizardVerifyExpDateValue.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
+        } else {
+            wizardVerifyExpDateValue.setText("");
         }
         if (asset.getQuantity() > 0) {
             wizardVerifyQuantityValue.setText(Integer.toString(asset.getQuantity()) + ((asset.getQuantity() == 1) ? " asset" : " assets"));
+        } else {
+            wizardVerifyQuantityValue.setText("");
         }
         List<ContractProperty> properties = asset.getContractProperties();
+        wizardVerifyRedeemableCheck.setChecked(false);
+        wizardVerifyTransfereableCheck.setChecked(false);
+        wizardVerifyExchangeableCheck.setChecked(false);
         if (properties != null && properties.size() > 0) {
             for (ContractProperty property : properties) {
                 if (property.getName().equals(DigitalAssetContractPropertiesConstants.REDEEMABLE)) {
@@ -245,11 +325,15 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         if (asset.getAmount() > 0) {
             double amount = BitcoinConverter.convert(asset.getAmount(), SATOSHI, BITCOIN);
             wizardVerifyAssetValue.setText(String.format("%.6f BTC", amount));
+        } else {
+            wizardVerifyAssetValue.setText(String.format("%.6f BTC", 0.0));
         }
         if (asset.getAmount() > 0 && asset.getQuantity() > 0 && asset.getFee() > 0) {
             double amount = BitcoinConverter.convert(asset.getAmount(), SATOSHI, BITCOIN);
             double total = amount * asset.getQuantity();
             wizardVerifyTotalValue.setText(String.format("%.6f BTC", total));
+        } else {
+            wizardVerifyTotalValue.setText(String.format("%.6f BTC", 0.0));
         }
     }
 
