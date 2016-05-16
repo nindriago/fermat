@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -13,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
@@ -30,8 +33,20 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfac
 
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConstantsAssetFactory;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.util.CommonLogger;
+import org.fermat.fermat_dap_api.layer.all_definition.contracts.ContractProperty;
+import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
+import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import static android.widget.Toast.makeText;
 
@@ -55,10 +70,13 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private FermatCheckBox wizardPropertiesTransfereableCheck;
     private FermatCheckBox wizardPropertiesExchangeableCheck;
     private FermatEditText wizardPropertiesExpDateEditText;
+    private ImageButton wizardPropertiesDateButton;
     private FermatButton wizardPropertiesBackButton;
     private FermatButton wizardPropertiesNextButton;
 
     SettingsManager<AssetFactorySettings> settingsManager;
+    private AssetFactory asset;
+    private Calendar expirationTimeCalendar;
 
     public WizardPropertiesFragment() {
 
@@ -79,6 +97,9 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
 
         settingsManager = appSession.getModuleManager().getSettingsManager();
         activity = getActivity();
+
+        expirationTimeCalendar = Calendar.getInstance();
+        expirationTimeCalendar.setTime(new Date());
 
         configureToolbar();
     }
@@ -149,23 +170,113 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         wizardPropertiesTransfereableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyTransfereableCheck);
         wizardPropertiesExchangeableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyExchangeableCheck);
         wizardPropertiesExpDateEditText = (FermatEditText) rootView.findViewById(R.id.wizardPropertiesQuantityEditText);
+        wizardPropertiesDateButton = (ImageButton) rootView.findViewById(R.id.wizardPropertiesDateButton);
         wizardPropertiesBackButton = (FermatButton) rootView.findViewById(R.id.wizardVerifyBackButton);
         wizardPropertiesNextButton = (FermatButton) rootView.findViewById(R.id.wizardVerifyFinishButton);
+
+        wizardPropertiesDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        expirationTimeCalendar.set(Calendar.YEAR, year);
+                        expirationTimeCalendar.set(Calendar.MONTH, month);
+                        expirationTimeCalendar.set(Calendar.DAY_OF_MONTH, day);
+                        wizardPropertiesExpDateEditText.setText(DAPStandardFormats.DATE_FORMAT.format(expirationTimeCalendar.getTime()));
+                    }
+                }, expirationTimeCalendar.get(Calendar.YEAR), expirationTimeCalendar.get(Calendar.MONTH), expirationTimeCalendar.get(Calendar.DAY_OF_MONTH));
+                pickerDialog.show();
+                CommonLogger.debug("DatePickerDialog", "Showing DatePickerDialog...");
+            }
+        });
         wizardPropertiesBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveProperties();
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
             }
         });
         wizardPropertiesNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveProperties();
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getCode(), appSession.getAppPublicKey());
             }
         });
     }
 
+    private void saveProperties() {
+        if (asset != null) {
+            if (wizardPropertiesAssetNameEditText.getText().toString().length() > 0) {
+                asset.setName(wizardPropertiesAssetNameEditText.getText().toString());
+            }
+            if (wizardPropertiesAssetDescEditText.getText().toString().length() > 0) {
+                asset.setDescription(wizardPropertiesAssetDescEditText.getText().toString());
+            }
+
+            List<ContractProperty> contractProperties = asset.getContractProperties();
+            if (contractProperties != null) {
+                for (ContractProperty contractProperty : contractProperties) {
+                    if (contractProperty.getName().equals(DigitalAssetContractPropertiesConstants.REDEEMABLE)) {
+                        contractProperty.setValue(wizardPropertiesRedeemableCheck.isChecked());
+                    }
+                    if (contractProperty.getName().equals(DigitalAssetContractPropertiesConstants.TRANSFERABLE)) {
+                        contractProperty.setValue(wizardPropertiesTransfereableCheck.isChecked());
+                    }
+                    if (contractProperty.getName().equals(DigitalAssetContractPropertiesConstants.SALEABLE)) {
+                        contractProperty.setValue(wizardPropertiesExchangeableCheck.isChecked());
+                    }
+                }
+            } else {
+                contractProperties = new ArrayList<>();
+                contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.REDEEMABLE, wizardPropertiesRedeemableCheck.isChecked()));
+                contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.TRANSFERABLE, wizardPropertiesTransfereableCheck.isChecked()));
+                contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.SALEABLE, wizardPropertiesExchangeableCheck.isChecked()));
+                asset.setContractProperties(contractProperties);
+            }
+
+            try {
+                if (wizardPropertiesExpDateEditText.getText().toString().length() > 0) {
+                    asset.setExpirationDate(new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime()));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void setupUIData() {
+        if (appSession.getData("asset_factory") != null) {
+            asset = (AssetFactory) appSession.getData("asset_factory");
+            loadProperties();
+        }
+    }
+
+    private void loadProperties() {
+        if (asset.getName() != null && asset.getName().length() > 0) {
+            wizardPropertiesAssetNameEditText.setText(asset.getName());
+        }
+        if (asset.getDescription() != null && asset.getDescription().length() > 0) {
+            wizardPropertiesAssetDescEditText.setText(asset.getDescription());
+        }
+        List<ContractProperty> properties = asset.getContractProperties();
+        if (properties != null && properties.size() > 0) {
+            for (ContractProperty property : properties) {
+                if (property.getName().equals(DigitalAssetContractPropertiesConstants.REDEEMABLE)) {
+                    wizardPropertiesRedeemableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
+                }
+                if (property.getName().equals(DigitalAssetContractPropertiesConstants.TRANSFERABLE)) {
+                    wizardPropertiesTransfereableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
+                }
+                if (property.getName().equals(DigitalAssetContractPropertiesConstants.SALEABLE)) {
+                    wizardPropertiesExchangeableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
+                }
+            }
+        }
+        if (asset.getExpirationDate() != null) {
+            wizardPropertiesExpDateEditText.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
+        }
     }
 
     private void configureToolbar() {

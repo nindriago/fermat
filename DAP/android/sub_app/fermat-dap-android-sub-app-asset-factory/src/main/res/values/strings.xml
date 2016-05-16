@@ -45,4 +45,5 @@
     <string name="dap_factory_draft_search_hint">Asset name</string>
 
     <string name="dap_asset_factory_system_error">Asset Factory system error</string>
+    <string name="dap_asset_factory_no_available">No Available</string>
 </resources>

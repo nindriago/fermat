@@ -1320,6 +1320,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         Fragment runtimeFragment;
         SideMenu runtimeSideMenu;
         MenuItem runtimeMenuItem;
+        String toolbarColor = "#4B5E75";
 
         String dapFactoryPublicKey = SubAppsPublicKeys.DAP_FACTORY.getCode();
 
@@ -1501,14 +1502,14 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA);
         runtimeActivity.setBackActivity(Activities.DAP_MAIN);
         runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
-        runtimeActivity.setColor("#1d1d25");
+        runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(toolbarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Multimedia");
-        runtimeTitleBar.setColor("#1d1d25");
+        runtimeTitleBar.setColor(toolbarColor);
         runtimeTitleBar.setIconName("Back");
         runtimeActivity.setTitleBar(runtimeTitleBar);
 
@@ -1525,14 +1526,14 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES);
         runtimeActivity.setBackActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA);
         runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
-        runtimeActivity.setColor("#1d1d25");
+        runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
         statusBar.setColor("#1d1d25");
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Properties");
-        runtimeTitleBar.setColor("#1d1d25");
+        runtimeTitleBar.setColor(toolbarColor);
         runtimeTitleBar.setIconName("Back");
         runtimeActivity.setTitleBar(runtimeTitleBar);
 
@@ -1549,10 +1550,10 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO);
         runtimeActivity.setBackActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES);
         runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
-        runtimeActivity.setColor("#1d1d25");
+        runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(toolbarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Crypto");
@@ -1573,14 +1574,14 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setType(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY);
         runtimeActivity.setBackActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO);
         runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
-        runtimeActivity.setColor("#1d1d25");
+        runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(toolbarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Verify");
-        runtimeTitleBar.setColor("#1d1d25");
+        runtimeTitleBar.setColor(toolbarColor);
         runtimeTitleBar.setIconName("Back");
         runtimeActivity.setTitleBar(runtimeTitleBar);
 

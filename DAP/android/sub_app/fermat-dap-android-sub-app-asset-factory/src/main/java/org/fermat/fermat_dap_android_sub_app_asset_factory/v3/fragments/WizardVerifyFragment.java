@@ -2,7 +2,9 @@ package org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,18 +27,30 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextV
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
+import com.bitdubai.fermat_api.layer.all_definition.exceptions.InvalidParameterException;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
+import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConstantsAssetFactory;
+import org.fermat.fermat_dap_api.layer.all_definition.contracts.ContractProperty;
+import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPFeeType;
+import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
 
+import java.util.Date;
+import java.util.List;
+
 import static android.widget.Toast.makeText;
+import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.BITCOIN;
+import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.SATOSHI;
 
 /**
  * Created by frank on 12/15/15.
@@ -67,6 +81,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     private FermatButton wizardVerifyFinishButton;
 
     SettingsManager<AssetFactorySettings> settingsManager;
+    private AssetFactory asset;
 
     public WizardVerifyFragment() {
 
@@ -179,6 +194,63 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     }
 
     private void setupUIData() {
+        if (appSession.getData("asset_factory") != null) {
+            asset = (AssetFactory) appSession.getData("asset_factory");
+            loadVerify();
+        }
+    }
+
+    private void loadVerify() {
+        if (asset.getName() != null && asset.getName().length() > 0) {
+            wizardVerifyAssetNameText.setText(asset.getName());
+        }
+        if (asset.getDescription() != null && asset.getDescription().length() > 0) {
+            wizardVerifyDescText.setText(asset.getDescription());
+        }
+        if (asset.getResources() != null && !asset.getResources().isEmpty()) {
+            if (asset.getResources().get(0) != null && asset.getResources().get(0).getResourceBinayData() != null) {
+                byte[] bitmapBytes = asset.getResources().get(0).getResourceBinayData();
+                BitmapDrawable drawable = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length));
+                if (wizardVerifyAssetImage != null)
+                    wizardVerifyAssetImage.setImageDrawable(drawable);
+            }
+        }
+        if (asset.getFee() > 0) {
+            try {
+                wizardVerifyFeeValue.setText(DAPFeeType.findByFeeValue(asset.getFee()).getDescription());
+            } catch (InvalidParameterException e) {
+                e.printStackTrace();
+            }
+        }
+        if (asset.getExpirationDate() != null) {
+            wizardVerifyExpDateValue.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
+        }
+        if (asset.getQuantity() > 0) {
+            wizardVerifyQuantityValue.setText(Integer.toString(asset.getQuantity()) + ((asset.getQuantity() == 1) ? " asset" : " assets"));
+        }
+        List<ContractProperty> properties = asset.getContractProperties();
+        if (properties != null && properties.size() > 0) {
+            for (ContractProperty property : properties) {
+                if (property.getName().equals(DigitalAssetContractPropertiesConstants.REDEEMABLE)) {
+                    wizardVerifyRedeemableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
+                }
+                if (property.getName().equals(DigitalAssetContractPropertiesConstants.TRANSFERABLE)) {
+                    wizardVerifyTransfereableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
+                }
+                if (property.getName().equals(DigitalAssetContractPropertiesConstants.SALEABLE)) {
+                    wizardVerifyExchangeableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
+                }
+            }
+        }
+        if (asset.getAmount() > 0) {
+            double amount = BitcoinConverter.convert(asset.getAmount(), SATOSHI, BITCOIN);
+            wizardVerifyAssetValue.setText(String.format("%.6f BTC", amount));
+        }
+        if (asset.getAmount() > 0 && asset.getQuantity() > 0 && asset.getFee() > 0) {
+            double amount = BitcoinConverter.convert(asset.getAmount(), SATOSHI, BITCOIN);
+            double total = amount * asset.getQuantity();
+            wizardVerifyTotalValue.setText(String.format("%.6f BTC", total));
+        }
     }
 
     private void configureToolbar() {

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,18 +26,31 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextV
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
+import com.bitdubai.fermat_api.layer.all_definition.exceptions.InvalidParameterException;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
+import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
+import org.fermat.fermat_dap_android_sub_app_asset_factory.adapters.BitcoinsSpinnerAdapter;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConstantsAssetFactory;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.util.Utils;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.adapters.AssetValueSpinnerAdapter;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.adapters.FeeSpinnerAdapter;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPFeeType;
+import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
 
+import java.text.ParseException;
+
 import static android.widget.Toast.makeText;
+import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.BITCOIN;
+import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.SATOSHI;
 
 /**
  * Created by frank on 12/15/15.
@@ -60,6 +76,7 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
     private FermatButton wizardCryptoNextButton;
 
     SettingsManager<AssetFactorySettings> settingsManager;
+    private AssetFactory asset;
 
     public WizardCryptoFragment() {
 
@@ -155,18 +172,133 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
         wizardCryptoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveCrypto();
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getCode(), appSession.getAppPublicKey());
             }
         });
         wizardCryptoNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveCrypto();
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY.getCode(), appSession.getAppPublicKey());
             }
         });
     }
 
+    private void saveCrypto() {
+        if (asset != null) {
+            try {
+                if (wizardCryptoValueEditText.getText().toString().length() > 0) {
+                    double amount = DAPStandardFormats.BITCOIN_FORMAT.parse(wizardCryptoValueEditText.getText().toString()).doubleValue();
+                    BitcoinConverter.Currency from = (BitcoinConverter.Currency) wizardCryptoValueSpinner.getSelectedItem();
+                    long amountSatoshi = ((Double) BitcoinConverter.convert(amount, from, SATOSHI)).longValue();
+                    asset.setAmount(amountSatoshi);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            asset.setFee(((DAPFeeType) wizardCryptoFeeSpinner.getSelectedItem()).getFeeValue());
+            if (wizardCryptoQuantityEditText.getText().toString().length() > 0) {
+                asset.setQuantity(Integer.valueOf(wizardCryptoQuantityEditText.getText().toString()));
+            }
+        }
+    }
+
     private void setupUIData() {
+        final BitcoinConverter.Currency[] data = BitcoinConverter.Currency.values();
+        final ArrayAdapter<BitcoinConverter.Currency> spinnerAdapter = new AssetValueSpinnerAdapter(
+                getActivity(), android.R.layout.simple_spinner_item,
+                data);
+        wizardCryptoValueSpinner.setAdapter(spinnerAdapter);
+        wizardCryptoValueSpinner.setSelection(3);
+        wizardCryptoValueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                updateBitcoins();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        wizardCryptoValueEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                updateBitcoins();
+                return false;
+            }
+        });
+        wizardCryptoTotalValue.setText(String.format("%.6f BTC", 0.0));
+        final DAPFeeType[] feeTypes = DAPFeeType.values();
+        final ArrayAdapter<DAPFeeType> spinnerAdapterFee = new FeeSpinnerAdapter(
+                getActivity(), android.R.layout.simple_spinner_item,
+                feeTypes);
+        wizardCryptoFeeSpinner.setAdapter(spinnerAdapterFee);
+        wizardCryptoFeeSpinner.setSelection(1);
+        wizardCryptoFeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                updateBitcoins();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        wizardCryptoQuantityEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                updateBitcoins();
+                return false;
+            }
+        });
+
+        try {
+            long satoshis = moduleManager.getBitcoinWalletBalance(Utils.getBitcoinWalletPublicKey(moduleManager));
+            double bitcoinWalletBalance = BitcoinConverter.convert(satoshis, SATOSHI, BITCOIN);
+            wizardCryptoBalanceValue.setText(String.format("%.6f BTC", bitcoinWalletBalance));
+        } catch (Exception e) {
+            wizardCryptoBalanceValue.setText(getResources().getString(R.string.dap_asset_factory_no_available));
+        }
+
+        if (appSession.getData("asset_factory") != null) {
+            asset = (AssetFactory) appSession.getData("asset_factory");
+            loadProperties(spinnerAdapterFee);
+        }
+    }
+
+    private void loadProperties(ArrayAdapter<DAPFeeType> spinnerAdapterFee) {
+        if (asset.getAmount() > 0) {
+            wizardCryptoValueEditText.setText(Long.toString(asset.getAmount()));
+        }
+        if (asset.getFee() > 0) {
+            try {
+                int pos = spinnerAdapterFee.getPosition(DAPFeeType.findByFeeValue(asset.getFee()));
+                wizardCryptoFeeSpinner.setSelection(pos);
+            } catch (InvalidParameterException e) {
+                e.printStackTrace();
+            }
+        }
+        if (asset.getQuantity() > 0) {
+            wizardCryptoQuantityEditText.setText(Integer.toString(asset.getQuantity()));
+        }
+        updateBitcoins();
+    }
+
+    private void updateBitcoins() {
+        Object selectedItem = wizardCryptoValueSpinner.getSelectedItem();
+        String bitcoinViewStr = wizardCryptoValueEditText.getText().toString();
+        if (selectedItem != null && bitcoinViewStr != null && bitcoinViewStr.length() > 0) {
+            BitcoinConverter.Currency from = (BitcoinConverter.Currency) wizardCryptoValueSpinner.getSelectedItem();
+            double amount = Double.parseDouble(wizardCryptoValueEditText.getText().toString());
+            double amountBTC = BitcoinConverter.convert(amount, from, BITCOIN);
+            String qstr = wizardCryptoQuantityEditText.getText().toString();
+            int quantity = (qstr != null && qstr.length() > 0) ? Integer.parseInt(qstr) : 0;
+            double total = quantity * amountBTC;
+            wizardCryptoTotalValue.setText(String.format("%.6f BTC", total));
+        }
     }
 
     private void configureToolbar() {

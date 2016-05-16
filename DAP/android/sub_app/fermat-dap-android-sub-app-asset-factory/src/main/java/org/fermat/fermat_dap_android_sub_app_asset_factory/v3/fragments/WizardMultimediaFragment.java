@@ -1,11 +1,19 @@
 package org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,18 +27,34 @@ import android.widget.Toast;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
+import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
+import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
+import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
+import com.bitdubai.fermat_api.layer.all_definition.resources_structure.enums.ResourceDensity;
+import com.bitdubai.fermat_api.layer.all_definition.resources_structure.enums.ResourceType;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
 
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConstantsAssetFactory;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.util.CommonLogger;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.util.Utils;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.exceptions.CantCreateAssetFactoryException;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.exceptions.CantCreateEmptyAssetFactoryException;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static android.widget.Toast.makeText;
 
@@ -38,6 +62,13 @@ import static android.widget.Toast.makeText;
  * Created by frank on 12/15/15.
  */
 public class WizardMultimediaFragment extends AbstractFermatFragment {
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_LOAD_IMAGE = 2;
+    private static final int CONTEXT_MENU_CAMERA = 1;
+    private static final int CONTEXT_MENU_GALLERY = 2;
+
+    private static final String TAG = "Asset Factory";
 
     private Activity activity;
     private AssetFactorySession assetFactorySession;
@@ -54,6 +85,9 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
     private FermatButton wizardMultimediaNextButton;
 
     SettingsManager<AssetFactorySettings> settingsManager;
+    private boolean hasResource = false;
+    private boolean isEdit = false;
+    private AssetFactory asset;
 
     public WizardMultimediaFragment() {
 
@@ -76,6 +110,59 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
         activity = getActivity();
 
         configureToolbar();
+    }
+
+    private void loadMultimedia() {
+        if (asset.getResources() != null && !asset.getResources().isEmpty()) {
+            if (asset.getResources().get(0) != null && asset.getResources().get(0).getResourceBinayData() != null) {
+                hasResource = true;
+                byte[] bitmapBytes = asset.getResources().get(0).getResourceBinayData();
+                BitmapDrawable drawable = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length));
+                if (wizardMultimediaAssetImage != null)
+                    wizardMultimediaAssetImage.setImageDrawable(drawable);
+            }
+        }
+    }
+
+    private void createNewAssetFactory() {
+        try {
+            if (!isEdit) {
+                final ProgressDialog dialog = new ProgressDialog(getActivity());
+                dialog.setTitle("Draft Asset");
+                dialog.setMessage("Creating new empty asset project, please wait...");
+                dialog.setCancelable(false);
+                dialog.show();
+                FermatWorker worker = new FermatWorker() {
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        asset = moduleManager.newAssetFactoryEmpty();
+                        List<InstalledWallet> installedWallets = moduleManager.getInstallWallets();
+                        if (installedWallets != null && installedWallets.size() > 0) {
+                            asset.setWalletPublicKey(Utils.getBitcoinWalletPublicKey(moduleManager));
+                        }
+                        return true;
+                    }
+                };
+                worker.setContext(getActivity());
+                worker.setCallBack(new FermatWorkerCallBack() {
+                    @Override
+                    public void onPostExecute(Object... result) {
+                        dialog.dismiss();
+                        // do nothing... continue with the form data
+                    }
+
+                    @Override
+                    public void onErrorOccurred(Exception ex) {
+                        dialog.dismiss();
+                        Toast.makeText(getActivity(), "Some error occurred while creating a new asset empty project", Toast.LENGTH_SHORT).show();
+                        ex.printStackTrace();
+                    }
+                });
+                worker.execute();
+            }
+        } catch (Exception ex) {
+            CommonLogger.exception(TAG, ex.getMessage(), ex);
+        }
     }
 
     @Override
@@ -142,15 +229,53 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
         wizardMultimediaCameraButton = (FermatButton) rootView.findViewById(R.id.wizardMultimediaCameraButton);
         wizardMultimediaAssetImage = (ImageView) rootView.findViewById(R.id.wizardMultimediaAssetImage);
         wizardMultimediaNextButton = (FermatButton) rootView.findViewById(R.id.wizardMultimediaNextButton);
+        wizardMultimediaPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+        wizardMultimediaCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadImageFromGallery();
+            }
+        });
         wizardMultimediaNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveMultimedia();
+                appSession.setData("asset_factory", asset);
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getCode(), appSession.getAppPublicKey());
             }
         });
     }
 
+    private void saveMultimedia() {
+        if (hasResource) {
+            List<Resource> resources = new ArrayList<>();
+            Resource resource = new Resource();
+            if (asset.getResources() != null && asset.getResources().size() > 0) {
+                resource.setId(asset.getResources().get(0).getId());
+            } else {
+                resource.setId(UUID.randomUUID());
+            }
+            resource.setResourceType(ResourceType.IMAGE);
+            resource.setResourceDensity(ResourceDensity.HDPI);
+            resource.setResourceBinayData(toByteArray(wizardMultimediaAssetImage));
+            resources.add(resource);
+            asset.setResources(resources);
+        } else
+            asset.setResources(null);
+    }
+
     private void setupUIData() {
+        if (appSession.getData("asset_factory") != null) {
+            asset = (AssetFactory) appSession.getData("asset_factory");
+            loadMultimedia();
+        } else {
+            createNewAssetFactory();
+        }
     }
 
     private void configureToolbar() {
@@ -164,5 +289,72 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
                 window.setStatusBarColor(getResources().getColor(R.color.card_toolbar));
             }
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Bitmap imageBitmap = null;
+            switch (requestCode) {
+                case REQUEST_IMAGE_CAPTURE:
+                    Bundle extras = data.getExtras();
+                    imageBitmap = (Bitmap) extras.get("data");
+                    break;
+                case REQUEST_LOAD_IMAGE:
+                    Uri selectedImage = data.getData();
+                    try {
+                        if (isAttached) {
+                            imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, wizardMultimediaAssetImage.getWidth(), wizardMultimediaAssetImage.getHeight(), true);
+                            if(imageBitmap != null){
+                                hasResource = true;
+//                                Picasso.with(getActivity()).load(selectedImage).transform(new CircleTransform()).into(takePicture);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity().getApplicationContext(), "Error Loading Image", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+            //pictureView.setBackground(new RoundedDrawable(imageBitmap, takePictureButton));
+            if (imageBitmap != null) {
+                hasResource = true;
+                wizardMultimediaAssetImage.setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
+            }
+        }
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private void loadImageFromGallery() {
+        Log.i("Multimedia", "Loading Image from Gallery...");
+        Intent intentLoad = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intentLoad, REQUEST_LOAD_IMAGE);
+    }
+
+    private byte[] toByteArray(ImageView imageView) {
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bm = imageView.getDrawingCache();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        appSession.setData("asset_factory", null);
     }
 }
