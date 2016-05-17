@@ -33,6 +33,8 @@ public class AssetFactoryDraftHolder extends FermatViewHolder {
     public ImageButton publishedItemEraseButton;
     public ImageButton publishedItemPublishButton;
 
+    public ImageView assetStatusImage;
+
 
     public AssetFactoryDraftHolder(View itemView) {
         super(itemView);
@@ -56,6 +58,8 @@ public class AssetFactoryDraftHolder extends FermatViewHolder {
         publishedItemEditButton  = (ImageButton) itemView.findViewById(R.id.publishedItemEditButton);
         publishedItemEraseButton = (ImageButton) itemView.findViewById(R.id.publishedItemEraseButton);
         publishedItemPublishButton = (ImageButton) itemView.findViewById(R.id.publishedItemPublishButton);
+
+        assetStatusImage = (ImageView) itemView.findViewById(R.id.assetStatusImage);
 
     }
 }
