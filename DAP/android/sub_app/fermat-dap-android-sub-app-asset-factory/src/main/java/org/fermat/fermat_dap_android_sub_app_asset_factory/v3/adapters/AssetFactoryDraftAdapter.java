@@ -146,6 +146,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.draftItemState.setText(R.string.home_asset_state_publishing);
         holder.normalAssetButtons.setVisibility(View.GONE);
         holder.draftSeparatorLine.setVisibility(View.GONE);
+        holder.assetStatusImage.setImageResource(R.drawable.publishing);
     }
 
     private void renderFinal(AssetFactoryDraftHolder holder, AssetFactory data, double amount) {
@@ -165,6 +166,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.normalAssetButtons.setVisibility(View.GONE);
         holder.draftSeparatorLine.setVisibility(View.GONE);
         holder.publishedAssetButtons.setVisibility(View.GONE);
+        holder.assetStatusImage.setImageResource(R.drawable.published);
     }
 
     private void renderDraft(AssetFactoryDraftHolder holder, final AssetFactory data, double amount) {
@@ -181,6 +183,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
                 holder.amount.setText(String.format(context.getString(R.string.home_row_asset_amount), data.getQuantity()));
                 holder.bitcoins.setText(String.format(context.getString(R.string.home_row_asset_bitcoins), amount));*/
         holder.draftItemState.setText(R.string.home_asset_state_draft);
+        holder.assetStatusImage.setImageResource(R.drawable.created);
 
         holder.draftItemEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
