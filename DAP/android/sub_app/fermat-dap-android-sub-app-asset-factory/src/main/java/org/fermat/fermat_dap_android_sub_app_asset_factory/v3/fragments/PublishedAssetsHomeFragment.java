@@ -191,11 +191,11 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
     private void configureToolbar() {
         Toolbar toolbar = getPaintActivtyFeactures().getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(Color.parseColor("#1d1d25"));
+            toolbar.setBackgroundColor(Color.parseColor("#3f5b77"));
             toolbar.setTitleTextColor(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(Color.parseColor("#1d1d25"));
+                window.setStatusBarColor(Color.parseColor("#3f5b77"));
             }
         }
     }

@@ -46,4 +46,6 @@
 
     <!--DapV3 Strings-->
     <string name="dapV3_home_row_asset_bitcoins">"%.6f" BTC</string>
+    <string name="dap_factory_no_assets">No Assets</string>
+
 </resources>
