@@ -43,6 +43,18 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"/>
 
+                <ImageView
+                    android:id="@+id/assetStatusImage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/created"
+                    android:scaleType="fitCenter"/>
+
+
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                     android:id="@+id/draftItemQuantity"
                     android:layout_width="wrap_content"
@@ -98,7 +110,6 @@
                 android:layout_below="@id/AssetImage"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:paddingBottom="10dp"
                 android:visibility="visible">
 
 
