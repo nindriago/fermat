@@ -128,8 +128,9 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             @Override
             public void onClick(View view) {
                 appSession.setData("asset_data", null);
-                selectedAsset = null;
-                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_data"));
+//              changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_data"));
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
+
             }
         });
         create.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fab_jump_from_down));
@@ -294,7 +295,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
         } catch (Exception e) {
             errorManager.reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.UNSTABLE, FermatException.wrapException(e));
-            makeText(getActivity(), "Asset Issuer system error",
+            makeText(getActivity(), "Asset Factory system error",
                     Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);

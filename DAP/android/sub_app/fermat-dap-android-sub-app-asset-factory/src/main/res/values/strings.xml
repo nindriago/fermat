@@ -44,8 +44,12 @@
     <string name="dap_factory_draft_search">Search</string>
     <string name="dap_factory_draft_search_hint">Asset name</string>
 
+
     <!--DapV3 Strings-->
     <string name="dapV3_home_row_asset_bitcoins">"%.6f" BTC</string>
     <string name="dap_factory_no_assets">No Assets</string>
 
+    <string name="dap_asset_factory_system_error">Asset Factory system error</string>
+    <string name="dap_asset_factory_no_available">No Available</string>
+    <string name="dap_asset_factory_invalid_name">Invalid Asset Name.</string>
 </resources>
