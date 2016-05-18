@@ -24,6 +24,7 @@
     <color name="text_color_hint">#0072bd</color>
 
     <!-- v3 -->
+    <color name="redeem_home_bar_color">#3f5b77</color>
     <color name="card_toolbar">#1371A7</color>
     <color name="card_toolbar_trans">#aa1371a7</color>
     <color name="bg_circular_redeem_color">#CC1371A7</color>
@@ -36,6 +37,7 @@
     <color name="card_background">#FAFAFA</color>
     <color name="card_background_back">#ECECEC</color>
     <color name="card_line">#BDBDBD</color>
+
 
 
     <color name="bg_asset_factory_v3">#CEE3F4</color>
