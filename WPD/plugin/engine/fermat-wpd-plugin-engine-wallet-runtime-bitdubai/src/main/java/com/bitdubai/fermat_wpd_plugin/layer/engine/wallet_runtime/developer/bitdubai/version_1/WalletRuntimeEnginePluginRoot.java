@@ -2362,7 +2362,9 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
     private SideMenu loadSideMenuAssetIssuerWallet(String publicKey) {
 
         SideMenu runtimeSideMenu = new SideMenu();
-        runtimeSideMenu.setBackgroundColor("#5C6E81");
+        //runtimeSideMenu.setBackgroundColor("#5C6E81");
+        //DAP V3
+        runtimeSideMenu.setBackgroundColor("#515151");
 //        runtimeSideMenu.setNavigationIconColor("#ffffff");
         runtimeSideMenu.setHasFooter(true);
 
@@ -2412,7 +2414,12 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         SideMenu runtimeSideMenu = new SideMenu();
         runtimeSideMenu.setBackgroundColor("#005580");
 //        runtimeSideMenu.setNavigationIconColor("#ffffff");
-        runtimeSideMenu.setHasFooter(true);
+        runtimeSideMenu.setHasFooter(false);
+
+        //dap v3
+        //SideMenu runtimeSideMenu = new SideMenu();
+        //runtimeSideMenu.setHasFooter(true);
+
 
         MenuItem runtimeMenuItem = new MenuItem();
 
