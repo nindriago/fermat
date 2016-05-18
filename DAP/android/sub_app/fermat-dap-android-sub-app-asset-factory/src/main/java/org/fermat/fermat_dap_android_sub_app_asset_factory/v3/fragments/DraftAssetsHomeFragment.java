@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.bitdubai.fermat_android_api.ui.Views.ConfirmDialog;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.enums.FermatRefreshTypes;
@@ -76,7 +77,7 @@ import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter
 /**
  * Created by Jinmy Bohorquez on 19/04/16.
  */
-public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFactory> implements FermatListItemListeners<AssetFactory>{
+public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFactory> implements FermatListItemListeners<AssetFactory> {
 
     private static AssetFactory selectedAsset;
 
@@ -94,7 +95,8 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     public static AssetFactory getAssetForEdit() {
         return selectedAsset;
     }
-    public static DraftAssetsHomeFragment newInstance(){
+
+    public static DraftAssetsHomeFragment newInstance() {
         return new DraftAssetsHomeFragment();
     }
 
@@ -144,8 +146,8 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         try {
 
         /*test*/
-        if(dataSet != null)
-            showOrHideNoAssetsView(dataSet.isEmpty());
+            if (dataSet != null)
+                showOrHideNoAssetsView(dataSet.isEmpty());
 
             satoshisWalletBalance = manager.getBitcoinWalletBalance(Utils.getBitcoinWalletPublicKey(manager));
         } catch (Exception e) {
@@ -198,11 +200,11 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     private void configureToolbar() {
         Toolbar toolbar = getPaintActivtyFeactures().getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(Color.parseColor("#3f5b77"));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_home_bar_color));
             toolbar.setTitleTextColor(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(Color.parseColor("#3f5b77"));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_home_bar_color));
             }
         }
     }
@@ -395,8 +397,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                     resource.setResourceBinayData(manager.getAssetFactoryResource(resource).getContent());
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
             if (errorManager != null)
                 errorManager.reportUnexpectedWalletException(
@@ -419,7 +420,6 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     }
 
 
-
     public boolean validate() {
         try {
             AssetFactory assetFactory = (AssetFactory) appSession.getData("asset_data");
@@ -436,13 +436,11 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                 return false;
             }
             String description = assetFactory.getDescription();
-            if (description.length() == 0)
-            {
+            if (description.length() == 0) {
                 Toast.makeText(getActivity(), "Invalid Asset Description.", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            if (quantity == 0)
-            {
+            if (quantity == 0) {
                 Toast.makeText(getActivity(), "Invalid Quantity of Assets", Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -460,122 +458,138 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
     public void doEditAsset() {
         selectedAsset = (AssetFactory) appSession.getData("asset_data");
-       if (selectedAsset != null ) {
+        if (selectedAsset != null) {
             changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), selectedAsset);
-        }else {
+        } else {
             appSession.setData("asset_data", null);
-       }
-    }
-
-    public void doPublishAsset() {
-
-        selectedAsset = (AssetFactory) appSession.getData("asset_data");
-
-        try {
-            if (manager.isReadyToPublish(selectedAsset.getAssetPublicKey())) {
-                final ProgressDialog dialog = new ProgressDialog(getActivity());
-                dialog.setTitle("Asset Factory");
-                dialog.setMessage("Publishing asset, please wait...");
-                dialog.setCancelable(false);
-                dialog.show();
-                FermatWorker worker = new FermatWorker() {
-                    @Override
-                    protected Object doInBackground() throws Exception {
-                        // for test
-                        for (InstalledWallet wallet : manager.getInstallWallets()) {
-                            selectedAsset.setWalletPublicKey(wallet.getWalletPublicKey());
-                            break;
-                        }
-                        manager.publishAsset(selectedAsset);
-                        appSession.setData("asset_data", null);
-                        return true;
-                    }
-                };
-                worker.setContext(getActivity());
-                worker.setCallBack(new FermatWorkerCallBack() {
-                    @Override
-                    public void onPostExecute(Object... result) {
-                        dialog.dismiss();
-                        appSession.setData("asset_data", null);
-                        selectedAsset = null;
-                        if (getActivity() != null) {
-                            onRefresh();
-                        }
-                        Toast.makeText(getActivity(), "The publishing process has been started successfully.\n\n " +
-                                "You will be able to distribute this asset in a few minutes from your Asset Issuer Wallet.", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onErrorOccurred(Exception ex) {
-                        dialog.dismiss();
-                        appSession.setData("asset_data", null);
-                        selectedAsset = null;
-
-                        /**
-                         * If there was an exception, I will search first if I ran out of keys
-                         * to show the appropiated message
-                         */
-                        Throwable rootException = ExceptionUtils.getRootCause(ex);
-                        if (rootException instanceof NotAvailableKeysToPublishAssetsException) {
-                            if (getActivity() != null) {
-                                Toast.makeText(getActivity(), rootException.getMessage(), Toast.LENGTH_LONG).show();
-                                onRefresh();
-                            }
-                        } else {
-                            if (getActivity() != null) {
-                                Toast.makeText(getActivity(), "You need to define all mandatory properties in your asset before publishing it.", Toast.LENGTH_LONG).show();
-                                onRefresh();
-                            }
-                        }
-                        ex.printStackTrace();
-                    }
-                });
-                worker.execute();
-            }
-        } catch (CantPublishAssetFactoy cantPublishAssetFactoy) {
-            cantPublishAssetFactoy.printStackTrace();
-            Toast.makeText(getActivity(), "You cannot publish this asset", Toast.LENGTH_SHORT).show();
         }
     }
 
+    public void doPublishAsset() {
+        selectedAsset = (AssetFactory) appSession.getData("asset_data");
+        new ConfirmDialog.Builder(getActivity(), appSession)
+                .setTitle(getResources().getString(R.string.home_asset_confirm_title))
+                .setMessage(getResources().getString(R.string.dap_asset_factory_v3_publish_confirm))
+                .setColorStyle(getResources().getColor(R.color.redeem_home_bar_color))
+                .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
+                    @Override
+                    public void onClick() {
+                        try {
+                            if (manager.isReadyToPublish(selectedAsset.getAssetPublicKey())) {
+                                final ProgressDialog dialog = new ProgressDialog(getActivity());
+                                dialog.setTitle("Asset Factory");
+                                dialog.setMessage("Publishing asset, please wait...");
+                                dialog.setCancelable(false);
+                                dialog.show();
+                                FermatWorker worker = new FermatWorker() {
+                                    @Override
+                                    protected Object doInBackground() throws Exception {
+                                        // for test
+                                        for (InstalledWallet wallet : manager.getInstallWallets()) {
+                                            selectedAsset.setWalletPublicKey(wallet.getWalletPublicKey());
+                                            break;
+                                        }
+                                        manager.publishAsset(selectedAsset);
+                                        appSession.setData("asset_data", null);
+                                        return true;
+                                    }
+                                };
+                                worker.setContext(getActivity());
+                                worker.setCallBack(new FermatWorkerCallBack() {
+                                    @Override
+                                    public void onPostExecute(Object... result) {
+                                        dialog.dismiss();
+                                        appSession.setData("asset_data", null);
+                                        selectedAsset = null;
+                                        if (getActivity() != null) {
+                                            onRefresh();
+                                        }
+                                        Toast.makeText(getActivity(), "The publishing process has been started successfully.\n\n " +
+                                                "You will be able to distribute this asset in a few minutes from your Asset Issuer Wallet.", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onErrorOccurred(Exception ex) {
+                                        dialog.dismiss();
+                                        appSession.setData("asset_data", null);
+                                        selectedAsset = null;
+
+                                        /**
+                                         * If there was an exception, I will search first if I ran out of keys
+                                         * to show the appropiated message
+                                         */
+                                        Throwable rootException = ExceptionUtils.getRootCause(ex);
+                                        if (rootException instanceof NotAvailableKeysToPublishAssetsException) {
+                                            if (getActivity() != null) {
+                                                Toast.makeText(getActivity(), rootException.getMessage(), Toast.LENGTH_LONG).show();
+                                                onRefresh();
+                                            }
+                                        } else {
+                                            if (getActivity() != null) {
+                                                Toast.makeText(getActivity(), "You need to define all mandatory properties in your asset before publishing it.", Toast.LENGTH_LONG).show();
+                                                onRefresh();
+                                            }
+                                        }
+                                        ex.printStackTrace();
+                                    }
+                                });
+                                worker.execute();
+                            }
+                        } catch (CantPublishAssetFactoy cantPublishAssetFactoy) {
+                            cantPublishAssetFactoy.printStackTrace();
+                            Toast.makeText(getActivity(), "You cannot publish this asset", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).build().show();
+    }
+
     public void doDeleteAsset() {
-        final ProgressDialog dialog = new ProgressDialog(getActivity());
-        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
-        dialog.setTitle("Deleting asset");
-        dialog.setMessage("Please wait...");
-        dialog.setCancelable(false);
-        dialog.show();
-        FermatWorker worker = new FermatWorker() {
-            @Override
-            protected Object doInBackground() throws Exception {
-                manager.removeAssetFactory(selectedAsset.getAssetPublicKey());
-                return true;
-            }
-        };
-        worker.setContext(getActivity());
-        worker.setCallBack(new FermatWorkerCallBack() {
-            @Override
-            public void onPostExecute(Object... result) {
-                dialog.dismiss();
-                appSession.setData("asset_data", null);
+        new ConfirmDialog.Builder(getActivity(), appSession)
+                .setTitle(getResources().getString(R.string.home_asset_confirm_title))
+                .setMessage(getResources().getString(R.string.dap_asset_factory_v3_delete_confirm))
+                .setColorStyle(getResources().getColor(R.color.redeem_home_bar_color))
+                .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
+                    @Override
+                    public void onClick() {
+                        final ProgressDialog dialog = new ProgressDialog(getActivity());
+                        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
+                        dialog.setTitle("Deleting asset");
+                        dialog.setMessage("Please wait...");
+                        dialog.setCancelable(false);
+                        dialog.show();
+                        FermatWorker worker = new FermatWorker() {
+                            @Override
+                            protected Object doInBackground() throws Exception {
+                                manager.removeAssetFactory(selectedAsset.getAssetPublicKey());
+                                return true;
+                            }
+                        };
+                        worker.setContext(getActivity());
+                        worker.setCallBack(new FermatWorkerCallBack() {
+                            @Override
+                            public void onPostExecute(Object... result) {
+                                dialog.dismiss();
+                                appSession.setData("asset_data", null);
 
-                if (getActivity() != null) {
-                    Toast.makeText(getActivity(), "Asset deleted successfully", Toast.LENGTH_SHORT).show();
-                    onRefresh();
-                }
-            }
+                                if (getActivity() != null) {
+                                    Toast.makeText(getActivity(), "Asset deleted successfully", Toast.LENGTH_SHORT).show();
+                                    onRefresh();
+                                }
+                            }
 
-            @Override
-            public void onErrorOccurred(Exception ex) {
-                dialog.dismiss();
-                appSession.setData("asset_data", null);
-                if (getActivity() != null) {
-                    CommonLogger.exception(TAG, ex.getMessage(), ex);
-                    Toast.makeText(getActivity(), "There was an error deleting this asset", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        worker.execute();
+                            @Override
+                            public void onErrorOccurred(Exception ex) {
+                                dialog.dismiss();
+                                appSession.setData("asset_data", null);
+                                if (getActivity() != null) {
+                                    CommonLogger.exception(TAG, ex.getMessage(), ex);
+                                    Toast.makeText(getActivity(), "There was an error deleting this asset", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        worker.execute();
+                    }
+                }).build().show();
     }
 
     @Override
