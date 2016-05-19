@@ -18,6 +18,7 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.holders.AssetHolder;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.filters.AssetFactoryDraftAdapterFilter;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment;
+import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.PublishedAssetsHomeFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.holders.AssetFactoryDraftHolder;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
@@ -49,6 +50,16 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         this.assetFactorySession = (AssetFactorySession) appSession;
         this.allAssets = dataSet;
     }
+    public AssetFactoryDraftAdapter( Context context, List<AssetFactory> dataSet, AssetFactoryModuleManager manager,
+                                    FermatSession appSession) {
+        super(context, dataSet);
+
+
+        this.manager = manager;
+        this.dataSet = dataSet;
+        this.assetFactorySession = (AssetFactorySession) appSession;
+        this.allAssets = dataSet;
+    }
 
     @Override
     protected AssetFactoryDraftHolder createHolder(View itemView, int type) {
@@ -74,7 +85,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
 
         double amountTotal = BitcoinConverter.convert(Double.valueOf(data.getAmount() * data.getQuantity()), SATOSHI, BITCOIN);
         double amountPerAsset = BitcoinConverter.convert(Double.valueOf(data.getAmount()), SATOSHI, BITCOIN);
-        holder.draftItemQuantity.setText(""+data.getQuantity());
+        holder.draftItemQuantity.setText((data.getQuantity() == 1)? data.getQuantity()+" Asset":data.getQuantity()+" Assets");
 
         List<Resource> resources = data.getResources();
         if (resources != null && resources.size() > 0) {
@@ -84,7 +95,9 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         }
 
         holder.draftItemAssetName.setText(data.getName());
-        holder.draftItemAssetValue.setText(amountPerAsset + "");
+        //holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountTotal));
+        holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountPerAsset));
+        holder.draftItemExpDate.setText((data.getExpirationDate() == null)?"No exp date":data.getExpirationDate()+"");
 
         switch (data.getState()) {
             case DRAFT:
@@ -133,6 +146,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.draftItemState.setText(R.string.home_asset_state_publishing);
         holder.normalAssetButtons.setVisibility(View.GONE);
         holder.draftSeparatorLine.setVisibility(View.GONE);
+        holder.assetStatusImage.setImageResource(R.drawable.publishing);
     }
 
     private void renderFinal(AssetFactoryDraftHolder holder, AssetFactory data, double amount) {
@@ -151,6 +165,8 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.draftItemState.setText(R.string.home_asset_state_published);
         holder.normalAssetButtons.setVisibility(View.GONE);
         holder.draftSeparatorLine.setVisibility(View.GONE);
+        holder.publishedAssetButtons.setVisibility(View.GONE);
+        holder.assetStatusImage.setImageResource(R.drawable.published);
     }
 
     private void renderDraft(AssetFactoryDraftHolder holder, final AssetFactory data, double amount) {
@@ -167,6 +183,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
                 holder.amount.setText(String.format(context.getString(R.string.home_row_asset_amount), data.getQuantity()));
                 holder.bitcoins.setText(String.format(context.getString(R.string.home_row_asset_bitcoins), amount));*/
         holder.draftItemState.setText(R.string.home_asset_state_draft);
+        holder.assetStatusImage.setImageResource(R.drawable.created);
 
         holder.draftItemEditButton.setOnClickListener(new View.OnClickListener() {
             @Override

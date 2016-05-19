@@ -1335,7 +1335,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor("#1C1C1C");
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Asset Factory");
@@ -1343,9 +1343,9 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setTitleBar(runtimeTitleBar);
 
         runtimeTabStrip = new TabStrip();
-        runtimeTabStrip.setTabsColor("#1d1d25");
-        runtimeTabStrip.setTabsIndicateColor("#ffffff");
-        runtimeTabStrip.setTabsTextColor("#ffffff");
+        runtimeTabStrip.setTabsColor("#CEE3F4");
+        runtimeTabStrip.setTabsIndicateColor("#8296ab");
+        runtimeTabStrip.setTabsTextColor("#8296ab");
 
         runtimeTab = new Tab();
         runtimeTab.setLabel("Draft");

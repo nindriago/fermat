@@ -36,26 +36,28 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:scaleType="fitXY"
-            android:src="@drawable/redeem_no_assets"/>
+            android:src="@drawable/icon_no_asset"/>
 
         <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/no_assets_user"
-            android:textColor="@color/dap_redeem_point_wallet_black_text"
-            android:textSize="20sp"/>
+            android:text="@string/no_assets_redeem_point"
+            android:textAllCaps="true"
+            android:textColor="@color/redeem_card_no_assets"
+            android:textSize="12sp"/>
 
         <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/no_history"
-            android:textColor="@color/dap_redeem_point_wallet_black_text"
-            android:textSize="15sp"
+            android:text="@string/no_assets_user_message"
+            android:textColor="@color/redeem_card_no_assets"
+            android:textSize="10sp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

@@ -99,50 +99,6 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
                 errorManager.reportUnexpectedWalletException(Wallets.DAP_REDEEM_POINT_WALLET,
                         UnexpectedWalletExceptionSeverity.DISABLES_THIS_FRAGMENT, ex);
         }
-        /*FermatWorker worker = new FermatWorker() {
-            @Override
-            protected Object doInBackground() throws Exception {
-                if (moduleManager == null)
-                    throw new NullPointerException("AssetRedeemPointWalletModuleManager is null");
-
-                assetRedeemPointWalletList = moduleManager.getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
-
-                if (assetRedeemPointWalletList != null && !assetRedeemPointWalletList.isEmpty()) {
-                    assets = new ArrayList<>();
-                    for (AssetRedeemPointWalletList assetRedeemPointWallet : assetRedeemPointWalletList) {
-                        DigitalAsset asset = new DigitalAsset(assetRedeemPointWallet.getDigitalAsset().getName(),
-                                String.valueOf(String.format("BookBalance: %d - AvailableBalance: %d",
-                                        assetRedeemPointWallet.getQuantityBookBalance(), assetRedeemPointWallet.getQuantityAvailableBalance())));
-                        asset.setAssetPublicKey(assetRedeemPointWallet.getDigitalAsset().getPublicKey());
-                        asset.setWalletPublicKey("public_key");
-                        assets.add(asset);
-                    }
-                }
-                return true;
-            
-            }
-        };
-        worker.setContext(getActivity());
-        worker.setCallBack(new FermatWorkerCallBack() {
-            @Override
-            public void onPostExecute(Object... result) {
-                if (getActivity() != null) {
-                    if (assets != null && !assets.isEmpty()) {
-                        if (adapter != null)
-                            adapter.changeDataSet(assets);
-                    }
-                }
-            }
-
-            @Override
-            public void onErrorOccurred(Exception ex) {
-                if (getActivity() != null)
-                    Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
-                CommonLogger.exception(this.getClass().getName(), ex.getMessage(), ex);
-                ex.printStackTrace();
-            }
-        });
-        worker.execute();*/
 
     }
 
@@ -155,16 +111,6 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         activity = new Activity();
         configureToolbar();
 
-
-        /*
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        showOrHideNoAssetsView(assets.isEmpty());*/
-        //onRefresh();
     }
 
     @Override

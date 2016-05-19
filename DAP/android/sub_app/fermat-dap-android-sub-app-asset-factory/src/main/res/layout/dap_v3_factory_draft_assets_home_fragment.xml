@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment"
-    android:background="@color/bg_asset_factory">
+    android:background="@color/bg_asset_factory_v3">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/factory_draft_swipe_refresh"
@@ -31,6 +31,21 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="center"
+            android:src="@drawable/no_assets_factory"/>
+
+        <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/dap_factory_no_assets"
+            android:textColor="#8296ab"
+            android:textSize="30sp"/>
 
     </LinearLayout>
 
