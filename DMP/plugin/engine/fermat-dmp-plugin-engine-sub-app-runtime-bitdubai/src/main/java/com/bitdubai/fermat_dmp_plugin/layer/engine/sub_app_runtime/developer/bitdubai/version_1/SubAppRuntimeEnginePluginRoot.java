@@ -1558,11 +1558,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -1613,11 +1613,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -1726,75 +1726,75 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
         dapAssetIssuerCommunity.addActivity(runtimeActivity);
 
         //INI ISSUER SETTINGS ACTIVITY
-        runtimeActivity = new Activity();
-        runtimeActivity.setType(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
-        runtimeActivity.setActivityType(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getCode());
-        runtimeActivity.setBackActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_MAIN);
-        runtimeActivity.setBackPublicKey(communityIssuerPublicKey);
-        runtimeActivity.setColor("#FF0B46F0");
-
-        statusBar = new StatusBar();
-        statusBar.setColor("#0072bb");
-        runtimeActivity.setStatusBar(statusBar);
-
-        runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("Settings");
-        runtimeTitleBar.setTitleColor("#ffffff");
-        runtimeTitleBar.setIsTitleTextStatic(true);
-        runtimeTitleBar.setColor("#0072bb");
-        runtimeTitleBar.setLabelSize(20);
-        runtimeActivity.setTitleBar(runtimeTitleBar);
-
-        statusBar = new StatusBar();
-        statusBar.setColor("#0072bb");
-        runtimeActivity.setStatusBar(statusBar);
-
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getKey());
-        runtimeActivity.addFragment(Fragments.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getKey(), runtimeFragment);
-        runtimeActivity.setStartFragment(Fragments.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getKey());
-
-        runtimeSideMenu = new SideMenu();
-        runtimeSideMenu.setBackgroundColor("#0072bb");
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Home");
-        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_MAIN);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Connections");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_CONNECTIONS_LIST);
-        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Notifications");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_MAIN);
-        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeActivity.setSideMenu(runtimeSideMenu);
-
-        dapAssetIssuerCommunity.addActivity(runtimeActivity);
+//        runtimeActivity = new Activity();
+//        runtimeActivity.setType(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
+//        runtimeActivity.setActivityType(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getCode());
+//        runtimeActivity.setBackActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_MAIN);
+//        runtimeActivity.setBackPublicKey(communityIssuerPublicKey);
+//        runtimeActivity.setColor("#FF0B46F0");
+//
+//        statusBar = new StatusBar();
+//        statusBar.setColor("#0072bb");
+//        runtimeActivity.setStatusBar(statusBar);
+//
+//        runtimeTitleBar = new TitleBar();
+//        runtimeTitleBar.setLabel("Settings");
+//        runtimeTitleBar.setTitleColor("#ffffff");
+//        runtimeTitleBar.setIsTitleTextStatic(true);
+//        runtimeTitleBar.setColor("#0072bb");
+//        runtimeTitleBar.setLabelSize(20);
+//        runtimeActivity.setTitleBar(runtimeTitleBar);
+//
+//        statusBar = new StatusBar();
+//        statusBar.setColor("#0072bb");
+//        runtimeActivity.setStatusBar(statusBar);
+//
+//        runtimeFragment = new Fragment();
+//        runtimeFragment.setType(Fragments.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getKey());
+//        runtimeActivity.addFragment(Fragments.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getKey(), runtimeFragment);
+//        runtimeActivity.setStartFragment(Fragments.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS.getKey());
+//
+//        runtimeSideMenu = new SideMenu();
+//        runtimeSideMenu.setBackgroundColor("#0072bb");
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Home");
+//        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_MAIN);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Connections");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_CONNECTIONS_LIST);
+//        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Notifications");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_ACTIVITY_MAIN);
+//        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_ISSUER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityIssuerPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeActivity.setSideMenu(runtimeSideMenu);
+//
+//        dapAssetIssuerCommunity.addActivity(runtimeActivity);
 
         listSubApp.put(dapAssetIssuerCommunity.getPublicKey(), dapAssetIssuerCommunity);
     }
@@ -1864,11 +1864,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -1981,11 +1981,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -2043,11 +2043,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -2104,11 +2104,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -2165,11 +2165,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -2226,77 +2226,77 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
         dapAssetUserCommunity.addActivity(runtimeActivity);
 
         //INI USER SETTINGS ACTIVITY
-        runtimeActivity = new Activity();
-        runtimeActivity.setType(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeActivity.setActivityType(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS.getCode());
-        runtimeActivity.setBackActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_MAIN);
-        runtimeActivity.setBackPublicKey(communityUserPublicKey);
-        runtimeActivity.setColor("#FF0B46F0");
-
-        statusBar = new StatusBar();
-        statusBar.setColor("#0072bb");
-        runtimeActivity.setStatusBar(statusBar);
-
-        runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("Settings");
-        runtimeTitleBar.setTitleColor("#ffffff");
-        runtimeTitleBar.setIsTitleTextStatic(true);
-        runtimeTitleBar.setColor("#0072bb");
-        runtimeTitleBar.setLabelSize(20);
-        runtimeActivity.setTitleBar(runtimeTitleBar);
-
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.DAP_ASSET_USER_COMMUNITY_SETTINGS_FRAGMENT.getKey());
-        runtimeActivity.addFragment(Fragments.DAP_ASSET_USER_COMMUNITY_SETTINGS_FRAGMENT.getKey(), runtimeFragment);
-        runtimeActivity.setStartFragment(Fragments.DAP_ASSET_USER_COMMUNITY_SETTINGS_FRAGMENT.getKey());
-
-        runtimeSideMenu = new SideMenu();
-        runtimeSideMenu.setBackgroundColor("#0072bb");
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Home");
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_MAIN);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Connections");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_CONNECTIONS_LIST);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Notifications");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_NOTIFICATION_FRAGMENT);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Manage Groups");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_ADMINISTRATIVE_GROUP_MAIN);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeActivity.setSideMenu(runtimeSideMenu);
-
-        dapAssetUserCommunity.addActivity(runtimeActivity);
+//        runtimeActivity = new Activity();
+//        runtimeActivity.setType(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeActivity.setActivityType(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS.getCode());
+//        runtimeActivity.setBackActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_MAIN);
+//        runtimeActivity.setBackPublicKey(communityUserPublicKey);
+//        runtimeActivity.setColor("#FF0B46F0");
+//
+//        statusBar = new StatusBar();
+//        statusBar.setColor("#0072bb");
+//        runtimeActivity.setStatusBar(statusBar);
+//
+//        runtimeTitleBar = new TitleBar();
+//        runtimeTitleBar.setLabel("Settings");
+//        runtimeTitleBar.setTitleColor("#ffffff");
+//        runtimeTitleBar.setIsTitleTextStatic(true);
+//        runtimeTitleBar.setColor("#0072bb");
+//        runtimeTitleBar.setLabelSize(20);
+//        runtimeActivity.setTitleBar(runtimeTitleBar);
+//
+//        runtimeFragment = new Fragment();
+//        runtimeFragment.setType(Fragments.DAP_ASSET_USER_COMMUNITY_SETTINGS_FRAGMENT.getKey());
+//        runtimeActivity.addFragment(Fragments.DAP_ASSET_USER_COMMUNITY_SETTINGS_FRAGMENT.getKey(), runtimeFragment);
+//        runtimeActivity.setStartFragment(Fragments.DAP_ASSET_USER_COMMUNITY_SETTINGS_FRAGMENT.getKey());
+//
+//        runtimeSideMenu = new SideMenu();
+//        runtimeSideMenu.setBackgroundColor("#0072bb");
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Home");
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_MAIN);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Connections");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_CONNECTIONS_LIST);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Notifications");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_NOTIFICATION_FRAGMENT);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Manage Groups");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_ACTIVITY_ADMINISTRATIVE_GROUP_MAIN);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_USER_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityUserPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeActivity.setSideMenu(runtimeSideMenu);
+//
+//        dapAssetUserCommunity.addActivity(runtimeActivity);
 
         listSubApp.put(dapAssetUserCommunity.getPublicKey(), dapAssetUserCommunity);
     }
@@ -2448,11 +2448,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
@@ -2537,75 +2537,75 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
         dapAssetRedeemPointCommunity.addActivity(runtimeActivity);
 
         //INI REDEEM POINT SETTINGS ACTIVITY
-        runtimeActivity = new Activity();
-        runtimeActivity.setType(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
-        runtimeActivity.setActivityType(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS.getCode());
-        runtimeActivity.setBackActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_ACTIVITY_MAIN);
-        runtimeActivity.setBackPublicKey(communityRedeemPointPublicKey);
-        runtimeActivity.setColor("#FF0B46F0");
-
-        statusBar = new StatusBar();
-        statusBar.setColor("#0072bb");
-        runtimeActivity.setStatusBar(statusBar);
-
-        runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("Settings");
-        runtimeTitleBar.setTitleColor("#ffffff");
-        runtimeTitleBar.setIsTitleTextStatic(true);
-        runtimeTitleBar.setColor("#0072bb");
-        runtimeTitleBar.setLabelSize(20);
-        runtimeActivity.setTitleBar(runtimeTitleBar);
-
-        statusBar = new StatusBar();
-        statusBar.setColor("#0072bb");
-        runtimeActivity.setStatusBar(statusBar);
-
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS_FRAGMENT.getKey());
-        runtimeActivity.addFragment(Fragments.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS_FRAGMENT.getKey(), runtimeFragment);
-        runtimeActivity.setStartFragment(Fragments.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS_FRAGMENT.getKey());
-
-        runtimeSideMenu = new SideMenu();
-        runtimeSideMenu.setBackgroundColor("#0072bb");
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Home");
-        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_ACTIVITY_MAIN);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Connections");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_ACTIVITY_CONNECTIONS_LIST);
-        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Notifications");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_NOTIFICATION_FRAGMENT);
-        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
-
-        runtimeActivity.setSideMenu(runtimeSideMenu);
-
-        dapAssetRedeemPointCommunity.addActivity(runtimeActivity);
+//        runtimeActivity = new Activity();
+//        runtimeActivity.setType(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
+//        runtimeActivity.setActivityType(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS.getCode());
+//        runtimeActivity.setBackActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_ACTIVITY_MAIN);
+//        runtimeActivity.setBackPublicKey(communityRedeemPointPublicKey);
+//        runtimeActivity.setColor("#FF0B46F0");
+//
+//        statusBar = new StatusBar();
+//        statusBar.setColor("#0072bb");
+//        runtimeActivity.setStatusBar(statusBar);
+//
+//        runtimeTitleBar = new TitleBar();
+//        runtimeTitleBar.setLabel("Settings");
+//        runtimeTitleBar.setTitleColor("#ffffff");
+//        runtimeTitleBar.setIsTitleTextStatic(true);
+//        runtimeTitleBar.setColor("#0072bb");
+//        runtimeTitleBar.setLabelSize(20);
+//        runtimeActivity.setTitleBar(runtimeTitleBar);
+//
+//        statusBar = new StatusBar();
+//        statusBar.setColor("#0072bb");
+//        runtimeActivity.setStatusBar(statusBar);
+//
+//        runtimeFragment = new Fragment();
+//        runtimeFragment.setType(Fragments.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS_FRAGMENT.getKey());
+//        runtimeActivity.addFragment(Fragments.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS_FRAGMENT.getKey(), runtimeFragment);
+//        runtimeActivity.setStartFragment(Fragments.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS_FRAGMENT.getKey());
+//
+//        runtimeSideMenu = new SideMenu();
+//        runtimeSideMenu.setBackgroundColor("#0072bb");
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Home");
+//        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_ACTIVITY_MAIN);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Connections");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_ACTIVITY_CONNECTIONS_LIST);
+//        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Notifications");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_NOTIFICATION_FRAGMENT);
+//        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//
+//        runtimeActivity.setSideMenu(runtimeSideMenu);
+//
+//        dapAssetRedeemPointCommunity.addActivity(runtimeActivity);
 
         runtimeActivity = new Activity();
         runtimeActivity.setType(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_ACTIVITY_LIST_PROFILE);
@@ -2679,11 +2679,11 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
         runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
-        runtimeMenuItem = new MenuItem();
-        runtimeMenuItem.setLabel("Settings");
-        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
-        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
-        runtimeSideMenu.addMenuItem(runtimeMenuItem);
+//        runtimeMenuItem = new MenuItem();
+//        runtimeMenuItem.setLabel("Settings");
+//        runtimeMenuItem.setLinkToActivity(Activities.DAP_ASSET_REDEEM_POINT_COMMUNITY_SETTINGS);
+//        runtimeMenuItem.setAppLinkPublicKey(communityRedeemPointPublicKey);
+//        runtimeSideMenu.addMenuItem(runtimeMenuItem);
 
         runtimeActivity.setSideMenu(runtimeSideMenu);
 
