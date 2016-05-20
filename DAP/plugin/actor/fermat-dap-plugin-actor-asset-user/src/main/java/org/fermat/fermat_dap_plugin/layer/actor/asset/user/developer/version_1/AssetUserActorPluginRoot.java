@@ -22,6 +22,7 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ServiceStatus;
 import com.bitdubai.fermat_api.layer.all_definition.enums.SubAppsPublicKeys;
+import com.bitdubai.fermat_api.layer.all_definition.enums.WalletsPublicKeys;
 import com.bitdubai.fermat_api.layer.all_definition.events.EventSource;
 import com.bitdubai.fermat_api.layer.all_definition.events.interfaces.FermatEvent;
 import com.bitdubai.fermat_api.layer.all_definition.events.interfaces.FermatEventHandler;
@@ -427,7 +428,7 @@ public class AssetUserActorPluginRoot extends AbstractPlugin implements
 //            for (ActorAssetUser actorAssetUser : actorAssetUsers) {
 //                try {
             cryptoAddressesNetworkServiceManager.sendAddressExchangeRequest(
-                    null,
+                    WalletsPublicKeys.DAP_USER_WALLET.getCode(),
                     CryptoCurrency.BITCOIN,
                     senderActorType,
                     destinationActorType,
@@ -453,7 +454,7 @@ public class AssetUserActorPluginRoot extends AbstractPlugin implements
             for (ActorAssetRedeemPoint actorAssetRedeemPoint : actorAssetRedeemPoints) {
 //                try {
                 cryptoAddressesNetworkServiceManager.sendAddressExchangeRequest(
-                        null,
+                        WalletsPublicKeys.DAP_REDEEM_WALLET.getCode(),
                         CryptoCurrency.BITCOIN,
                         Actors.DAP_ASSET_USER,
                         Actors.DAP_ASSET_REDEEM_POINT,
