@@ -2,6 +2,7 @@ package org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -23,6 +24,8 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButto
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatEditText;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
+import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
+import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
@@ -36,7 +39,9 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConst
 import org.fermat.fermat_dap_android_sub_app_asset_factory.util.CommonLogger;
 import org.fermat.fermat_dap_api.layer.all_definition.contracts.ContractProperty;
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.State;
 import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.enums.AssetBehavior;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
@@ -47,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static android.widget.Toast.makeText;
 
@@ -59,6 +65,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private AssetFactorySession assetFactorySession;
     private AssetFactoryModuleManager moduleManager;
     private ErrorManager errorManager;
+    private static final String TAG = "Asset Factory";
 
     //UI
     private View rootView;
@@ -73,6 +80,11 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private ImageButton wizardPropertiesDateButton;
     private FermatButton wizardPropertiesBackButton;
     private FermatButton wizardPropertiesNextButton;
+    private View wizardPropertiesButtons;
+    private FermatButton wizardPropertiesSaveButton;
+    private ImageButton wizardPropertiesStep1Image;
+    private ImageButton wizardPropertiesStep3Image;
+    private ImageButton wizardPropertiesStep4Image;
 
     SettingsManager<AssetFactorySettings> settingsManager;
     private AssetFactory asset;
@@ -173,6 +185,11 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         wizardPropertiesDateButton = (ImageButton) rootView.findViewById(R.id.wizardPropertiesDateButton);
         wizardPropertiesBackButton = (FermatButton) rootView.findViewById(R.id.wizardVerifyBackButton);
         wizardPropertiesNextButton = (FermatButton) rootView.findViewById(R.id.wizardVerifyFinishButton);
+        wizardPropertiesButtons = rootView.findViewById(R.id.wizardPropertiesButtons);
+        wizardPropertiesSaveButton = (FermatButton) rootView.findViewById(R.id.wizardPropertiesSaveButton);
+        wizardPropertiesStep1Image = (ImageButton) rootView.findViewById(R.id.wizardPropertiesStep1Image);
+        wizardPropertiesStep3Image = (ImageButton) rootView.findViewById(R.id.wizardPropertiesStep3Image);
+        wizardPropertiesStep4Image = (ImageButton) rootView.findViewById(R.id.wizardPropertiesStep4Image);
 
         wizardPropertiesDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,6 +221,92 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getCode(), appSession.getAppPublicKey());
             }
         });
+        wizardPropertiesSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validate()) {
+                    saveProperties();
+                    doFinish();
+                    changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                }
+            }
+        });
+        wizardPropertiesStep1Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveProperties();
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
+            }
+        });
+        wizardPropertiesStep3Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveProperties();
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getCode(), appSession.getAppPublicKey());
+            }
+        });
+        wizardPropertiesStep4Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveProperties();
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY.getCode(), appSession.getAppPublicKey());
+            }
+        });
+    }
+
+    private boolean validate() {
+        return true;
+    }
+
+    private void doFinish() {
+        if (asset != null) {
+            if (asset.getFactoryId() == null) {
+                asset.setFactoryId(UUID.randomUUID().toString());
+            }
+            asset.setTotalQuantity(asset.getQuantity());
+            asset.setIsRedeemable(asset.getIsRedeemable());
+            asset.setState(State.DRAFT);
+            asset.setAssetBehavior(AssetBehavior.REGENERATION_ASSET);
+            asset.setCreationTimestamp(new Timestamp(System.currentTimeMillis()));
+            saveAssetFactoryFinish();
+        }
+    }
+
+    private void saveAssetFactoryFinish() {
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setTitle("Saving asset");
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(false);
+        dialog.show();
+        FermatWorker worker = new FermatWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                moduleManager.saveAssetFactory(asset);
+                return true;
+            }
+        };
+        worker.setContext(getActivity());
+        worker.setCallBack(new FermatWorkerCallBack() {
+            @Override
+            public void onPostExecute(Object... result) {
+                dialog.dismiss();
+                if (getActivity() != null) {
+//                    Toast.makeText(getActivity(), String.format("Asset %s has been saved", asset.getName()), Toast.LENGTH_SHORT).show();
+                    appSession.setData("asset_factory", null);
+                    changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                }
+            }
+
+            @Override
+            public void onErrorOccurred(Exception ex) {
+                dialog.dismiss();
+                if (getActivity() != null) {
+                    CommonLogger.exception(TAG, ex.getMessage(), ex);
+                    Toast.makeText(getActivity(), "There was an error creating this asset", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        worker.execute();
     }
 
     private void saveProperties() {
@@ -250,6 +353,11 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         if (appSession.getData("asset_factory") != null) {
             asset = (AssetFactory) appSession.getData("asset_factory");
             loadProperties();
+        }
+
+        if (asset != null) {
+            wizardPropertiesSaveButton.setVisibility((asset.getFactoryId() != null) ? View.VISIBLE : View.INVISIBLE);
+            wizardPropertiesButtons.setVisibility((asset.getFactoryId() != null) ? View.INVISIBLE : View.VISIBLE);
         }
     }
 

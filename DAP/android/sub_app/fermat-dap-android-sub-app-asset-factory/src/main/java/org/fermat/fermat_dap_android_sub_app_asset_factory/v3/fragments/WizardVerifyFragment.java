@@ -16,14 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox;
-import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatEditText;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
@@ -89,6 +88,11 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     private FermatTextView wizardVerifyTotalValue;
     private FermatButton wizardVerifyBackButton;
     private FermatButton wizardVerifyFinishButton;
+    private FermatButton wizardVerifySaveButton;
+    private View wizardVerifyButtons;
+    private ImageButton wizardVerifyStep1Image;
+    private ImageButton wizardVerifyStep2Image;
+    private ImageButton wizardVerifyStep3Image;
 
     SettingsManager<AssetFactorySettings> settingsManager;
     private AssetFactory asset;
@@ -190,6 +194,11 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         wizardVerifyTotalValue = (FermatTextView) rootView.findViewById(R.id.wizardVerifyTotalValue);
         wizardVerifyBackButton = (FermatButton) rootView.findViewById(R.id.wizardVerifyBackButton);
         wizardVerifyFinishButton = (FermatButton) rootView.findViewById(R.id.wizardVerifyFinishButton);
+        wizardVerifySaveButton = (FermatButton) rootView.findViewById(R.id.wizardVerifySaveButton);
+        wizardVerifyButtons = rootView.findViewById(R.id.wizardVerifyButtons);
+        wizardVerifyStep1Image = (ImageButton) rootView.findViewById(R.id.wizardVerifyStep1Image);
+        wizardVerifyStep2Image = (ImageButton) rootView.findViewById(R.id.wizardVerifyStep2Image);
+        wizardVerifyStep3Image = (ImageButton) rootView.findViewById(R.id.wizardVerifyStep3Image);
         wizardVerifyBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,6 +213,31 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
                 } else {
                     Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        wizardVerifySaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doFinish();
+                changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+            }
+        });
+        wizardVerifyStep1Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
+            }
+        });
+        wizardVerifyStep2Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getCode(), appSession.getAppPublicKey());
+            }
+        });
+        wizardVerifyStep3Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getCode(), appSession.getAppPublicKey());
             }
         });
     }
@@ -241,9 +275,11 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             public void onPostExecute(Object... result) {
                 dialog.dismiss();
                 if (getActivity() != null) {
-                    if (!isEdit) {
-                        Toast.makeText(getActivity(), String.format("Asset %s has been created", asset.getName()), Toast.LENGTH_SHORT).show();
-                    }
+//                    if (!isEdit) {
+//                        Toast.makeText(getActivity(), String.format("Asset %s has been created", asset.getName()), Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getActivity(), String.format("Asset %s has been saved", asset.getName()), Toast.LENGTH_SHORT).show();
+//                    }
                     appSession.setData("asset_factory", null);
                     changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
                 }
@@ -265,6 +301,11 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         if (appSession.getData("asset_factory") != null) {
             asset = (AssetFactory) appSession.getData("asset_factory");
             loadVerify();
+        }
+
+        if (asset != null) {
+            wizardVerifySaveButton.setVisibility((asset.getFactoryId() != null) ? View.VISIBLE : View.INVISIBLE);
+            wizardVerifyButtons.setVisibility((asset.getFactoryId() != null) ? View.INVISIBLE : View.VISIBLE);
         }
     }
 
