@@ -113,6 +113,7 @@ public class RedeemPointMainActivityFragment extends FermatWalletListFragment<Di
         if (settings == null) {
             settings = new RedeemPointSettings();
             settings.setIsContactsHelpEnabled(true);
+            settings.setNotificationEnabled(true);
             settings.setIsPresentationHelpEnabled(true);
 
             try {

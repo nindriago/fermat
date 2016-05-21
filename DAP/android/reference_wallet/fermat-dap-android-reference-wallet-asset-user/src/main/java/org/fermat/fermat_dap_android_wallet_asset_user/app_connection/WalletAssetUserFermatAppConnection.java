@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_android_wallet_asset_user.app_connection;
 
 import android.content.Context;
+
 import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.engine.FooterViewPainter;
 import com.bitdubai.fermat_android_api.engine.HeaderViewPainter;
@@ -13,12 +14,15 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Developers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
+import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
+
 import org.fermat.fermat_dap_android_wallet_asset_user.common.header.WalletAssetUserHeaderPainter;
 import org.fermat.fermat_dap_android_wallet_asset_user.factory.WalletAssetUserFragmentFactory;
 import org.fermat.fermat_dap_android_wallet_asset_user.navigation_drawer.UserWalletNavigationViewPainter;
 import org.fermat.fermat_dap_android_wallet_asset_user.sessions.AssetUserSession;
 import org.fermat.fermat_dap_api.layer.dap_identity.asset_user.interfaces.IdentityAssetUser;
+import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
 
 /**
@@ -76,32 +80,31 @@ public class WalletAssetUserFermatAppConnection extends AppConnections<AssetUser
     public NotificationPainter getNotificationPainter(String code) {
         NotificationPainter notification = null;
         try {
-            this.assetUserSession = (AssetUserSession) this.getSession();
-            if (assetUserSession != null)
-                manager = assetUserSession.getModuleManager();
-            String[] params = code.split("_");
-            String notificationType = params[0];
-            String senderActorPublicKey = params[1];
+            SettingsManager<AssetUserSettings> settingsManager;
 
-            switch (notificationType) {
-                case "ASSET-USER-DEBIT":
-//                    if (manager != null) {
-                    //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Key", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
-                    notification = new WalletAssetUserNotificationPainter("Wallet User - Debit", senderActorPublicKey, "", "");
-//                    }
-                    break;
-                case "ASSET-USER-CREDIT":
-//                    if (manager != null) {
-                    //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Request", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
-                    notification = new WalletAssetUserNotificationPainter("Wallet User Credit", senderActorPublicKey, "", "");
-//                    }
-                    break;
+            this.assetUserSession = this.getFullyLoadedSession();
+            boolean enabledNotification = true;
+
+            if (assetUserSession != null) {
+                if (assetUserSession.getModuleManager() != null) {
+                    manager = assetUserSession.getModuleManager();
+                    settingsManager = assetUserSession.getModuleManager().getSettingsManager();
+                    enabledNotification = settingsManager.loadAndGetSettings(assetUserSession.getAppPublicKey()).getNotificationEnabled();
+                }
+                String[] params = code.split("_");
+                String notificationType = params[0];
+                String senderActorPublicKey = params[1];
+
+                if (enabledNotification) {
+                    switch (notificationType) {
+                        case "ASSET-USER-DEBIT":
+                            notification = new WalletAssetUserNotificationPainter("Wallet User - Debit", senderActorPublicKey, "", "");
+                            break;
+                        case "ASSET-USER-CREDIT":
+                            notification = new WalletAssetUserNotificationPainter("Wallet User Credit", senderActorPublicKey, "", "");
+                            break;
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

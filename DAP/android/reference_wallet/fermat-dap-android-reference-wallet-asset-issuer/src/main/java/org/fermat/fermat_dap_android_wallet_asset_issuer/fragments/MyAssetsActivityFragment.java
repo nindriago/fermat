@@ -117,6 +117,7 @@ public class MyAssetsActivityFragment extends FermatWalletListFragment<DigitalAs
         if (settings == null) {
             settings = new AssetIssuerSettings();
             settings.setIsContactsHelpEnabled(true);
+            settings.setNotificationEnabled(true);
             settings.setIsPresentationHelpEnabled(true);
 
             try {
