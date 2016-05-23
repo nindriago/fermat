@@ -1369,6 +1369,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
 
         runtimeSideMenu = new SideMenu();
         runtimeSideMenu.setBackgroundColor("#1d1d25");
+        runtimeSideMenu.setHasFooter(true);
 
         runtimeMenuItem = new MenuItem();
         runtimeMenuItem.setLabel("Home");
