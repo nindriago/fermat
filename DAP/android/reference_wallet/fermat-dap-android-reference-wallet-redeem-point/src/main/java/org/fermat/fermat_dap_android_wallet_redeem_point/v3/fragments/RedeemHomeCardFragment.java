@@ -347,9 +347,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         if (moduleManager != null) {
             try {
 //                assets = Data.getAllDigitalAssets(moduleManager);
-//                assets = Data.getAssets(moduleManager);
-                //assets.addAll(DataManager.getAllPendingNegotiations());
-                    assets = Data.getAllTestAssets(moduleManager);
+                    assets = Data.getAllRedeemPointAssets(moduleManager);
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);
                 if (errorManager != null)
