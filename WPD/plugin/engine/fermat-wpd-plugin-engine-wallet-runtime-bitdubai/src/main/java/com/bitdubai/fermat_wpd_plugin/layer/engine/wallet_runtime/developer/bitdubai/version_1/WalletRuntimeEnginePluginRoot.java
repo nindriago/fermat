@@ -2414,7 +2414,7 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         SideMenu runtimeSideMenu = new SideMenu();
         runtimeSideMenu.setBackgroundColor("#005580");
 //        runtimeSideMenu.setNavigationIconColor("#ffffff");
-        runtimeSideMenu.setHasFooter(false);
+        runtimeSideMenu.setHasFooter(true);
 
         //dap v3
         //SideMenu runtimeSideMenu = new SideMenu();
