@@ -24,8 +24,10 @@ public class FragmentsCommons {
 
     public static View setUpHeaderScreen(LayoutInflater inflater, Context activity, ActiveActorIdentityInformation identityAssetUser) throws CantGetIdentityRedeemPointException {
 
-        View view = inflater.inflate(R.layout.dap_navigation_drawer_redeem_point_wallet_header, null, true);
+        // dap V3
+        //View view = inflater.inflate(R.layout.dap_v3_navigation_drawer_redeem_point_wallet_header, null, true);
 
+        View view = inflater.inflate(R.layout.dap_navigation_drawer_redeem_point_wallet_header, null, true);
         try {
             ImageView imageView = (ImageView) view.findViewById(R.id.image_view_profile);
             if (identityAssetUser != null) {

@@ -33,16 +33,16 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
     @Override
     public AbstractFermatFragment getFermatFragment(AssetFactoryFragmentsEnumType fragments) throws FragmentNotFoundException {
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_EDITABLE_TAB_FRAGMENT))
-                return EditableAssetsFragment.newInstance();
-                //return DraftAssetsHomeFragment.newInstance();
+                //return EditableAssetsFragment.newInstance();
+                return DraftAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_PUBLISHED_TAB_FRAGMENT))
-                return PublishedAssetsFragment.newInstance();
-                //return PublishedAssetsHomeFragment.newInstance();
+                //return PublishedAssetsFragment.newInstance();
+                return PublishedAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_EDITOR_ACTIVITY))
-            return AssetEditorFragment.newInstance(EditableAssetsFragment.getAssetForEdit());
+            //return AssetEditorFragment.newInstance(EditableAssetsFragment.getAssetForEdit());
 
             //Use this for testing
-            //return AssetEditorFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
+            return AssetEditorFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
 
             //Use this when new Wizard fragment is ready
             //return CreateEditorAssetFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());

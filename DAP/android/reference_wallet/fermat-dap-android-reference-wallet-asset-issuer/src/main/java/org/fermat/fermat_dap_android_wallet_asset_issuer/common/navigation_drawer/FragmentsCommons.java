@@ -20,8 +20,11 @@ public class FragmentsCommons {
 
     public static View setUpHeaderScreen(LayoutInflater inflater, Context activity, ActiveActorIdentityInformation identityAssetIssuer) throws CantGetIdentityAssetIssuerException {
 
-        View view = inflater.inflate(R.layout.dap_navigation_drawer_issuer_wallet_header, null, true);
+        //Dap V2
+        //View view = inflater.inflate(R.layout.dap_navigation_drawer_issuer_wallet_header, null, true);
 
+        //Dap v3
+        View view = inflater.inflate(R.layout.dap_v3_navigation_drawer_issuer_wallet_header, null, true);
         try {
             ImageView imageView = (ImageView) view.findViewById(R.id.image_view_profile);
             if (identityAssetIssuer != null) {

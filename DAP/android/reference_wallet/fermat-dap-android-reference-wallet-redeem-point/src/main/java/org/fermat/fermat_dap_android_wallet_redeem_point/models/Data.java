@@ -18,6 +18,7 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletTransaction;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.RedeemPointStatistic;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
+import org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantGetTransactionsException;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWalletException;
@@ -59,6 +60,52 @@ public class Data {
         }
         return digitalAssets;
     }
+
+//    public static List<DigitalAsset> getAllRedeemPointAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+//        List<AssetRedeemPointWalletList> assetsRedeemPointBalances = moduleManager.getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
+//        AssetRedeemPointWallet redeemPointWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
+//        List<DigitalAsset> digitalAssets = new ArrayList<>();
+//        DigitalAsset digitalAsset;
+//
+//        for (AssetRedeemPointWalletList assetRedeemPointWalletList : assetsRedeemPointBalances) {
+//            //List<CryptoAddress> addresses = assetRedeemPointWalletList.getAddresses();
+//            for (int i = 0; i < assetRedeemPointWalletList.getQuantityBookBalance(); i++) {
+//                try {
+//                    CryptoAddress address = addresses.get(i);
+//                    digitalAsset = new DigitalAsset();
+//                    digitalAsset.setAssetPublicKey(assetRedeemPointWalletList.getDigitalAsset().getPublicKey());
+//                    digitalAsset.setName(assetRedeemPointWalletList.getDigitalAsset().getName());
+//                    digitalAsset.setExpDate((Timestamp) assetRedeemPointWalletList.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
+//                    digitalAsset.setAssetDescription(assetRedeemPointWalletList.getDigitalAsset().getDescription());
+//
+//                    List<AssetRedeemPointWalletTransaction> transactions = redeemPointWallet.getTransactions(
+//                            BalanceType.AVAILABLE,TransactionType.CREDIT,address.getAddress());
+//                    //digitalAsset.setActorAssetUser();
+//                    //digitalAsset.setImageActorUserFrom();
+//                    //digitalAsset.setActorUserNameFrom();
+//
+//                    //digitalAsset.setActorIssuerAddress(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer());
+//                    digitalAsset.setActorIssuerNameFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getAlias());
+//                    digitalAsset.setImageActorIssuerFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getImage());
+//
+//                    //digitalAsset.setDate();
+//                    //digitalAsset.setStatus();
+//
+//                    List<Resource> resources = assetRedeemPointWalletList.getDigitalAsset().getResources();
+//                    if (resources != null && !resources.isEmpty()) {
+//                        digitalAsset.setImage(resources.get(0).getResourceBinayData());
+//                    }
+//
+//                    digitalAssets.add(digitalAsset);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        return digitalAssets;
+//    }
+
 
     public static List<UserRedeemed> getUserRedeemedPointList(String walletPublicKey, DigitalAsset digitalAsset, AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
 

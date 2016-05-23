@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
+
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetIssuerException;
+
 import com.squareup.picasso.Picasso;
 
 /**
@@ -19,7 +22,12 @@ public class FragmentsCommons {
 
     public static View setUpHeaderScreen(LayoutInflater inflater, Context activity, ActiveActorIdentityInformation identityAssetIssuer) throws CantGetIdentityAssetIssuerException {
 
-        View view = inflater.inflate(R.layout.dap_navigation_drawer_factory_header, null, true);
+        //DAP V2
+        //View view = inflater.inflate(R.layout.dap_navigation_drawer_factory_header, null, true);
+
+
+        //DAP V3
+        View view = inflater.inflate(R.layout.dap_v3_navigation_drawer_factory_header, null, true);
 
         try {
             ImageView imageView = (ImageView) view.findViewById(R.id.image_view_profile);
