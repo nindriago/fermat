@@ -91,6 +91,7 @@ public class AssetFactoryNavigationViewAdapter extends FermatAdapter<MenuItem, A
                     break;
             }
 
+
         } catch (Exception e) {
             e.printStackTrace();
         }
