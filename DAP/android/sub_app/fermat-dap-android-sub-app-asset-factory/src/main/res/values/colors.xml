@@ -43,6 +43,8 @@
     <color name="bg_asset_factory_v3">#CEE3F4</color>
     <color name="card_header_text">#FFFAFA</color>
     <color name="wizard_background">#D6E7F4</color>
+    <color name="wizard_top_line_on">#479BC2</color>
+    <color name="wizard_top_line_off">#B3BCCB</color>
     <color name="wizard_label_1">#4E627A</color>
     <color name="wizard_label_2">#95A8BA</color>
     <color name="wizard_label_3">#4B5E75</color>

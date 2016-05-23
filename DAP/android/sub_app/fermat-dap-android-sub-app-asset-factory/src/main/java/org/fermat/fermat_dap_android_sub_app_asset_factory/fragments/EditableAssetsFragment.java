@@ -455,8 +455,11 @@ public class EditableAssetsFragment extends AbstractFermatFragment implements
     }
 
     private void editAsset() {
-        if (getAssetForEdit() != null && getAssetForEdit().getState() == State.DRAFT)
-            changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), getAssetForEdit());
+        if (getAssetForEdit() != null && getAssetForEdit().getState() == State.DRAFT) {
+            appSession.setData("asset_factory", getAssetForEdit());
+            changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
+//            changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), getAssetForEdit());
+        }
         else
             selectedAsset = null;
     }

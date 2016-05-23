@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -45,13 +46,14 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactory
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.SessionConstantsAssetFactory;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.util.CommonLogger;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.util.Utils;
-import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.exceptions.CantCreateAssetFactoryException;
-import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.exceptions.CantCreateEmptyAssetFactoryException;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.State;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.enums.AssetBehavior;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -83,6 +85,10 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
     private FermatButton wizardMultimediaCameraButton;
     private ImageView wizardMultimediaAssetImage;
     private FermatButton wizardMultimediaNextButton;
+    private FermatButton wizardMultimediaSaveButton;
+    private ImageButton wizardMultimediaStep2Image;
+    private ImageButton wizardMultimediaStep3Image;
+    private ImageButton wizardMultimediaStep4Image;
 
     SettingsManager<AssetFactorySettings> settingsManager;
     private boolean hasResource = false;
@@ -229,6 +235,10 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
         wizardMultimediaCameraButton = (FermatButton) rootView.findViewById(R.id.wizardMultimediaCameraButton);
         wizardMultimediaAssetImage = (ImageView) rootView.findViewById(R.id.wizardMultimediaAssetImage);
         wizardMultimediaNextButton = (FermatButton) rootView.findViewById(R.id.wizardMultimediaNextButton);
+        wizardMultimediaSaveButton = (FermatButton) rootView.findViewById(R.id.wizardMultimediaSaveButton);
+        wizardMultimediaStep2Image = (ImageButton) rootView.findViewById(R.id.wizardMultimediaStep2Image);
+        wizardMultimediaStep3Image = (ImageButton) rootView.findViewById(R.id.wizardMultimediaStep3Image);
+        wizardMultimediaStep4Image = (ImageButton) rootView.findViewById(R.id.wizardMultimediaStep4Image);
         wizardMultimediaPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,11 +254,99 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
         wizardMultimediaNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveMultimedia();
-                appSession.setData("asset_factory", asset);
-                changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getCode(), appSession.getAppPublicKey());
+                go(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getCode());
             }
         });
+        wizardMultimediaSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validate()) {
+                    saveMultimedia();
+                    doFinish();
+                }
+            }
+        });
+        wizardMultimediaStep2Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                go(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_PROPERTIES.getCode());
+            }
+        });
+        wizardMultimediaStep3Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                go(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_CRYPTO.getCode());
+            }
+        });
+        wizardMultimediaStep4Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                go(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY.getCode());
+            }
+        });
+    }
+
+    private void doFinish() {
+        if (asset != null) {
+            if (asset.getFactoryId() == null) {
+                asset.setFactoryId(UUID.randomUUID().toString());
+            }
+            asset.setTotalQuantity(asset.getQuantity());
+            asset.setIsRedeemable(asset.getIsRedeemable());
+            asset.setState(State.DRAFT);
+            asset.setAssetBehavior(AssetBehavior.REGENERATION_ASSET);
+            asset.setCreationTimestamp(new Timestamp(System.currentTimeMillis()));
+            saveAssetFactoryFinish();
+        }
+    }
+
+    private void saveAssetFactoryFinish() {
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setTitle("Saving asset");
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(false);
+        dialog.show();
+        FermatWorker worker = new FermatWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                moduleManager.saveAssetFactory(asset);
+                return true;
+            }
+        };
+        worker.setContext(getActivity());
+        worker.setCallBack(new FermatWorkerCallBack() {
+            @Override
+            public void onPostExecute(Object... result) {
+                dialog.dismiss();
+                if (getActivity() != null) {
+//                    Toast.makeText(getActivity(), String.format("Asset %s has been saved", asset.getName()), Toast.LENGTH_SHORT).show();
+                    appSession.setData("asset_factory", null);
+                    changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                }
+            }
+
+            @Override
+            public void onErrorOccurred(Exception ex) {
+                dialog.dismiss();
+                if (getActivity() != null) {
+                    CommonLogger.exception(TAG, ex.getMessage(), ex);
+                    Toast.makeText(getActivity(), "There was an error creating this asset", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        worker.execute();
+    }
+
+    private void go(String code) {
+        if (validate()) {
+            saveMultimedia();
+            appSession.setData("asset_factory", asset);
+            changeActivity(code, appSession.getAppPublicKey());
+        }
+    }
+
+    private boolean validate() {
+        return true;
     }
 
     private void saveMultimedia() {
@@ -275,6 +373,11 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
             loadMultimedia();
         } else {
             createNewAssetFactory();
+        }
+
+        if (asset != null) {
+            wizardMultimediaSaveButton.setVisibility((asset.getFactoryId() != null) ? View.VISIBLE : View.INVISIBLE);
+            wizardMultimediaNextButton.setVisibility((asset.getFactoryId() != null) ? View.INVISIBLE : View.VISIBLE);
         }
     }
 
