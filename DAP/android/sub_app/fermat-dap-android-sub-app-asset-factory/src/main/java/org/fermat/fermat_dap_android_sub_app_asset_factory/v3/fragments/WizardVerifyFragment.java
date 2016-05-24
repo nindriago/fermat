@@ -342,7 +342,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         if (asset.getDescription() != null && asset.getDescription().length() > 0) {
             wizardVerifyDescText.setText(asset.getDescription());
         } else {
-            wizardVerifyDescText.setText("");
+            wizardVerifyDescText.setText("Description must be set");
         }
         if (asset.getResources() != null && !asset.getResources().isEmpty()) {
             if (asset.getResources().get(0) != null && asset.getResources().get(0).getResourceBinayData() != null) {
@@ -368,7 +368,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         if (asset.getQuantity() > 0) {
             wizardVerifyQuantityValue.setText(Integer.toString(asset.getQuantity()) + ((asset.getQuantity() == 1) ? " asset" : " assets"));
         } else {
-            wizardVerifyQuantityValue.setText("");
+            wizardVerifyQuantityValue.setText("Quantity must be set");
         }
         List<ContractProperty> properties = asset.getContractProperties();
         wizardVerifyRedeemableCheck.setChecked(false);
