@@ -67,6 +67,8 @@ import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.Asset
 import org.fermat.fermat_dap_api.layer.dap_transaction.asset_issuing.exceptions.NotAvailableKeysToPublishAssetsException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -386,10 +388,27 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         try {
             List<AssetFactory> draftItems = manager.getAssetFactoryByState(State.DRAFT);
             List<AssetFactory> pendingFinalItems = manager.getAssetFactoryByState(State.PENDING_FINAL);
-            if (draftItems != null && !draftItems.isEmpty())
+            Comparator<AssetFactory> comparator = new Comparator<AssetFactory>() {
+                @Override
+                public int compare(AssetFactory lhs, AssetFactory rhs) {
+                    if (lhs.getCreationTimestamp().getTime() > rhs.getCreationTimestamp().getTime())
+                        return -1;
+                    else if (lhs.getCreationTimestamp().getTime() < rhs.getCreationTimestamp().getTime())
+                        return 1;
+                    return 0;
+                }
+            };
+
+            if (draftItems != null && !draftItems.isEmpty()) {
+                Collections.sort(draftItems, comparator);
                 items.addAll(draftItems);
-            if (pendingFinalItems != null && !pendingFinalItems.isEmpty())
+            }
+
+            if (pendingFinalItems != null && !pendingFinalItems.isEmpty()) {
+                Collections.sort(pendingFinalItems, comparator);
                 items.addAll(pendingFinalItems);
+            }
+
             List<Resource> resources;
             for (AssetFactory item : items) {
                 resources = item.getResources();
