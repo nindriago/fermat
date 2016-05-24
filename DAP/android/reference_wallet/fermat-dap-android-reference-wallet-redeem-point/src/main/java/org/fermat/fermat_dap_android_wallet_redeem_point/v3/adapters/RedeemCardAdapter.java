@@ -11,6 +11,9 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.Fermat
 import com.bitdubai.fermat_android_api.layer.definition.wallet.utils.ImagesUtils;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
+import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantGetSettingsException;
+import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.SettingsNotFoundException;
+import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;
@@ -18,7 +21,9 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSes
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.filters.RedeemHomeCardAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemHomeCardFragment;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.holders.RedeemCardViewHolder;
+import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.RedeemPointSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
+import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWalletException;
 
 import java.util.List;
 
@@ -27,13 +32,14 @@ import java.util.List;
  */
 public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardViewHolder> implements Filterable {
 
-    private  RedeemPointSession assetRedeemSession;
-    private  AssetRedeemPointWalletSubAppModule manager;
-    private  RedeemHomeCardFragment fragment;
+    private RedeemPointSession assetRedeemSession;
+    private AssetRedeemPointWalletSubAppModule manager;
+    private RedeemHomeCardFragment fragment;
     private List<DigitalAsset> allDigitalAssets;
 
+
     public RedeemCardAdapter(RedeemHomeCardFragment fragment, Context context, List<DigitalAsset> digitalAssets, AssetRedeemPointWalletSubAppModule manager,
-                           FermatSession appSession) {
+                             FermatSession appSession) {
         super(context, digitalAssets);
         this.fragment = fragment;
         this.manager = manager;
@@ -41,6 +47,7 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
         this.assetRedeemSession = (RedeemPointSession) appSession;
         this.allDigitalAssets = digitalAssets;
     }
+
     @Override
     protected RedeemCardViewHolder createHolder(View itemView, int type) {
 
@@ -54,15 +61,23 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
 
     @Override
     protected void bindHolder(RedeemCardViewHolder holder, DigitalAsset data, int position) {
-        bind(holder,data);
+        bind(holder, data);
     }
 
     @Override
     public Filter getFilter() {
-        return new RedeemHomeCardAdapterFilter(this.allDigitalAssets,this);
+        return new RedeemHomeCardAdapterFilter(this.allDigitalAssets, this);
     }
 
-    public void bind (RedeemCardViewHolder holder, final DigitalAsset asset){
+    public void bind(RedeemCardViewHolder holder, final DigitalAsset asset) {
+        RedeemPointSettings settings = null;
+        Boolean assetNotificationEnabled = false;
+        try {
+            settings = assetRedeemSession.getModuleManager().getSettingsManager().loadAndGetSettings(assetRedeemSession.getAppPublicKey());
+            assetNotificationEnabled = settings.getAssetNotificationEnabled();
+        } catch (Exception e) {
+            settings = null;
+        }
 
         Bitmap bitmap;
         if (asset.getImage() != null && asset.getImage().length > 0) {
@@ -93,12 +108,8 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
             }
         });
 
-        if(asset.getStatus() == DigitalAsset.Status.PENDING){
 
-            holder.redeemNegotiationV3Asset.setVisibility(View.VISIBLE);
-            holder.confirmedV3Asset.setVisibility(View.GONE);
-
-        }else if(asset.getStatus() == DigitalAsset.Status.CONFIRMED) {
+        if (asset.getStatus() == DigitalAsset.Status.PENDING && assetNotificationEnabled) {
 
             holder.redeemNegotiationV3Asset.setVisibility(View.VISIBLE);
             holder.confirmedV3Asset.setVisibility(View.GONE);
@@ -122,10 +133,18 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
                 }
             });
 
-
-        }else{
+        } else if (asset.getStatus() == DigitalAsset.Status.PENDING && !assetNotificationEnabled) {
             holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
-            holder.confirmedV3Asset.setVisibility(View.VISIBLE);
+            holder.confirmedV3Asset.setVisibility(View.GONE);
+        } else if (asset.getStatus() == DigitalAsset.Status.CONFIRMED) {
+
+            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
+            holder.confirmedV3Asset.setVisibility(View.GONE);
+
+
+        } else {
+            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
+            holder.confirmedV3Asset.setVisibility(View.GONE);
 
             holder.cardDeliverButton.setOnClickListener(new View.OnClickListener() {
                 @Override
