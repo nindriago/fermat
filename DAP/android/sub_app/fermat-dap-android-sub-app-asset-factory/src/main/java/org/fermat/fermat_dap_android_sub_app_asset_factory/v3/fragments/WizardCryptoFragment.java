@@ -342,7 +342,7 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
                 getActivity(), android.R.layout.simple_spinner_item,
                 data);
         wizardCryptoValueSpinner.setAdapter(spinnerAdapter);
-        wizardCryptoValueSpinner.setSelection(3);
+        wizardCryptoValueSpinner.setSelection(0);
         wizardCryptoValueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
