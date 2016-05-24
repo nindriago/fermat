@@ -53,6 +53,8 @@
     <string name="dap_asset_factory_system_error">Asset Factory system error</string>
     <string name="dap_asset_factory_no_available">No Available</string>
     <string name="dap_asset_factory_invalid_name">Invalid Asset Name.</string>
+    <string name="dap_asset_factory_invalid_description">Invalid Asset Description.</string>
+    <string name="dap_asset_factory_invalid_quantity">Asset Quantity must be greater than 0.</string>
     <string name="dap_asset_factory_v3_publish_confirm">Are you sure you want to publish this asset? This action is irreversible</string>
     <string name="dap_asset_factory_v3_delete_confirm">Are you sure you want to delete this asset? This action is irreversible</string>
 </resources>
