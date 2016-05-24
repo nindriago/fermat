@@ -20,6 +20,7 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.filters.AssetFacto
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.PublishedAssetsHomeFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.holders.AssetFactoryDraftHolder;
+import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
 
@@ -97,33 +98,20 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.draftItemAssetName.setText(data.getName());
         //holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountTotal));
         holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountPerAsset));
-        holder.draftItemExpDate.setText((data.getExpirationDate() == null)?"No exp date":data.getExpirationDate()+"");
+        holder.draftItemExpDate.setText((data.getExpirationDate() == null)? "No Exp Date": DAPStandardFormats.DATE_FORMAT.format(data.getExpirationDate()));
 
         switch (data.getState()) {
             case DRAFT:
                 renderDraft(holder, data, amountTotal);
-                                /*holder.itemView.setLongClickable(true);
-                                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                                        @Override
-                                        public boolean onLongClick(View view) {
-                                                if (menuItemClick != null) {
-                                                        menuItemClick.onMenuItemClickListener(view, data, position);
-                                                }
-                                                return true;
-                                        }
-                                });*/
                 break;
             case FINAL:
                 renderFinal(holder, data, amountTotal);
-//                                holder.itemView.setLongClickable(false);
                 break;
             case PENDING_FINAL:
                 renderPendingFinal(holder, data, amountTotal);
-//                                holder.itemView.setLongClickable(false);
                 break;
             default:
                 holder.itemView.setVisibility(View.INVISIBLE);
-//                                holder.itemView.setLongClickable(false);
                 break;
         }
 
@@ -170,6 +158,8 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
     }
 
     private void renderDraft(AssetFactoryDraftHolder holder, final AssetFactory data, double amount) {
+        holder.normalAssetButtons.setVisibility(View.VISIBLE);
+        holder.draftSeparatorLine.setVisibility(View.VISIBLE);
                 /*holder.rowView.setBackgroundColor(ContextCompat.getColor(context, R.color.blue));
                 holder.bottomLine.setVisibility(View.GONE);
                 holder.state.setTextColor(ContextCompat.getColor(context, R.color.state_color_editable));
@@ -188,14 +178,14 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.draftItemEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assetFactorySession.setData("asset_data", data);
+                assetFactorySession.setData("asset_factory", data);
                 fragment.doEditAsset();
             }
         });
         holder.draftItemPublishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assetFactorySession.setData("asset_data", data);
+                assetFactorySession.setData("asset_factory", data);
                 if(fragment.validate())
                 fragment.doPublishAsset();
             }
@@ -203,7 +193,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.draftItemEraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assetFactorySession.setData("asset_data", data);
+                assetFactorySession.setData("asset_factory", data);
                 fragment.doDeleteAsset();
             }
         });

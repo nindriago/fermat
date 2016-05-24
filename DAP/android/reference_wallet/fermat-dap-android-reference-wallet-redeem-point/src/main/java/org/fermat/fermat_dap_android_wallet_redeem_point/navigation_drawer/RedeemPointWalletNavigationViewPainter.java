@@ -54,33 +54,33 @@ public class RedeemPointWalletNavigationViewPainter implements NavigationViewPai
     @Override
     public ViewGroup addNavigationViewBodyContainer(LayoutInflater layoutInflater, ViewGroup base) {
         //DAP V3
-//        RelativeLayout relativeLayout = (RelativeLayout) layoutInflater.inflate(R.layout.dap_v3_navigation_drawer_redeem_point_wallet_bottom, base, true);
-//        return relativeLayout;
+        RelativeLayout relativeLayout = (RelativeLayout) layoutInflater.inflate(R.layout.dap_v3_navigation_drawer_redeem_point_wallet_bottom, base, true);
+        return relativeLayout;
 
        // DAP v2
-       return null;
+       //return null;
     }
 
     //DAP V3
-//    @Override
-//    public Bitmap addBodyBackground() {
-//        Bitmap drawable = null;
-//        try {
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//            options.inScaled = true;
-//            options.inSampleSize = 5;
-//            drawable = BitmapFactory.decodeResource(
-//                    activity.get().getResources(), R.drawable.patterm, options);
-//        } catch (OutOfMemoryError error) {
-//            error.printStackTrace();
-//        }
-//        return drawable;
-//    }
- //DAP V2
     @Override
     public Bitmap addBodyBackground() {
-        return null;
+        Bitmap drawable = null;
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = true;
+            options.inSampleSize = 5;
+            drawable = BitmapFactory.decodeResource(
+                    activity.get().getResources(), R.drawable.patterm, options);
+        } catch (OutOfMemoryError error) {
+            error.printStackTrace();
+        }
+        return drawable;
     }
+ //DAP V2
+//    @Override
+//    public Bitmap addBodyBackground() {
+//        return null;
+//    }
 
     @Override
     public int addBodyBackgroundColor() {
@@ -93,16 +93,16 @@ public class RedeemPointWalletNavigationViewPainter implements NavigationViewPai
     }
 
 //    //DAP V3
-//    @Override
-//    public boolean hasBodyBackground() {
-//        return true;
-//    }
-
-    //DAP V2
     @Override
     public boolean hasBodyBackground() {
-        return false;
+        return true;
     }
+
+    //DAP V2
+//    @Override
+//    public boolean hasBodyBackground() {
+//        return false;
+//    }
 
     @Override
     public boolean hasClickListener() {

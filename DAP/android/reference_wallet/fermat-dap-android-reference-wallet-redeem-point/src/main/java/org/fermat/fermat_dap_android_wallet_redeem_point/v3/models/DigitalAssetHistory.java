@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  */
 public class DigitalAssetHistory implements Comparable<DigitalAssetHistory> {
 
+    private String stadicticID;
     private String historyNameAsset;
     private String historyNameUser;
     private Timestamp expDate;
@@ -108,6 +109,14 @@ public class DigitalAssetHistory implements Comparable<DigitalAssetHistory> {
     public String getFormattedAcceptedDate() {
         if (acceptedDate == null) return "No accepted date";
         return DAPStandardFormats.DATE_FORMAT.format(acceptedDate);
+    }
+
+    public String getStadicticID() {
+        return stadicticID;
+    }
+
+    public void setStadicticID(String stadicticID) {
+        this.stadicticID = stadicticID;
     }
 
     @Override

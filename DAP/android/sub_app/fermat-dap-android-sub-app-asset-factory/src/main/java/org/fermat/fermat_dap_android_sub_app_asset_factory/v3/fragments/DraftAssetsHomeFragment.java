@@ -106,7 +106,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         setHasOptionsMenu(true);
 
         try {
-            appSession.setData("asset_data", null);
+            appSession.setData("asset_factory", null);
             appSession.setData("redeem_points", null);
             manager = ((AssetFactorySession) appSession).getModuleManager();
             errorManager = appSession.getErrorManager();
@@ -129,8 +129,8 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                appSession.setData("asset_data", null);
-//              changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_data"));
+                appSession.setData("asset_factory", null);
+//              changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_factory"));
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
 
             }
@@ -422,7 +422,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
 
     public boolean validate() {
         try {
-            AssetFactory assetFactory = (AssetFactory) appSession.getData("asset_data");
+            AssetFactory assetFactory = (AssetFactory) appSession.getData("asset_factory");
             long satoshis = assetFactory.getAmount();
             if (CryptoVault.isDustySend(satoshis)) {
                 Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
@@ -457,16 +457,16 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
     }
 
     public void doEditAsset() {
-        selectedAsset = (AssetFactory) appSession.getData("asset_data");
+        selectedAsset = (AssetFactory) appSession.getData("asset_factory");
         if (selectedAsset != null) {
-            changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), selectedAsset);
+            changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey(), selectedAsset);
         } else {
-            appSession.setData("asset_data", null);
+            appSession.setData("asset_factory", null);
         }
     }
 
     public void doPublishAsset() {
-        selectedAsset = (AssetFactory) appSession.getData("asset_data");
+        selectedAsset = (AssetFactory) appSession.getData("asset_factory");
         new ConfirmDialog.Builder(getActivity(), appSession)
                 .setTitle(getResources().getString(R.string.home_asset_confirm_title))
                 .setMessage(getResources().getString(R.string.dap_asset_factory_v3_publish_confirm))
@@ -490,7 +490,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                                             break;
                                         }
                                         manager.publishAsset(selectedAsset);
-                                        appSession.setData("asset_data", null);
+                                        appSession.setData("asset_factory", null);
                                         return true;
                                     }
                                 };
@@ -499,7 +499,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                                     @Override
                                     public void onPostExecute(Object... result) {
                                         dialog.dismiss();
-                                        appSession.setData("asset_data", null);
+                                        appSession.setData("asset_factory", null);
                                         selectedAsset = null;
                                         if (getActivity() != null) {
                                             onRefresh();
@@ -511,7 +511,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                                     @Override
                                     public void onErrorOccurred(Exception ex) {
                                         dialog.dismiss();
-                                        appSession.setData("asset_data", null);
+                                        appSession.setData("asset_factory", null);
                                         selectedAsset = null;
 
                                         /**
@@ -552,7 +552,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                     @Override
                     public void onClick() {
                         final ProgressDialog dialog = new ProgressDialog(getActivity());
-                        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_data");
+                        final AssetFactory selectedAsset = (AssetFactory) appSession.getData("asset_factory");
                         dialog.setTitle("Deleting asset");
                         dialog.setMessage("Please wait...");
                         dialog.setCancelable(false);
@@ -569,7 +569,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                             @Override
                             public void onPostExecute(Object... result) {
                                 dialog.dismiss();
-                                appSession.setData("asset_data", null);
+                                appSession.setData("asset_factory", null);
 
                                 if (getActivity() != null) {
                                     Toast.makeText(getActivity(), "Asset deleted successfully", Toast.LENGTH_SHORT).show();
@@ -580,7 +580,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
                             @Override
                             public void onErrorOccurred(Exception ex) {
                                 dialog.dismiss();
-                                appSession.setData("asset_data", null);
+                                appSession.setData("asset_factory", null);
                                 if (getActivity() != null) {
                                     CommonLogger.exception(TAG, ex.getMessage(), ex);
                                     Toast.makeText(getActivity(), "There was an error deleting this asset", Toast.LENGTH_SHORT).show();

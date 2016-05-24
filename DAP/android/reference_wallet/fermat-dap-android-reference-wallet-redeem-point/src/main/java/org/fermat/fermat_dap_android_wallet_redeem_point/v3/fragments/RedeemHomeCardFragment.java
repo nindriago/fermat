@@ -273,11 +273,12 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
     private void setUpPresentation(boolean checkButton) {
         try {
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
+
                     .setBannerRes(R.drawable.banner_redeem_point_wallet)
                     .setIconRes(R.drawable.redeem_point)
                     .setImageLeft(R.drawable.redeem_point_identity)
-                    .setVIewColor(R.color.redeem_card_toolbar)
-                    .setTitleTextColor(R.color.redeem_card_toolbar)
+                    .setVIewColor(R.color.dap_redeem_point_view_color)
+                    .setTitleTextColor(R.color.dap_redeem_point_view_color)
                     .setTextNameLeft(R.string.dap_redeem_wallet_welcome_name_left)
                     .setSubTitle(R.string.dap_redeem_wallet_welcome_subTitle)
                     .setBody(R.string.dap_redeem_wallet_welcome_body)
@@ -347,9 +348,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         if (moduleManager != null) {
             try {
 //                assets = Data.getAllDigitalAssets(moduleManager);
-//                assets = Data.getAssets(moduleManager);
-                //assets.addAll(DataManager.getAllPendingNegotiations());
-                    assets = Data.getAllTestAssets(moduleManager);
+                    assets = Data.getAllRedeemPointAssets(moduleManager);
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);
                 if (errorManager != null)
