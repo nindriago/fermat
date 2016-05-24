@@ -260,11 +260,18 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         return true;
     }
     private boolean isValid(AssetFactory asset){
-
+        Date newExpDate = null;
+        try {
+            newExpDate= new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
+        } catch (ParseException e) {
+            Toast.makeText(getActivity(), "Invalid Date", Toast.LENGTH_SHORT).show();
+        }
+        boolean isValidDate = newExpDate == null ? true : newExpDate.after(new Date());
 
         if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() > 0 &&
                 wizardPropertiesAssetDescEditText.getText().toString().trim().length() > 0 &&
-                asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND){
+                asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND &&
+                isValidDate){
             return true;
 
         }else if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() == 0){
@@ -275,6 +282,9 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             return false;
         }else if(asset.getQuantity() == 0){
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (newExpDate != null && newExpDate.before(new Date())){
+            Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
             return false;
         }else{
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
@@ -365,7 +375,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             }
 
             try {
-                if (wizardPropertiesExpDateEditText.getText().toString().length() > 0) {
+                if (wizardPropertiesExpDateEditText.getText().toString().length() > 0 && !wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
                     asset.setExpirationDate(new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime()));
                 }
             } catch (ParseException e) {
@@ -417,7 +427,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         if (asset.getExpirationDate() != null) {
             wizardPropertiesExpDateEditText.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
         } else {
-            wizardPropertiesExpDateEditText.setText("");
+            wizardPropertiesExpDateEditText.setText("None");
         }
     }
 
