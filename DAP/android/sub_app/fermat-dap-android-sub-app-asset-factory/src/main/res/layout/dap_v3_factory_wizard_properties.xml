@@ -274,10 +274,25 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:src="@drawable/calendar"
+                android:background="@null"
                 android:layout_toRightOf="@+id/wizardPropertiesQuantityEditText"
                 android:layout_below="@+id/wizardPropertiesQuantityLabel"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"/>
+
+            <ImageButton
+                android:id="@+id/wizardPropertiesEraseDateButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/x_icon_blue"
+                android:scaleType="fitCenter"
+                android:background="@null"
+
+                android:layout_below="@+id/wizardPropertiesQuantityLabel"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="120dp"
+                android:visibility="gone"
+                />
 
         </RelativeLayout>
 
