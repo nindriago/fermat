@@ -130,13 +130,14 @@ public class SettingsFactoryNotificationFragment extends AbstractFermatFragment 
     }
 
     private void configureToolbar() {
-        Toolbar toolbar = getPaintActivtyFeactures().getToolbar();
+        Toolbar toolbar = getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(Color.parseColor("#1d1d25"));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_home_bar_color));
             toolbar.setTitleTextColor(Color.WHITE);
+            toolbar.setBottom(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(Color.parseColor("#1d1d25"));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_home_bar_color));
             }
         }
     }
