@@ -98,7 +98,7 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
         setHasOptionsMenu(true);
 
         try {
-            appSession.setData("asset_data", null);
+            appSession.setData("asset_factory", null);
             appSession.setData("redeem_points", null);
             manager = ((AssetFactorySession) appSession).getModuleManager();
             errorManager = appSession.getErrorManager();
@@ -122,8 +122,8 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
 //        create.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                appSession.setData("asset_data", null);
-//                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_data"));
+//                appSession.setData("asset_factory", null);
+//                changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), (AssetFactory) appSession.getData("asset_factory"));
 //            }
 //        });
 //        create.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fab_jump_from_down));
