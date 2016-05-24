@@ -264,6 +264,7 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
                 if (isValid(asset)) {
                     saveMultimedia();
                     doFinish();
+                    Toast.makeText(getActivity(), String.format("Asset %s has been edited", asset.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -405,12 +406,12 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.card_toolbar));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_home_bar_color));
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setBottom(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(getResources().getColor(R.color.card_toolbar));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_home_bar_color));
             }
         }
     }
