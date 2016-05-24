@@ -60,15 +60,15 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:visibility="invisible"
-        app:button_color="#f22222"
-        app:button_colorPressed="#f22222"
+        app:button_color="@color/redeem_home_bar_color"
+        app:button_colorPressed="@color/redeem_home_bar_color"
         app:image="@drawable/fab_plus_icon"
         app:shadow_color="#eae8e6"
         app:shadow_radius="3.0dp"
         app:shadow_xOffset="0.5dp"
         app:shadow_yOffset="1.0dp"
         app:show_animation="@anim/fab_jump_to_right"
-        app:stroke_color="#f22222"
+        app:stroke_color="@color/redeem_home_bar_color"
         app:type="DEFAULT" />
 
 </RelativeLayout>
