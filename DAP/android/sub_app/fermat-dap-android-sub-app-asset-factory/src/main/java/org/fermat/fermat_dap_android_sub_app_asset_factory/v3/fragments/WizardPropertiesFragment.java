@@ -61,6 +61,7 @@ import static android.widget.Toast.makeText;
  */
 public class WizardPropertiesFragment extends AbstractFermatFragment {
 
+    Date date = null;
     private Activity activity;
     private AssetFactorySession assetFactorySession;
     private AssetFactoryModuleManager moduleManager;
@@ -224,7 +225,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         wizardPropertiesSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validate()) {
+                if (isValid(asset)) {
                     saveProperties();
                     doFinish();
                     changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
@@ -256,6 +257,34 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
 
     private boolean validate() {
         return true;
+    }
+    private boolean isValid(AssetFactory asset){
+
+
+        try {
+            date = new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() > 0 &&
+                wizardPropertiesAssetDescEditText.getText().toString().trim().length() > 0 &&
+                asset.getQuantity() > 0){
+            return true;
+
+        }else if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() == 0){
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(wizardPropertiesAssetDescEditText.getText().toString().trim().length() == 0){
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_description), Toast.LENGTH_SHORT).show();
+            return false;
+        }else /*if(asset.getQuantity() == 0)*/{
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }/*else{
+            Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
+            return false;
+        }*/
     }
 
     private void doFinish() {
@@ -311,11 +340,11 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
 
     private void saveProperties() {
         if (asset != null) {
-            if (wizardPropertiesAssetNameEditText.getText().toString().length() > 0) {
-                asset.setName(wizardPropertiesAssetNameEditText.getText().toString());
+            if (wizardPropertiesAssetNameEditText.getText().toString().trim().length() > 0) {
+                asset.setName(wizardPropertiesAssetNameEditText.getText().toString().trim());
             }
-            if (wizardPropertiesAssetDescEditText.getText().toString().length() > 0) {
-                asset.setDescription(wizardPropertiesAssetDescEditText.getText().toString());
+            if (wizardPropertiesAssetDescEditText.getText().toString().trim().length() > 0) {
+                asset.setDescription(wizardPropertiesAssetDescEditText.getText().toString().trim());
             }
 
             List<ContractProperty> contractProperties = asset.getContractProperties();
