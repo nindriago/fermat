@@ -260,7 +260,7 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
         wizardMultimediaSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validate()) {
+                if (isValid(asset)) {
                     saveMultimedia();
                     doFinish();
                 }
@@ -344,7 +344,23 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
             changeActivity(code, appSession.getAppPublicKey());
         }
     }
+    private boolean isValid(AssetFactory asset){
+        if(asset.getName() != null && asset.getName().trim().length() > 0 &&
+                asset.getDescription() != null && asset.getDescription().trim().length() > 0
+                && asset.getQuantity() > 0){
+            return true;
 
+        }else if(asset.getName() == null || asset.getName().trim().length() == 0){
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(asset.getDescription() == null || asset.getDescription().trim().length() == 0 ){
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_description), Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
     private boolean validate() {
         return true;
     }
