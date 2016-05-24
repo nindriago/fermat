@@ -55,6 +55,7 @@ import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.Asset
 
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.UUID;
 
 import static android.widget.Toast.makeText;
@@ -237,10 +238,12 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
         });
     }
     private boolean isValid(AssetFactory asset){
+        boolean isValidDate = asset.getExpirationDate() == null ? true : asset.getExpirationDate().after(new Date());
         if(asset.getName() != null && asset.getName().trim().length() > 0 &&
                 asset.getDescription() != null && asset.getDescription().trim().length() > 0
                 && Integer.parseInt(wizardCryptoQuantityEditText.getText().toString()) > 0
-                && Double.parseDouble(wizardCryptoValueEditText.getText().toString())>= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND){
+                && Double.parseDouble(wizardCryptoValueEditText.getText().toString())>= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND
+                && isValidDate){
             return true;
 
         }else if(asset.getName() == null || asset.getName().trim().length() == 0){
@@ -251,6 +254,9 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
             return false;
         }else if(Integer.parseInt(wizardCryptoQuantityEditText.getText().toString()) == 0){
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (asset.getExpirationDate() != null && asset.getExpirationDate().before(new Date())){
+            Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
             return false;
         }else{
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
