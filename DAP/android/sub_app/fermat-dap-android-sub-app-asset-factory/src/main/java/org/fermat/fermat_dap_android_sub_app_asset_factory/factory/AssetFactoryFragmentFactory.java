@@ -33,19 +33,11 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
     @Override
     public AbstractFermatFragment getFermatFragment(AssetFactoryFragmentsEnumType fragments) throws FragmentNotFoundException {
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_EDITABLE_TAB_FRAGMENT))
-                //return EditableAssetsFragment.newInstance();
                 return DraftAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_PUBLISHED_TAB_FRAGMENT))
-                //return PublishedAssetsFragment.newInstance();
                 return PublishedAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_EDITOR_ACTIVITY))
-            //return AssetEditorFragment.newInstance(EditableAssetsFragment.getAssetForEdit());
-
-            //Use this for testing
             return AssetEditorFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
-
-            //Use this when new Wizard fragment is ready
-            //return CreateEditorAssetFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS))
             return SettingsFactoryFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS_NETWORK_MAIN))
@@ -62,20 +54,6 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
             return WizardVerifyFragment.newInstance();
         throw createFragmentNotFoundException(fragments);
 
-        // For the new dap V3
-/*        if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_DRAFT_TAB_FRAGMENT))
-            return DraftAssetsHomeFragment.newInstance();
-        if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_PUBLISHED_TAB_FRAGMENT))
-            return PublishedAssetsHomeFragment.newInstance();
-        if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_EDITOR_FRAGMENT))
-            return CreateEditorAssetFragment.newInstance(DraftAssetsHomeFragment.newInstance());
-        if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS_FRAGMENT))
-            return SettingsFactoryFragment.newInstance();
-        if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS_NETWORK_MAIN_FRAGMENT))
-            return SettingsFactoryNetworkFragment.newInstance();
-        if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS_NOTIFICATIONS_FRAGMENT))
-            return SettingsFactoryNotificationFragment.newInstance();
-        throw createFragmentNotFoundException(fragments);*/
     }
 
     @Override
