@@ -30,6 +30,7 @@ import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
+import com.bitdubai.fermat_bch_api.layer.crypto_network.bitcoin.interfaces.BitcoinNetworkConfiguration;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
@@ -261,15 +262,9 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private boolean isValid(AssetFactory asset){
 
 
-        try {
-            date = new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
         if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() > 0 &&
                 wizardPropertiesAssetDescEditText.getText().toString().trim().length() > 0 &&
-                asset.getQuantity() > 0){
+                asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND){
             return true;
 
         }else if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() == 0){
@@ -278,13 +273,14 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         }else if(wizardPropertiesAssetDescEditText.getText().toString().trim().length() == 0){
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_description), Toast.LENGTH_SHORT).show();
             return false;
-        }else /*if(asset.getQuantity() == 0)*/{
+        }else if(asset.getQuantity() == 0){
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
             return false;
-        }/*else{
-            Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
+                    " \n This is needed to pay the fee of bitcoin transactions during delivery of the assets.", Toast.LENGTH_LONG).show();
             return false;
-        }*/
+        }
     }
 
     private void doFinish() {
