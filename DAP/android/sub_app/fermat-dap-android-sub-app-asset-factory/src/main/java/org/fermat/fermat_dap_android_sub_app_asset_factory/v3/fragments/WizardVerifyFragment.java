@@ -208,18 +208,19 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         wizardVerifyFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (asset.getName() != null && asset.getName().length() > 0) {
+                if (isValid(asset)) {
                     doFinish();
-                } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
         wizardVerifySaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doFinish();
-                changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                if(isValid(asset)) {
+                    doFinish();
+                    changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                }
             }
         });
         wizardVerifyStep1Image.setOnClickListener(new View.OnClickListener() {
@@ -241,7 +242,23 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             }
         });
     }
+    private boolean isValid(AssetFactory asset){
+        if(asset.getName() != null && asset.getName().trim().length() > 0 &&
+                asset.getDescription() != null && asset.getDescription().trim().length() > 0
+                && asset.getQuantity() > 0){
+            return true;
 
+        }else if(asset.getName() == null || asset.getName().trim().length() == 0){
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(asset.getDescription() == null || asset.getDescription().trim().length() == 0 ){
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_description), Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
     private void doFinish() {
         if (asset != null) {
             if (asset.getFactoryId() == null) {
