@@ -211,6 +211,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             public void onClick(View v) {
                 if (isValid(asset)) {
                     doFinish();
+                    Toast.makeText(getActivity(), String.format("Asset %s has been created", asset.getName()), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -221,6 +222,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
                 if(isValid(asset)) {
                     doFinish();
                     changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                    Toast.makeText(getActivity(), String.format("Asset %s has been edited", asset.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -361,7 +363,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         if (asset.getExpirationDate() != null) {
             wizardVerifyExpDateValue.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
         } else {
-            wizardVerifyExpDateValue.setText("");
+            wizardVerifyExpDateValue.setText("No Exp date");
         }
         if (asset.getQuantity() > 0) {
             wizardVerifyQuantityValue.setText(Integer.toString(asset.getQuantity()) + ((asset.getQuantity() == 1) ? " asset" : " assets"));
@@ -403,12 +405,12 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.card_toolbar));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_home_bar_color));
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setBottom(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(getResources().getColor(R.color.card_toolbar));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_home_bar_color));
             }
         }
     }
