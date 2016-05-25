@@ -137,8 +137,9 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
             holder.confirmedV3Asset.setVisibility(View.GONE);
         } else if (asset.getStatus() == DigitalAsset.Status.CONFIRMED) {
 
+            holder.cardDetailStatusImage.setVisibility(View.GONE);
             holder.actionButtons.setVisibility(View.GONE);
-            holder.confirmedV3Asset.setVisibility(View.GONE);
+            holder.confirmedV3Asset.setVisibility(View.VISIBLE);
 
 
         } else {

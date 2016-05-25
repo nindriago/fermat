@@ -34,6 +34,7 @@ public class RedeemCardViewHolder extends FermatViewHolder {
     public FermatTextView cardActorName;
     public ImageView cardConfirmedImage;
     public ImageView cardStatusImage;
+    public ImageView cardDetailStatusImage;
 
     public ImageButton cardDeliverButton;
     public ImageButton cardAcceptButton;
@@ -41,6 +42,7 @@ public class RedeemCardViewHolder extends FermatViewHolder {
 
     public View redeemNegotiationV3Asset;
     public View confirmedV3Asset;
+
     public View actionButtons;
 
 
@@ -54,6 +56,7 @@ public class RedeemCardViewHolder extends FermatViewHolder {
         cardAssetName = (FermatTextView) itemView.findViewById(R.id.cardAssetName);
         cardTime = (FermatTextView) itemView.findViewById(R.id.cardTime);
         cardActorUserImage = (ImageView) itemView.findViewById(R.id.cardActorUserImage);
+        cardDetailStatusImage = (ImageView) itemView.findViewById(R.id.cardDetailStatusImage);
         cardActorName = (FermatTextView) itemView.findViewById(R.id.cardActorName);
         cardConfirmedImage = (ImageView) itemView.findViewById(R.id.cardConfirmedImage);
         cardStatusImage = (ImageView) itemView.findViewById(R.id.cardStatusImage);
