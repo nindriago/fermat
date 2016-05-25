@@ -12,7 +12,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/redeemDetailViewPager"
             android:layout_width="match_parent"
-            android:layout_height="330dp">
+            android:layout_height="wrap_content">
 
         </android.support.v4.view.ViewPager>
 
@@ -42,6 +42,7 @@
                     android:layout_marginLeft="7dp"/>
 
                 <LinearLayout
+                    android:id="@+id/actionButtonsDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -112,9 +113,8 @@
         <RelativeLayout
             android:id="@+id/shadowLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadow"
-            >
+            android:layout_height="match_parent"
+            android:background="@drawable/shadow">
 
         </RelativeLayout>
 
