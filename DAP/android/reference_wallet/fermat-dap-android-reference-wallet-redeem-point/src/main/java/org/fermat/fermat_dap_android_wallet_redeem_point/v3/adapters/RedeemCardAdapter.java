@@ -89,10 +89,9 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
         }
 
         holder.cardAssetName.setText(asset.getName());
-//        cardTime.setText(asset.getFormattedDate()); agregasr este metodo al modelo digital asset
-        holder.cardTime.setText(asset.getFormattedExpDate());
+        holder.cardTime.setText(asset.getFormattedDate());
 
-        byte[] img = (asset.getImageActorUserFrom() == null) ? new byte[0] : asset.getImage(); /*modificar modelo Digital Asset*/
+        byte[] img = (asset.getImageActorUserFrom() == null) ? new byte[0] : asset.getImageActorUserFrom(); /*modificar modelo Digital Asset*/
         BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(holder.cardActorUserImage,
                 holder.res, R.drawable.img_asset_without_image, false);
         bitmapWorkerTask.execute(img);
@@ -111,7 +110,7 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
 
         if (asset.getStatus() == DigitalAsset.Status.PENDING && assetNotificationEnabled) {
 
-            holder.redeemNegotiationV3Asset.setVisibility(View.VISIBLE);
+            holder.actionButtons.setVisibility(View.VISIBLE);
             holder.confirmedV3Asset.setVisibility(View.GONE);
 
             holder.cardStatusImage.setImageResource(R.drawable.received);
@@ -134,16 +133,16 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
             });
 
         } else if (asset.getStatus() == DigitalAsset.Status.PENDING && !assetNotificationEnabled) {
-            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
+            holder.actionButtons.setVisibility(View.GONE);
             holder.confirmedV3Asset.setVisibility(View.GONE);
         } else if (asset.getStatus() == DigitalAsset.Status.CONFIRMED) {
 
-            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
+            holder.actionButtons.setVisibility(View.GONE);
             holder.confirmedV3Asset.setVisibility(View.GONE);
 
 
         } else {
-            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
+            holder.actionButtons.setVisibility(View.GONE);
             holder.confirmedV3Asset.setVisibility(View.GONE);
 
             holder.cardDeliverButton.setOnClickListener(new View.OnClickListener() {

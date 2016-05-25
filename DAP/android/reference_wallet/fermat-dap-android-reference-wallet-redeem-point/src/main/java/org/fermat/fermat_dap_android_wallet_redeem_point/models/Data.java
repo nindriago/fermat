@@ -75,6 +75,7 @@ public class Data {
                 digitalAsset.setName(assetRedeemPointWalletList.getDigitalAsset().getName());
                 digitalAsset.setExpDate((Timestamp) assetRedeemPointWalletList.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
                 digitalAsset.setAssetDescription(assetRedeemPointWalletList.getDigitalAsset().getDescription());
+                digitalAsset.setAvailableBalance(assetRedeemPointWalletList.getAvailableBalance());
 
                 List<AssetRedeemPointWalletTransaction> transactions = redeemPointWallet.getTransactionsForDisplay(assetRedeemPointWalletList.getDigitalAsset().getPublicKey());
                 //digitalAsset.setActorAssetUser(transactions.get(transactions.size()-1).getActorFrom());
@@ -87,6 +88,7 @@ public class Data {
 
                 digitalAsset.setDate(new Timestamp(transactions.get(transactions.size() - 1).getTimestamp()));
                 digitalAsset.setStatus(transactions.get(transactions.size() - 1).getBalanceType().equals(BalanceType.AVAILABLE) ? DigitalAsset.Status.CONFIRMED : DigitalAsset.Status.PENDING);
+                digitalAsset.setActorIssuerAddress("Asset Issuer "+digitalAsset.getActorIssuerNameFrom()+" address");
 
                 List<Resource> resources = assetRedeemPointWalletList.getDigitalAsset().getResources();
                 if (resources != null && !resources.isEmpty()) {
