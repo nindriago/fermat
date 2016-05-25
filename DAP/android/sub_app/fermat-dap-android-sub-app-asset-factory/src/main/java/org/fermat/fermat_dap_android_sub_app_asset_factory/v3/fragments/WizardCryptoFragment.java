@@ -414,7 +414,14 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
 
     private void loadCrypto(ArrayAdapter<DAPFeeType> spinnerAdapterFee) {
         if (asset.getAmount() > 0) {
-            wizardCryptoValueEditText.setText(Long.toString(asset.getAmount()));
+            try {
+                double amount = DAPStandardFormats.BITCOIN_FORMAT.parse(Long.toString(asset.getAmount())).doubleValue();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            BitcoinConverter.Currency to = (BitcoinConverter.Currency) wizardCryptoValueSpinner.getSelectedItem();
+            long amountToLoad = ((Double) BitcoinConverter.convert(asset.getAmount(), SATOSHI, to)).longValue();
+            wizardCryptoValueEditText.setText(Long.toString(amountToLoad));
         } else {
             wizardCryptoValueEditText.setText("0");
 
