@@ -111,6 +111,9 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         activity = new Activity();
         configureToolbar();
 
+        if (assets != null)
+            showOrHideNoAssetsView(assets.isEmpty());
+
     }
 
     @Override
