@@ -87,6 +87,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private ImageButton wizardPropertiesStep1Image;
     private ImageButton wizardPropertiesStep3Image;
     private ImageButton wizardPropertiesStep4Image;
+    private ImageButton wizardPropertiesEraseDateButton;
 
     SettingsManager<AssetFactorySettings> settingsManager;
     private AssetFactory asset;
@@ -192,6 +193,16 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         wizardPropertiesStep1Image = (ImageButton) rootView.findViewById(R.id.wizardPropertiesStep1Image);
         wizardPropertiesStep3Image = (ImageButton) rootView.findViewById(R.id.wizardPropertiesStep3Image);
         wizardPropertiesStep4Image = (ImageButton) rootView.findViewById(R.id.wizardPropertiesStep4Image);
+        wizardPropertiesEraseDateButton = (ImageButton) rootView.findViewById(R.id.wizardPropertiesEraseDateButton);
+
+        wizardPropertiesEraseDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wizardPropertiesExpDateEditText.setText("");
+                wizardPropertiesEraseDateButton.setVisibility(View.GONE);
+
+            }
+        });
 
         wizardPropertiesDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +214,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
                         expirationTimeCalendar.set(Calendar.MONTH, month);
                         expirationTimeCalendar.set(Calendar.DAY_OF_MONTH, day);
                         wizardPropertiesExpDateEditText.setText(DAPStandardFormats.DATE_FORMAT.format(expirationTimeCalendar.getTime()));
+                        wizardPropertiesEraseDateButton.setVisibility(View.VISIBLE);
                     }
                 }, expirationTimeCalendar.get(Calendar.YEAR), expirationTimeCalendar.get(Calendar.MONTH), expirationTimeCalendar.get(Calendar.DAY_OF_MONTH));
                 pickerDialog.show();
@@ -230,6 +242,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
                     saveProperties();
                     doFinish();
                     changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                    Toast.makeText(getActivity(), String.format("Asset %s has been edited", asset.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -260,11 +273,18 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         return true;
     }
     private boolean isValid(AssetFactory asset){
-
+        Date newExpDate = null;
+        try {
+            newExpDate= new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
+        } catch (ParseException e) {
+            Toast.makeText(getActivity(), "Invalid Date", Toast.LENGTH_SHORT).show();
+        }
+        boolean isValidDate = newExpDate == null ? true : newExpDate.after(new Date());
 
         if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() > 0 &&
                 wizardPropertiesAssetDescEditText.getText().toString().trim().length() > 0 &&
-                asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND){
+                asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND &&
+                isValidDate){
             return true;
 
         }else if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() == 0){
@@ -275,6 +295,9 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             return false;
         }else if(asset.getQuantity() == 0){
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (newExpDate != null && newExpDate.before(new Date())){
+            Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
             return false;
         }else{
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
@@ -365,8 +388,10 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             }
 
             try {
-                if (wizardPropertiesExpDateEditText.getText().toString().length() > 0) {
+                if (wizardPropertiesExpDateEditText.getText().toString().length() > 0 && !wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
                     asset.setExpirationDate(new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime()));
+                }else{
+                    asset.setExpirationDate(null);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -384,6 +409,9 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             wizardPropertiesSaveButton.setVisibility((asset.getFactoryId() != null) ? View.VISIBLE : View.INVISIBLE);
             wizardPropertiesButtons.setVisibility((asset.getFactoryId() != null) ? View.INVISIBLE : View.VISIBLE);
         }
+
+        wizardPropertiesEraseDateButton.setVisibility(
+                (wizardPropertiesExpDateEditText.getText().toString().equals(""))?View.GONE:View.VISIBLE);
     }
 
     private void loadProperties() {
@@ -417,19 +445,19 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         if (asset.getExpirationDate() != null) {
             wizardPropertiesExpDateEditText.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
         } else {
-            wizardPropertiesExpDateEditText.setText("");
+            wizardPropertiesExpDateEditText.setText("None");
         }
     }
 
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.card_toolbar));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_home_bar_color));
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setBottom(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(getResources().getColor(R.color.card_toolbar));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_home_bar_color));
             }
         }
     }

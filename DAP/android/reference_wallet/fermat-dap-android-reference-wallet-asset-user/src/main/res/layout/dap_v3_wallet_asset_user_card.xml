@@ -28,7 +28,7 @@
                 android:id="@+id/cardHeader"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/bg_card">
+                android:background="@drawable/bg_card_wallet_user">
 
                 <RelativeLayout
                     android:id="@+id/cardActorImageLayout"
@@ -201,7 +201,7 @@
                         android:layout_width="55dp"
                         android:layout_height="30dp"
                         android:background="@null"
-                        android:src="@drawable/ic_appropriate" />
+                        android:src="@drawable/ic_appropriate_user_wallet" />
 
                     <ImageButton
                         android:id="@+id/cardSellButton"

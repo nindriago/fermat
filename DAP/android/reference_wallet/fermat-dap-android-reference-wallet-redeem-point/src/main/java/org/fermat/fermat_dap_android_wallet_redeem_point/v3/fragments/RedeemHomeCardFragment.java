@@ -369,9 +369,15 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
     public void activityChange(){
         changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
     }
-    public void doAcceptAsset(){}
+    public void doAcceptAsset(){
+
+    }
 
     public void doRejectAsset(){}
 
     public void doDeliver(){}
+
+    public SettingsManager<RedeemPointSettings> getSettingsManager() {
+        return settingsManager;
+    }
 }

@@ -56,6 +56,7 @@ import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.Asset
 import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -264,6 +265,7 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
                 if (isValid(asset)) {
                     saveMultimedia();
                     doFinish();
+                    Toast.makeText(getActivity(), String.format("Asset %s has been edited", asset.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -346,9 +348,13 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
         }
     }
     private boolean isValid(AssetFactory asset){
+        boolean isValidDate = asset.getExpirationDate() == null ? true : asset.getExpirationDate().after(new Date());
+
         if(asset.getName() != null && asset.getName().trim().length() > 0 &&
                 asset.getDescription() != null && asset.getDescription().trim().length() > 0
-                && asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND){
+                && asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND
+                && isValidDate){
+
             return true;
 
         }else if(asset.getName() == null || asset.getName().trim().length() == 0){
@@ -359,6 +365,9 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
             return false;
         }else if(asset.getQuantity() == 0){
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (asset.getExpirationDate() != null && asset.getExpirationDate().before(new Date())){
+            Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
             return false;
         }else{
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
@@ -405,12 +414,12 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.card_toolbar));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_home_bar_color));
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setBottom(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(getResources().getColor(R.color.card_toolbar));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_home_bar_color));
             }
         }
     }

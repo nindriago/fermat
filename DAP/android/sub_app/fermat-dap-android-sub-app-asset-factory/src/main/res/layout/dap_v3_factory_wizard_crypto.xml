@@ -168,6 +168,17 @@
                 android:layout_marginLeft="5dp"
                 android:background="@color/wizard_crypto_value_spinner"/>
 
+            <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
+                android:id="@+id/wizardBitcoinNoteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Note: Values are displayed in Bitcoins"
+                android:textSize="12sp"
+                android:textColor="@color/wizard_label_2"
+                android:layout_alignParentRight="true"
+
+                android:layout_marginRight="10dp"/>
+
             <TextView
                 android:id="@+id/wizardCryptoFeeLabel"
                 android:layout_width="wrap_content"

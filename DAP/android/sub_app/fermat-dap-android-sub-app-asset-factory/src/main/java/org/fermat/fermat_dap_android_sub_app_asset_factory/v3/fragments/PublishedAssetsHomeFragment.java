@@ -60,6 +60,9 @@ import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.Asset
 import org.fermat.fermat_dap_api.layer.dap_transaction.asset_issuing.exceptions.NotAvailableKeysToPublishAssetsException;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -87,8 +90,7 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
     private SearchView searchView;
 
 
-
-    public static PublishedAssetsHomeFragment newInstance(){
+    public static PublishedAssetsHomeFragment newInstance() {
         return new PublishedAssetsHomeFragment();
     }
 
@@ -137,7 +139,7 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
         try {
 
         /*test*/
-            if(dataSet != null)
+            if (dataSet != null)
                 showOrHideNoAssetsView(dataSet.isEmpty());
 
             satoshisWalletBalance = manager.getBitcoinWalletBalance(Utils.getBitcoinWalletPublicKey(manager));
@@ -376,8 +378,19 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
         List<AssetFactory> items = new ArrayList<>();
         try {
             List<AssetFactory> publishedAssets = manager.getAssetFactoryByState(FINAL);
-            if (publishedAssets != null && !publishedAssets.isEmpty())
+            if (publishedAssets != null && !publishedAssets.isEmpty()) {
+                Collections.sort(publishedAssets, new Comparator<AssetFactory>() {
+                    @Override
+                    public int compare(AssetFactory lhs, AssetFactory rhs) {
+                        if (lhs.getCreationTimestamp().getTime() > rhs.getCreationTimestamp().getTime())
+                            return -1;
+                        else if (lhs.getCreationTimestamp().getTime() < rhs.getCreationTimestamp().getTime())
+                            return 1;
+                        return 0;
+                    }
+                });
                 items.addAll(publishedAssets);
+            }
             List<Resource> resources;
             for (AssetFactory item : items) {
                 resources = item.getResources();
@@ -385,8 +398,7 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
                     resource.setResourceBinayData(manager.getAssetFactoryResource(resource).getContent());
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
             if (errorManager != null)
                 errorManager.reportUnexpectedWalletException(
@@ -407,7 +419,6 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
                 super.onUpdateViewOnUIThread(code);
         }
     }
-
 
 
     @Override

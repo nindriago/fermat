@@ -211,6 +211,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             public void onClick(View v) {
                 if (isValid(asset)) {
                     doFinish();
+                    Toast.makeText(getActivity(), String.format("Asset %s has been created", asset.getName()), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -221,6 +222,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
                 if(isValid(asset)) {
                     doFinish();
                     changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
+                    Toast.makeText(getActivity(), String.format("Asset %s has been edited", asset.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -244,9 +246,12 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         });
     }
     private boolean isValid(AssetFactory asset){
+        boolean isValidDate = asset.getExpirationDate() == null ? true : asset.getExpirationDate().after(new Date());
+
         if(asset.getName() != null && asset.getName().trim().length() > 0 &&
                 asset.getDescription() != null && asset.getDescription().trim().length() > 0
-                && asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND){
+                && asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND
+                && isValidDate){
             return true;
 
         }else if(asset.getName() == null || asset.getName().trim().length() == 0){
@@ -257,6 +262,10 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             return false;
         }else if(asset.getQuantity() == 0){
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (asset.getExpirationDate() != null && asset.getExpirationDate().before(new Date())){
+            Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
             return false;
         }else{
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
@@ -340,7 +349,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         if (asset.getDescription() != null && asset.getDescription().length() > 0) {
             wizardVerifyDescText.setText(asset.getDescription());
         } else {
-            wizardVerifyDescText.setText("");
+            wizardVerifyDescText.setText("Description must be set");
         }
         if (asset.getResources() != null && !asset.getResources().isEmpty()) {
             if (asset.getResources().get(0) != null && asset.getResources().get(0).getResourceBinayData() != null) {
@@ -361,12 +370,12 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         if (asset.getExpirationDate() != null) {
             wizardVerifyExpDateValue.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
         } else {
-            wizardVerifyExpDateValue.setText("");
+            wizardVerifyExpDateValue.setText("No Exp date");
         }
         if (asset.getQuantity() > 0) {
             wizardVerifyQuantityValue.setText(Integer.toString(asset.getQuantity()) + ((asset.getQuantity() == 1) ? " asset" : " assets"));
         } else {
-            wizardVerifyQuantityValue.setText("");
+            wizardVerifyQuantityValue.setText("Quantity must be set");
         }
         List<ContractProperty> properties = asset.getContractProperties();
         wizardVerifyRedeemableCheck.setChecked(false);
@@ -403,12 +412,12 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     private void configureToolbar() {
         Toolbar toolbar = getToolbar();
         if (toolbar != null) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.card_toolbar));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.redeem_home_bar_color));
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setBottom(Color.WHITE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(getResources().getColor(R.color.card_toolbar));
+                window.setStatusBarColor(getResources().getColor(R.color.redeem_home_bar_color));
             }
         }
     }
