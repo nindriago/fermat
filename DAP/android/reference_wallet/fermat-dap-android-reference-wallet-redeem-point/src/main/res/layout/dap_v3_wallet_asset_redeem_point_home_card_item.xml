@@ -181,7 +181,7 @@
                     android:src="@drawable/received"
                     android:scaleType="centerCrop"
                     android:layout_marginLeft="9dp"
-                    android:visibility="invisible"/>
+                    android:visibility="visible"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
