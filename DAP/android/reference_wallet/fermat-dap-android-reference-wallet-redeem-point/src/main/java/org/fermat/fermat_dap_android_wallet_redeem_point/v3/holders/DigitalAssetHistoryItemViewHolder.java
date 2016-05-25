@@ -77,7 +77,7 @@ public class DigitalAssetHistoryItemViewHolder extends FermatViewHolder {
             imageViewAssetRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), bitmap));
         }
         else
-            imageViewAssetRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.asset_user_identity_history));
+            imageViewAssetRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.img_asset_without_image));
 
         if (digitalAssetHistory.getImageActorUserFrom() != null && digitalAssetHistory.getImageActorUserFrom().length > 0) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(digitalAssetHistory.getImageActorUserFrom(), 0, digitalAssetHistory.getImageActorUserFrom().length);
