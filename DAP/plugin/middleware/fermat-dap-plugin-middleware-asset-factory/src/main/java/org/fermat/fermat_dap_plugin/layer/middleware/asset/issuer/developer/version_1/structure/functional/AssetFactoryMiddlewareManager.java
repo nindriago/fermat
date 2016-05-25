@@ -98,14 +98,15 @@ public final class AssetFactoryMiddlewareManager {
 
     private void saveAssetFactoryInDatabase(AssetFactory assetFactory) throws org.fermat.fermat_dap_plugin.layer.middleware.asset.issuer.developer.version_1.exceptions.DatabaseOperationException, org.fermat.fermat_dap_plugin.layer.middleware.asset.issuer.developer.version_1.exceptions.MissingAssetDataException, CantCreateFileException, CantPersistFileException {
         try {
-            List<ContractProperty> contractProperties = new ArrayList<>();
-            ContractProperty redeemable;
-            ContractProperty expirationDate;
-            redeemable = new ContractProperty(DigitalAssetContractPropertiesConstants.REDEEMABLE, assetFactory.getIsRedeemable());
-            expirationDate = new ContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE, assetFactory.getExpirationDate());
-            contractProperties.add(redeemable);
-            contractProperties.add(expirationDate);
-            assetFactory.setContractProperties(contractProperties);
+//            List<ContractProperty> contractProperties = new ArrayList<>();
+//            ContractProperty redeemable;
+//            ContractProperty expirationDate;
+//            redeemable = new ContractProperty(DigitalAssetContractPropertiesConstants.REDEEMABLE, assetFactory.getIsRedeemable());
+//            expirationDate = new ContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE, assetFactory.getExpirationDate());
+//            contractProperties.add(redeemable);
+//            contractProperties.add(expirationDate);
+//            assetFactory.setContractProperties(contractProperties);
+//            assetFactory.getContractProperties().add(expirationDate);
             try {
                 assetFactory.setIdentityAssetIssuer(identityAssetIssuerManager.getIdentityAssetIssuer());
             } catch (CantGetAssetIssuerIdentitiesException cantCreateFileException) {
