@@ -218,7 +218,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
                             .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
                                 @Override
                                 public void onClick() {
-                                    doDistributeToUsers(digitalAsset.getAssetPublicKey(), users, users.size());
+                                    doDistributeToUsers(digitalAsset.getAssetPublicKey(), getSelectedUsers(), getSelectedUsersCount());
                                 }
                             }).build().show();
                 }
@@ -343,8 +343,28 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
 
     @Override
     public void onItemClickListener(User data, int position) {
-        data.setSelected(!data.isSelected());
-        adapter.notifyDataSetChanged();
+        if (data.isSelected() || digitalAsset.getAvailableBalanceQuantity() > getSelectedUsersCount()) {
+            data.setSelected(!data.isSelected());
+            adapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getActivity(), R.string.dap_issuer_wallet_select_user, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private int getSelectedUsersCount() {
+        int count = 0;
+        for (User user : users) {
+            if (user.isSelected()) count++;
+        }
+        return count;
+    }
+
+    private List<User> getSelectedUsers() {
+        List<User> selectedUsers = new ArrayList<>();
+        for (User user : users) {
+            if (user.isSelected()) selectedUsers.add(user);
+        }
+        return selectedUsers;
     }
 
     @Override

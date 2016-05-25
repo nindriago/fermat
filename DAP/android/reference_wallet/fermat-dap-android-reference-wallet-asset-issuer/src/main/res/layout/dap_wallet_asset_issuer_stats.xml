@@ -35,7 +35,7 @@
             android:layout_height="200dp"
             android:layout_marginBottom="16dp"
             android:scaleType="fitXY"
-            android:src="@drawable/sad_face"/>
+            android:src="@drawable/ic_no_stats"/>
 
         <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:text="@string/no_stats_v3"
             android:textColor="@color/dap_issuer_wallet_v3_no_stats_text"
-            android:textSize="40sp"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 </FrameLayout>
