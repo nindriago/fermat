@@ -12,6 +12,7 @@ import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAsset
 import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAssetUser;
+import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWallet;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletList;
@@ -27,8 +28,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -61,34 +65,50 @@ public class Data {
         return digitalAssets;
     }
 
-    public static List<DigitalAsset> getAllRedeemPointAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+
+    public static List<DigitalAsset> getAllRedeemPointAssetsNew(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
         List<AssetRedeemPointWalletList> assetsRedeemPointBalances = moduleManager.getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
         AssetRedeemPointWallet redeemPointWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
         List<DigitalAsset> digitalAssets = new ArrayList<>();
         DigitalAsset digitalAsset;
+        String currentHash = "";
 
         for (AssetRedeemPointWalletList assetRedeemPointWalletList : assetsRedeemPointBalances) {
+            String assetPublicKey = assetRedeemPointWalletList.getDigitalAsset().getPublicKey();
+            List<AssetRedeemPointWalletTransaction> transactions = redeemPointWallet.getTransactionsForDisplay(assetPublicKey);
 
-            try {
+            Map<String, List<AssetRedeemPointWalletTransaction>> mappedTransactionsByHash = new HashMap<>();
+
+            for (AssetRedeemPointWalletTransaction transaction : transactions) {
+                if (currentHash.equals(transaction.getTransactionHash())) {
+                    mappedTransactionsByHash.get(currentHash).add(transaction);
+                } else {
+                    currentHash = transaction.getTransactionHash();
+                    List<AssetRedeemPointWalletTransaction> sublist = new ArrayList<>();
+                    sublist.add(transaction);
+                    mappedTransactionsByHash.put(currentHash, sublist);
+
+                }
+            }
+
+            for (List<AssetRedeemPointWalletTransaction> list : mappedTransactionsByHash.values()) {
                 digitalAsset = new DigitalAsset();
                 digitalAsset.setAssetPublicKey(assetRedeemPointWalletList.getDigitalAsset().getPublicKey());
                 digitalAsset.setName(assetRedeemPointWalletList.getDigitalAsset().getName());
                 digitalAsset.setExpDate((Timestamp) assetRedeemPointWalletList.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
                 digitalAsset.setAssetDescription(assetRedeemPointWalletList.getDigitalAsset().getDescription());
-                digitalAsset.setAvailableBalance(assetRedeemPointWalletList.getAvailableBalance());
+                digitalAsset.setAvailableBalance(list.get(list.size() - 1).getAmount());
 
-                List<AssetRedeemPointWalletTransaction> transactions = redeemPointWallet.getTransactionsForDisplay(assetRedeemPointWalletList.getDigitalAsset().getPublicKey());
-                //digitalAsset.setActorAssetUser(transactions.get(transactions.size()-1).getActorFrom());
-                digitalAsset.setImageActorUserFrom(transactions.get(transactions.size() - 1).getActorFrom().getProfileImage());
-                digitalAsset.setActorUserNameFrom(transactions.get(transactions.size() - 1).getActorFrom().getName());
+                digitalAsset.setActorUserNameFrom(list.get(list.size() - 1).getActorFrom().getName());
+                digitalAsset.setImageActorUserFrom(list.get(list.size() - 1).getActorFrom().getProfileImage());
 
-                //digitalAsset.setActorIssuerAddress(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer());
+                digitalAsset.setActorIssuerAddress("Asset Issuer " + digitalAsset.getActorIssuerNameFrom() + " address");
                 digitalAsset.setActorIssuerNameFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getAlias());
                 digitalAsset.setImageActorIssuerFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getImage());
 
-                digitalAsset.setDate(new Timestamp(transactions.get(transactions.size() - 1).getTimestamp()));
-                digitalAsset.setStatus(transactions.get(transactions.size() - 1).getBalanceType().equals(BalanceType.AVAILABLE) ? DigitalAsset.Status.CONFIRMED : DigitalAsset.Status.PENDING);
-                digitalAsset.setActorIssuerAddress("Asset Issuer "+digitalAsset.getActorIssuerNameFrom()+" address");
+                digitalAsset.setDate(new Timestamp(list.get(list.size() - 1).getTimestamp()));
+                digitalAsset.setStatus(list.get(list.size() - 1).getBalanceType().equals(BalanceType.AVAILABLE) ? DigitalAsset.Status.CONFIRMED : DigitalAsset.Status.PENDING);
+
 
                 List<Resource> resources = assetRedeemPointWalletList.getDigitalAsset().getResources();
                 if (resources != null && !resources.isEmpty()) {
@@ -96,10 +116,20 @@ public class Data {
                 }
 
                 digitalAssets.add(digitalAsset);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
         }
+
+        Collections.sort(digitalAssets, new Comparator<DigitalAsset>() {
+            @Override
+            public int compare(DigitalAsset lhs, DigitalAsset rhs) {
+                if (lhs.getDate().getTime() > rhs.getDate().getTime())
+                    return -1;
+                else if (lhs.getDate().getTime() < rhs.getDate().getTime())
+                    return 1;
+                return 0;
+            }
+        });
 
         return digitalAssets;
     }
