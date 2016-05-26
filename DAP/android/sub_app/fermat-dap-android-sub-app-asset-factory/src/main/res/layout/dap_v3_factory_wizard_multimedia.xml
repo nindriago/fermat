@@ -131,17 +131,17 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_centerHorizontal="true"
             android:id="@+id/wizardMultimediaButtonsLayout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp">
+            android:layout_alignLeft="@+id/wizardMultimediaAssetImage"
+            android:layout_alignRight="@+id/wizardMultimediaAssetImage">
 
             <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton
                 android:id="@+id/wizardMultimediaPhotoButton"
-                android:layout_width="162dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="1.0"
                 android:layout_height="40dp"
                 android:text="Photo"
                 android:fontFamily="Helvetica Neue LT Std 45"
@@ -151,7 +151,8 @@
 
             <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton
                 android:id="@+id/wizardMultimediaCameraButton"
-                android:layout_width="162dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="1.0"
                 android:layout_height="40dp"
                 android:text="Gallery"
                 android:fontFamily="Helvetica Neue LT Std 45"
@@ -167,6 +168,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:src="@drawable/img_asset_image"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="30dp"
             android:layout_marginLeft="30dp"
             android:layout_below="@+id/wizardMultimediaButtonsLayout"/>

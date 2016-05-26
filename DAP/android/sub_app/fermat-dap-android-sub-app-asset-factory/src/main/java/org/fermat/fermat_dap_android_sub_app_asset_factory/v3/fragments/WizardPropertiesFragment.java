@@ -198,8 +198,10 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         wizardPropertiesEraseDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wizardPropertiesExpDateEditText.setText("");
-                wizardPropertiesEraseDateButton.setVisibility(View.GONE);
+                if (!wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
+                    wizardPropertiesExpDateEditText.setText("");
+                    wizardPropertiesEraseDateButton.setVisibility(View.GONE);
+                }
 
             }
         });

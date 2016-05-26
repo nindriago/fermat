@@ -141,6 +141,8 @@ implements FermatListItemListeners<DigitalAssetHistory> {
         final RedeemPointSettings redeemPointSettingsTemp = settings;
 
         configureToolbar();
+        if (digitalAssetsHistory != null)
+            showOrHideNoAssetsView(digitalAssetsHistory.isEmpty());
 
     }
 
@@ -232,7 +234,6 @@ implements FermatListItemListeners<DigitalAssetHistory> {
         if (moduleManager != null) {
             try {
                 digitalAssets = Data.getAllAcceptedDigitalAssets(moduleManager);
-
 
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);

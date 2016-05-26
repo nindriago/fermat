@@ -75,6 +75,7 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
                     break;
                 case DAP_WALLET_REDEEM_POINT_USER_DETAIL_FRAGMENT:
                     currentFragment = new RedeemPointDetailFragment();
+                    break;
                 default:
                     throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
             }

@@ -89,10 +89,9 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
         }
 
         holder.cardAssetName.setText(asset.getName());
-//        cardTime.setText(asset.getFormattedDate()); agregasr este metodo al modelo digital asset
-        holder.cardTime.setText(asset.getFormattedExpDate());
+        holder.cardTime.setText(asset.getFormattedDate());
 
-        byte[] img = (asset.getImageActorUserFrom() == null) ? new byte[0] : asset.getImage(); /*modificar modelo Digital Asset*/
+        byte[] img = (asset.getImageActorUserFrom() == null) ? new byte[0] : asset.getImageActorUserFrom(); /*modificar modelo Digital Asset*/
         BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(holder.cardActorUserImage,
                 holder.res, R.drawable.img_asset_without_image, false);
         bitmapWorkerTask.execute(img);
@@ -111,12 +110,9 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
 
         if (asset.getStatus() == DigitalAsset.Status.PENDING && assetNotificationEnabled) {
 
-            holder.redeemNegotiationV3Asset.setVisibility(View.VISIBLE);
+            holder.actionButtons.setVisibility(View.VISIBLE);
             holder.confirmedV3Asset.setVisibility(View.GONE);
-
-            holder.cardStatusImage.setImageResource(R.drawable.received);
-            holder.cardAcceptButton.setImageResource(R.drawable.accept_active);
-            holder.cardRejectButton.setImageResource(R.drawable.cancel_active);
+            holder.cardStatusImage.setVisibility(View.VISIBLE);
 
             holder.cardAcceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,25 +130,15 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
             });
 
         } else if (asset.getStatus() == DigitalAsset.Status.PENDING && !assetNotificationEnabled) {
-            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
+            holder.actionButtons.setVisibility(View.GONE);
             holder.confirmedV3Asset.setVisibility(View.GONE);
+            holder.cardStatusImage.setVisibility(View.VISIBLE);
+
         } else if (asset.getStatus() == DigitalAsset.Status.CONFIRMED) {
+            holder.cardStatusImage.setVisibility(View.GONE);
+            holder.actionButtons.setVisibility(View.GONE);
+            holder.confirmedV3Asset.setVisibility(View.VISIBLE);
 
-            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
-            holder.confirmedV3Asset.setVisibility(View.GONE);
-
-
-        } else {
-            holder.redeemNegotiationV3Asset.setVisibility(View.GONE);
-            holder.confirmedV3Asset.setVisibility(View.GONE);
-
-            holder.cardDeliverButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    assetRedeemSession.setData("asset_data", asset);
-                    fragment.doDeliver();
-                }
-            });
         }
     }
 }
