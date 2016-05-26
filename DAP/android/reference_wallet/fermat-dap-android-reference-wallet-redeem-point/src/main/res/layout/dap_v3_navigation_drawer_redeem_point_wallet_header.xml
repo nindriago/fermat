@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="180dp">
@@ -9,9 +8,9 @@
         android:id="@+id/image_view_profile"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         tools:ignore="contentDescription"
-        tools:src="@drawable/profile_image_standard"/>
+        tools:src="@drawable/img_asset_without_image" />
 
     <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
         android:id="@+id/txt_name"
@@ -19,15 +18,15 @@
         android:layout_height="38dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal"
-        android:background="#CC404040"
+        android:background="#44FAFAFA"
         android:fontFamily="sans-serif-medium"
         android:paddingBottom="8dp"
-        android:paddingTop="8dp"
         android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:text=""
         android:textColor="#FAFAFA"
         android:textSize="14sp"
-        tools:ignore="HardcodedText"
-        android:text="Unknown"
-        />
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
 
 </RelativeLayout>

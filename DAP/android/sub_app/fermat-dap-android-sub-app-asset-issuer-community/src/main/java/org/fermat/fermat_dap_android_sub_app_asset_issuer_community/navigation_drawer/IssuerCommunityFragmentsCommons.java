@@ -34,11 +34,10 @@ public class IssuerCommunityFragmentsCommons {
                 if (identityAssetIssuer.getImage().length > 0) {
                     BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(imageView, activity.getResources(), 0, false);
                     bitmapWorkerTask.execute(identityAssetIssuer.getImage());
-//                    imageView.setImageBitmap((BitmapFactory.decodeByteArray(identityAssetIssuer.getImage(), 0, identityAssetIssuer.getImage().length)));
                 } else
-                    Picasso.with(activity).load(R.drawable.asset_issuer_comunity).into(imageView);
+                    Picasso.with(activity).load(R.drawable.banner_asset_issuer_community).into(imageView);
             } else
-                Picasso.with(activity).load(R.drawable.asset_issuer_comunity).into(imageView);
+                Picasso.with(activity).load(R.drawable.banner_asset_issuer_community).into(imageView);
             FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
             fermatTextView.setText(identityAssetIssuer.getAlias());
         }

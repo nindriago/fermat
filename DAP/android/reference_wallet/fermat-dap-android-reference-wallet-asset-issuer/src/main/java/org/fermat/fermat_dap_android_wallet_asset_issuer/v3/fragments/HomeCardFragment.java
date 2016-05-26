@@ -119,6 +119,7 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
             settings = new AssetIssuerSettings();
             settings.setIsContactsHelpEnabled(true);
             settings.setIsPresentationHelpEnabled(true);
+            settings.setNotificationEnabled(true);
 
             try {
                 settingsManager.persistSettings(appSession.getAppPublicKey(), settings);
