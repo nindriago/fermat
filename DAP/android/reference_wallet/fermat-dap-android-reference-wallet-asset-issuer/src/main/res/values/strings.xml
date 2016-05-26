@@ -59,6 +59,7 @@
     <string name="dap_issuer_wallet_no_assets_delivered">No assets delivered</string>
     <string name="dap_issuer_wallet_no_assets_appropriated">No assets appropriated</string>
     <string name="dap_issuer_wallet_no_assets_redeemed">No assets redeemed</string>
+    <string name="dap_issuer_wallet_select_user">Can\'t select user, not enough available assets to deliver</string>
     <!-- -->
 
     <!-- app strings -->

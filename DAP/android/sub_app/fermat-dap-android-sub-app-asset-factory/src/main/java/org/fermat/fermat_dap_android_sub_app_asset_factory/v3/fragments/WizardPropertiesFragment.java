@@ -368,27 +368,6 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
                 asset.setDescription(wizardPropertiesAssetDescEditText.getText().toString().trim());
             }
 
-            List<ContractProperty> contractProperties = asset.getContractProperties();
-            if (contractProperties != null) {
-                for (ContractProperty contractProperty : contractProperties) {
-                    if (contractProperty.getName().equals(DigitalAssetContractPropertiesConstants.REDEEMABLE)) {
-                        contractProperty.setValue(wizardPropertiesRedeemableCheck.isChecked());
-                    }
-                    if (contractProperty.getName().equals(DigitalAssetContractPropertiesConstants.TRANSFERABLE)) {
-                        contractProperty.setValue(wizardPropertiesTransfereableCheck.isChecked());
-                    }
-                    if (contractProperty.getName().equals(DigitalAssetContractPropertiesConstants.SALEABLE)) {
-                        contractProperty.setValue(wizardPropertiesExchangeableCheck.isChecked());
-                    }
-                }
-            } else {
-                contractProperties = new ArrayList<>();
-                contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.REDEEMABLE, wizardPropertiesRedeemableCheck.isChecked()));
-                contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.TRANSFERABLE, wizardPropertiesTransfereableCheck.isChecked()));
-                contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.SALEABLE, wizardPropertiesExchangeableCheck.isChecked()));
-                asset.setContractProperties(contractProperties);
-            }
-
             try {
                 if (wizardPropertiesExpDateEditText.getText().toString().length() > 0 && !wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
                     asset.setExpirationDate(new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime()));
@@ -398,6 +377,13 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            List<ContractProperty> contractProperties = new ArrayList<>();
+            contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.REDEEMABLE, wizardPropertiesRedeemableCheck.isChecked()));
+            contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.TRANSFERABLE, wizardPropertiesTransfereableCheck.isChecked()));
+            contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.SALEABLE, wizardPropertiesExchangeableCheck.isChecked()));
+            contractProperties.add(new ContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE, asset.getExpirationDate()));
+            asset.setContractProperties(contractProperties);
         }
     }
 
