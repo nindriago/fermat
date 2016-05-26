@@ -10,6 +10,7 @@ import java.util.List;
 public class Group {
     private String name;
     private boolean selected;
+    private boolean first;
 
     private ActorAssetUserGroup actorAssetUserGroup;
 
@@ -53,6 +54,14 @@ public class Group {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
     }
 
     @Override

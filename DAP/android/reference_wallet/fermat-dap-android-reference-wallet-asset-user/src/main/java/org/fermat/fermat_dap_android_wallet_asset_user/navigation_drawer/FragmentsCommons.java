@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
+
 import org.fermat.fermat_dap_android_wallet_asset_user.util.BitmapWorkerTask;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
+
 import com.squareup.picasso.Picasso;
 
 /**
@@ -24,10 +27,14 @@ public class FragmentsCommons {
 
     public static View setUpHeaderScreen(LayoutInflater inflater, Context activity, ActiveActorIdentityInformation identityAssetUser) throws CantGetIdentityAssetUserException {
 
-        View view = inflater.inflate(R.layout.dap_navigation_drawer_user_wallet_header, null, true);
+        //DAP V2
+        //View view = inflater.inflate(R.layout.dap_navigation_drawer_user_wallet_header, null, true);
+
+        //DAP V2
+        View view = inflater.inflate(R.layout.dap_v3_navigation_drawer_user_wallet_header, null, true);
 
         try {
-            ImageView imageView = (ImageView) view.findViewById(R.id.image_view_profile);
+            ImageView imageView = (ImageView) view.findViewById(R.id.image_view_profile_user);
             if (identityAssetUser != null) {
                 if (identityAssetUser.getImage() != null) {
                     if (identityAssetUser.getImage().length > 0) {
@@ -45,11 +52,11 @@ public class FragmentsCommons {
                     } else
                         Picasso.with(activity).load(R.drawable.asset_user_identity).into(imageView);
                 }
-                FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
+                FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name_user);
                 fermatTextView.setText(identityAssetUser.getAlias());
             } else {
                 Picasso.with(activity).load(R.drawable.asset_user_identity).into(imageView);
-                FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
+                FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name_user);
                 fermatTextView.setText(R.string.dap_identity_alias_default_text);
             }
 

@@ -148,7 +148,7 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
 
     @Override
     public List<AssetFactory> getAssetFactoryByState(State state) throws CantGetAssetFactoryException, CantCreateFileException {
-        return assetFactorySupAppModuleManager.getAssetsFactoryByState(state, selectedNetwork);
+        return assetFactorySupAppModuleManager.getAssetsFactoryByState(state, getSelectedNetwork());
     }
 
     @Override

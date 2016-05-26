@@ -1,21 +1,35 @@
 package org.fermat.fermat_dap_android_wallet_redeem_point.models;
 
+import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
+import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Genders;
+import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
+import com.bitdubai.fermat_api.layer.osa_android.location_system.Location;
+
+import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
+import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
+import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAssetUser;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWallet;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletList;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletTransaction;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.RedeemPointStatistic;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
+import org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantGetTransactionsException;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWalletException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by frank on 12/9/15.
@@ -34,6 +48,8 @@ public class Data {
             digitalAsset.setBookBalanceQuantity(asset.getQuantityBookBalance());
             digitalAsset.setAvailableBalance(asset.getAvailableBalance());
             digitalAsset.setExpDate((Timestamp) asset.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
+            digitalAsset.setAssetDescription(asset.getDigitalAsset().getDescription());
+
 
             digitalAssets.add(digitalAsset);
 
@@ -44,6 +60,48 @@ public class Data {
         }
         return digitalAssets;
     }
+
+    public static List<DigitalAsset> getAllRedeemPointAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+        List<AssetRedeemPointWalletList> assetsRedeemPointBalances = moduleManager.getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
+        AssetRedeemPointWallet redeemPointWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
+        List<DigitalAsset> digitalAssets = new ArrayList<>();
+        DigitalAsset digitalAsset;
+
+        for (AssetRedeemPointWalletList assetRedeemPointWalletList : assetsRedeemPointBalances) {
+
+            try {
+                digitalAsset = new DigitalAsset();
+                digitalAsset.setAssetPublicKey(assetRedeemPointWalletList.getDigitalAsset().getPublicKey());
+                digitalAsset.setName(assetRedeemPointWalletList.getDigitalAsset().getName());
+                digitalAsset.setExpDate((Timestamp) assetRedeemPointWalletList.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
+                digitalAsset.setAssetDescription(assetRedeemPointWalletList.getDigitalAsset().getDescription());
+
+                List<AssetRedeemPointWalletTransaction> transactions = redeemPointWallet.getTransactionsForDisplay(assetRedeemPointWalletList.getDigitalAsset().getPublicKey());
+                //digitalAsset.setActorAssetUser(transactions.get(transactions.size()-1).getActorFrom());
+                digitalAsset.setImageActorUserFrom(transactions.get(transactions.size() - 1).getActorFrom().getProfileImage());
+                digitalAsset.setActorUserNameFrom(transactions.get(transactions.size() - 1).getActorFrom().getName());
+
+                //digitalAsset.setActorIssuerAddress(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer());
+                digitalAsset.setActorIssuerNameFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getAlias());
+                digitalAsset.setImageActorIssuerFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getImage());
+
+                digitalAsset.setDate(new Timestamp(transactions.get(transactions.size() - 1).getTimestamp()));
+                digitalAsset.setStatus(transactions.get(transactions.size() - 1).getBalanceType().equals(BalanceType.AVAILABLE) ? DigitalAsset.Status.CONFIRMED : DigitalAsset.Status.PENDING);
+
+                List<Resource> resources = assetRedeemPointWalletList.getDigitalAsset().getResources();
+                if (resources != null && !resources.isEmpty()) {
+                    digitalAsset.setImage(resources.get(0).getResourceBinayData());
+                }
+
+                digitalAssets.add(digitalAsset);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return digitalAssets;
+    }
+
 
     public static List<UserRedeemed> getUserRedeemedPointList(String walletPublicKey, DigitalAsset digitalAsset, AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
 
@@ -109,4 +167,127 @@ public class Data {
         }
         return null;
     }
+
+    //    public static List<DigitalAsset> getAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws CantLoadWalletException {
+//        List<AssetRedeemPointWalletList> assetRedeemPointWalletList = moduleManager.
+//                getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
+//        AssetRedeemPointWallet redeemWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
+//        List<DigitalAsset> assets = new ArrayList<>();
+//        for (AssetRedeemPointWalletList assetRedeemWalletList : assetRedeemPointWalletList) {
+//            List<CryptoAddress> addresses = assetRedeemWalletList.getAddresses();
+//            for (int i = 0; i < assetRedeemWalletList.getQuantityBookBalance(); i++) {
+//                try {
+//                    CryptoAddress address = addresses.get(i);
+//                    assets.add(new DigitalAsset(assetRedeemWalletList, redeemWallet.getActorTransactionSummary(), address));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        Collections.sort(assets, new Comparator<DigitalAsset>() {
+//            @Override
+//            public int compare(DigitalAsset lhs, DigitalAsset rhs) {
+//                if (lhs.getDate().getTime() > rhs.getDate().getTime()) return -1;
+//                else if (lhs.getDate().getTime() < rhs.getDate().getTime()) return 1;
+//                return 0;
+//            }
+//        });
+//
+//        return assets;
+//    }
+    public static List<DigitalAsset> getAllTestAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+        List<DigitalAsset> digitalAssets = new ArrayList<>();
+        DigitalAsset digitalAsset;
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, 0);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (0 + 1) + "x1");
+        digitalAsset.setAssetDescription("Hamburguesa Full" +
+                "con doble relleno de algun ingrediente random");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Penelope Quintero");
+        digitalAsset.setAvailableBalance(200000L);
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.PENDING);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Burguer");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Burguer");
+
+        digitalAssets.add(digitalAsset);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Combo " + (2) + " pizza");
+        digitalAsset.setAssetDescription("Pizza Full" +
+                "con doble relleno de algun ingrediente random");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Jinmy Bohorquez");
+        digitalAsset.setAvailableBalance(3000000L);
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.CONFIRMED);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Pizza");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Pizza");
+
+        digitalAssets.add(digitalAsset);
+
+        digitalAsset = new DigitalAsset();
+        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
+        digitalAsset.setName("Sandwich " + (2) + "mix");
+        digitalAsset.setAssetDescription("Sandwich Full" +
+                "con doble relleno de algun ingrediente random");
+        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
+        digitalAsset.setActorUserNameFrom("Nerio Indriago");
+        digitalAsset.setAvailableBalance(60000000L);
+        digitalAsset.setImageActorUserFrom(null);
+        digitalAsset.setImage(null);
+        digitalAsset.setStatus(DigitalAsset.Status.ACEPTED);
+        digitalAsset.setActorIssuerNameFrom("UpperWay Sandwiches");
+        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
+                " Sandwiches");
+
+        digitalAssets.add(digitalAsset);
+
+
+        return digitalAssets;
+    }
+
+    public static List<DigitalAssetHistory> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
+        AssetRedeemPointWallet redeemPointWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
+        List<DigitalAssetHistory> digitalAssets = new ArrayList<>();
+        DigitalAssetHistory digitalAsset;
+
+        for (RedeemPointStatistic stadistic : redeemPointWallet.getAllStatistics()) {
+
+            digitalAsset = new DigitalAssetHistory();
+            digitalAsset.setStadicticID(stadistic.statisticId().toString());
+            digitalAsset.setAssetPublicKey(stadistic.assetRedeemed().getDigitalAsset().getPublicKey());
+            digitalAsset.setHistoryNameAsset(stadistic.assetRedeemed().getDigitalAsset().getName());
+            digitalAsset.setExpDate((Timestamp) stadistic.assetRedeemed().getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue());
+            digitalAsset.setAcceptedDate(new Timestamp(stadistic.redemptionTime().getTime()));
+
+
+            digitalAsset.setHistoryNameUser(stadistic.userThatRedeemed().getName());
+            digitalAsset.setImageActorUserFrom(stadistic.userThatRedeemed().getProfileImage());
+            digitalAsset.setImageAsset(getDigitalAsset(moduleManager, stadistic.assetRedeemed().getDigitalAsset().getPublicKey()).getImage());
+            digitalAsset.setActorUserPublicKey(stadistic.userThatRedeemed().getActorPublicKey());
+
+            digitalAssets.add(digitalAsset);
+
+        }
+        Collections.sort(digitalAssets);
+
+        return digitalAssets;
+    }
+
 }
