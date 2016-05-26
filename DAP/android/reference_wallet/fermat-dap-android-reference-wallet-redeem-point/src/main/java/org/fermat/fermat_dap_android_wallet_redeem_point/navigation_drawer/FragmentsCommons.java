@@ -45,12 +45,12 @@ public class FragmentsCommons {
                         //bitmap = Bitmap.createScaledBitmap(bitmap,imageView.getMaxWidth(),imageView.getMaxHeight(),true);
                         //imageView.setImageBitmap(bitmap);
                     } else
-                        Picasso.with(activity).load(R.drawable.redeem_point).into(imageView);
+                        Picasso.with(activity).load(R.drawable.banner_redeem_point_wallet).into(imageView);
                 }
                 FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
                 fermatTextView.setText(identityAssetUser.getAlias());
             } else {
-                Picasso.with(activity).load(R.drawable.redeem_point).into(imageView);
+                Picasso.with(activity).load(R.drawable.banner_redeem_point_wallet).into(imageView);
                 FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
                 fermatTextView.setText(R.string.dap_identity_alias_default_text);
             }
