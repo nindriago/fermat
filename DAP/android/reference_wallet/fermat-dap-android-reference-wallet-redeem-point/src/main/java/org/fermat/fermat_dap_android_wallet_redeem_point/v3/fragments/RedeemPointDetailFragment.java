@@ -154,20 +154,13 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         if(digitalAsset.getStatus() == DigitalAsset.Status.PENDING){
 
             actionButtonsDetail.setVisibility(View.GONE);
-            confirmedDetailV3Asset.setVisibility(View.GONE);
+            cardDetailStatusImage.setImageResource(R.drawable.wait);
 
-            cardDetailStatusImage.setImageResource(R.drawable.received);
-            cardDetailAcceptButton.setImageResource(R.drawable.accept_active);
-            cardDetailRejectButton.setImageResource(R.drawable.cancel_active);
 
         }else if(digitalAsset.getStatus() == DigitalAsset.Status.CONFIRMED) {
 
             actionButtonsDetail.setVisibility(View.GONE);
-            confirmedDetailV3Asset.setVisibility(View.VISIBLE);
-
             cardDetailStatusImage.setImageResource(R.drawable.received);
-            cardDetailAcceptButton.setImageResource(R.drawable.accept_active);
-            cardDetailRejectButton.setImageResource(R.drawable.cancel_active);
 
             cardDetailAcceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,21 +183,6 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
                 }
             });
 
-
-        }else {
-            redeemDetailPendingV3Asset.setVisibility(View.GONE);
-            confirmedDetailV3Asset.setVisibility(View.VISIBLE);
-
-            cardDetailDeliverButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    redeemPointSession.setData("asset_data", digitalAsset);
-                    /*
-                    metodo para deliver
-                    doDeliver();
-                     */
-                }
-            });
         }
 
     }
