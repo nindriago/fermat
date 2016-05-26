@@ -102,8 +102,9 @@ public class Data {
                 digitalAsset.setActorUserNameFrom(list.get(list.size() - 1).getActorFrom().getName());
                 digitalAsset.setImageActorUserFrom(list.get(list.size() - 1).getActorFrom().getProfileImage());
 
-                digitalAsset.setActorIssuerAddress("Asset Issuer " + digitalAsset.getActorIssuerNameFrom() + " address");
+
                 digitalAsset.setActorIssuerNameFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getAlias());
+                digitalAsset.setActorIssuerAddress("Asset Issuer " + digitalAsset.getActorIssuerNameFrom() + " address");
                 digitalAsset.setImageActorIssuerFrom(assetRedeemPointWalletList.getDigitalAsset().getIdentityAssetIssuer().getImage());
 
                 digitalAsset.setDate(new Timestamp(list.get(list.size() - 1).getTimestamp()));
@@ -200,99 +201,6 @@ public class Data {
         return null;
     }
 
-    //    public static List<DigitalAsset> getAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws CantLoadWalletException {
-//        List<AssetRedeemPointWalletList> assetRedeemPointWalletList = moduleManager.
-//                getAssetRedeemPointWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
-//        AssetRedeemPointWallet redeemWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
-//        List<DigitalAsset> assets = new ArrayList<>();
-//        for (AssetRedeemPointWalletList assetRedeemWalletList : assetRedeemPointWalletList) {
-//            List<CryptoAddress> addresses = assetRedeemWalletList.getAddresses();
-//            for (int i = 0; i < assetRedeemWalletList.getQuantityBookBalance(); i++) {
-//                try {
-//                    CryptoAddress address = addresses.get(i);
-//                    assets.add(new DigitalAsset(assetRedeemWalletList, redeemWallet.getActorTransactionSummary(), address));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        Collections.sort(assets, new Comparator<DigitalAsset>() {
-//            @Override
-//            public int compare(DigitalAsset lhs, DigitalAsset rhs) {
-//                if (lhs.getDate().getTime() > rhs.getDate().getTime()) return -1;
-//                else if (lhs.getDate().getTime() < rhs.getDate().getTime()) return 1;
-//                return 0;
-//            }
-//        });
-//
-//        return assets;
-//    }
-    public static List<DigitalAsset> getAllTestAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
-        List<DigitalAsset> digitalAssets = new ArrayList<>();
-        DigitalAsset digitalAsset;
-
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DATE, 0);
-
-        digitalAsset = new DigitalAsset();
-        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
-        digitalAsset.setName("Combo " + (0 + 1) + "x1");
-        digitalAsset.setAssetDescription("Hamburguesa Full" +
-                "con doble relleno de algun ingrediente random");
-        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
-        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
-        digitalAsset.setActorUserNameFrom("Penelope Quintero");
-        digitalAsset.setAvailableBalance(200000L);
-        digitalAsset.setImageActorUserFrom(null);
-        digitalAsset.setImage(null);
-        digitalAsset.setStatus(DigitalAsset.Status.PENDING);
-        digitalAsset.setActorIssuerNameFrom("UpperWay Burguer");
-        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
-                " Burguer");
-
-        digitalAssets.add(digitalAsset);
-
-        digitalAsset = new DigitalAsset();
-        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
-        digitalAsset.setName("Combo " + (2) + " pizza");
-        digitalAsset.setAssetDescription("Pizza Full" +
-                "con doble relleno de algun ingrediente random");
-        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
-        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
-        digitalAsset.setActorUserNameFrom("Jinmy Bohorquez");
-        digitalAsset.setAvailableBalance(3000000L);
-        digitalAsset.setImageActorUserFrom(null);
-        digitalAsset.setImage(null);
-        digitalAsset.setStatus(DigitalAsset.Status.CONFIRMED);
-        digitalAsset.setActorIssuerNameFrom("UpperWay Pizza");
-        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
-                " Pizza");
-
-        digitalAssets.add(digitalAsset);
-
-        digitalAsset = new DigitalAsset();
-        digitalAsset.setAssetPublicKey(UUID.randomUUID().toString());
-        digitalAsset.setName("Sandwich " + (2) + "mix");
-        digitalAsset.setAssetDescription("Sandwich Full" +
-                "con doble relleno de algun ingrediente random");
-        digitalAsset.setExpDate(new Timestamp(calendar.getTime().getTime()));
-        digitalAsset.setDate(new Timestamp(calendar.getTime().getTime()));
-        digitalAsset.setActorUserNameFrom("Nerio Indriago");
-        digitalAsset.setAvailableBalance(60000000L);
-        digitalAsset.setImageActorUserFrom(null);
-        digitalAsset.setImage(null);
-        digitalAsset.setStatus(DigitalAsset.Status.ACEPTED);
-        digitalAsset.setActorIssuerNameFrom("UpperWay Sandwiches");
-        digitalAsset.setActorIssuerAddress("direccion random de prueba para testear de UpperWay" +
-                " Sandwiches");
-
-        digitalAssets.add(digitalAsset);
-
-
-        return digitalAssets;
-    }
 
     public static List<DigitalAssetHistory> getAllAcceptedDigitalAssets(AssetRedeemPointWalletSubAppModule moduleManager) throws Exception {
         AssetRedeemPointWallet redeemPointWallet = moduleManager.loadAssetRedeemPointWallet(WalletUtilities.WALLET_PUBLIC_KEY);
