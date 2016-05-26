@@ -35,12 +35,15 @@ public class RedeemCardViewHolder extends FermatViewHolder {
     public ImageView cardConfirmedImage;
     public ImageView cardStatusImage;
 
+
     public ImageButton cardDeliverButton;
     public ImageButton cardAcceptButton;
     public ImageButton cardRejectButton;
 
     public View redeemNegotiationV3Asset;
     public View confirmedV3Asset;
+
+    public View actionButtons;
 
 
     public RedeemCardViewHolder(View itemView, AssetRedeemPointWalletSubAppModule manager, Context context) {
@@ -61,37 +64,7 @@ public class RedeemCardViewHolder extends FermatViewHolder {
         cardRejectButton = (ImageButton) itemView.findViewById(R.id.cardRejectButton);
         redeemNegotiationV3Asset = itemView.findViewById(R.id.redeemPendingV3Asset);
         confirmedV3Asset = itemView.findViewById(R.id.confirmedV3Asset);
-        
-    }
-    
-    public void Bind(final DigitalAsset asset){
-        
-        Bitmap bitmap;
-        if (asset.getImage() != null && asset.getImage().length > 0) {
-            bitmap = BitmapFactory.decodeByteArray(asset.getImage(), 0, asset.getImage().length);
-        } else {
-            bitmap = BitmapFactory.decodeResource(res, R.drawable.img_asset_without_image);
-        }
-        bitmap = Bitmap.createScaledBitmap(bitmap, 45, 45, true);
-        cardAssetImage.setImageDrawable(ImagesUtils.getRoundedBitmap(res, bitmap));
-
-        cardAssetName.setText(asset.getName());
-//        cardTime.setText(asset.getFormattedDate()); agregasr este metodo al modelo digital asset
-        cardTime.setText(asset.getFormattedExpDate());
-
-        byte[] img = (asset.getImageActorUserFrom() == null) ? new byte[0] : asset.getImage(); /*modificar modelo Digital Asset*/
-        BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(cardAssetImage,
-                res, R.drawable.img_asset_without_image, false);
-        bitmapWorkerTask.execute(img);
-
-        cardActorName.setText(asset.getActorUserNameFrom());
-
-        /*agragar logica de negotiation */
-//        if( not negotiation whatever){
-//            confirmedV3Asset.setVisibility(View.VISIBLE);
-//            redeemNegotiationV3Asset.setVisibility(View.GONE);
-//
-//        }else {}
+        actionButtons = itemView.findViewById(R.id.actionButtons);
 
     }
 

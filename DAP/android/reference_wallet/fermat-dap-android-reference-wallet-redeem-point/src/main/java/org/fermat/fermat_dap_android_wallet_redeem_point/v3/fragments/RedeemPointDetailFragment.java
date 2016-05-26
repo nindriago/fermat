@@ -60,6 +60,7 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
     private ImageButton cardDetailAcceptButton;
     private ImageButton cardDetailRejectButton;
     private View redeemDetailPendingV3Asset;
+    private View actionButtonsDetail;
     private View confirmedDetailV3Asset;
     private FermatTextView assetDetailDescription;
     private FermatTextView assetDetailAssetValue;
@@ -112,6 +113,7 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         cardDetailRejectButton = (ImageButton) rootView.findViewById(R.id.cardDetailRejectButton);
         redeemDetailPendingV3Asset = rootView.findViewById(R.id.redeemDetailPendingV3Asset);
         confirmedDetailV3Asset = rootView.findViewById(R.id.confirmedDetailV3Asset);
+        actionButtonsDetail = rootView.findViewById(R.id.actionButtonsDetail);
 
         assetDetailDescription = (FermatTextView) rootView.findViewById(R.id.assetDetailDescription);
         assetDetailAssetValue = (FermatTextView) rootView.findViewById(R.id.assetDetailAssetValue);
@@ -151,17 +153,14 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         /*Listeners*/
         if(digitalAsset.getStatus() == DigitalAsset.Status.PENDING){
 
-            redeemDetailPendingV3Asset.setVisibility(View.VISIBLE);
-            confirmedDetailV3Asset.setVisibility(View.GONE);
+            actionButtonsDetail.setVisibility(View.GONE);
+            cardDetailStatusImage.setImageResource(R.drawable.wait);
+
 
         }else if(digitalAsset.getStatus() == DigitalAsset.Status.CONFIRMED) {
 
-            redeemDetailPendingV3Asset.setVisibility(View.VISIBLE);
-            confirmedDetailV3Asset.setVisibility(View.GONE);
-
+            actionButtonsDetail.setVisibility(View.GONE);
             cardDetailStatusImage.setImageResource(R.drawable.received);
-            cardDetailAcceptButton.setImageResource(R.drawable.accept_active);
-            cardDetailRejectButton.setImageResource(R.drawable.cancel_active);
 
             cardDetailAcceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,21 +183,6 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
                 }
             });
 
-
-        }else {
-            redeemDetailPendingV3Asset.setVisibility(View.GONE);
-            confirmedDetailV3Asset.setVisibility(View.VISIBLE);
-
-            cardDetailDeliverButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    redeemPointSession.setData("asset_data", digitalAsset);
-                    /*
-                    metodo para deliver
-                    doDeliver();
-                     */
-                }
-            });
         }
 
     }

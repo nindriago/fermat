@@ -49,6 +49,7 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.SessionConstan
 import org.fermat.fermat_dap_android_wallet_redeem_point.util.CommonLogger;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.adapters.RedeemCardAdapter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.filters.RedeemHomeCardAdapterFilter;
+import org.fermat.fermat_dap_api.layer.all_definition.DAPConstants;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityRedeemPointException;
 import org.fermat.fermat_dap_api.layer.dap_identity.asset_user.interfaces.IdentityAssetUser;
@@ -110,6 +111,9 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         initSettings();
         activity = new Activity();
         configureToolbar();
+
+        if (assets != null)
+            showOrHideNoAssetsView(assets.isEmpty());
 
     }
 
@@ -348,7 +352,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         if (moduleManager != null) {
             try {
 //                assets = Data.getAllDigitalAssets(moduleManager);
-                    assets = Data.getAllRedeemPointAssets(moduleManager);
+                    assets = Data.getAllRedeemPointAssetsNew(moduleManager);
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);
                 if (errorManager != null)
@@ -379,5 +383,16 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
 
     public SettingsManager<RedeemPointSettings> getSettingsManager() {
         return settingsManager;
+    }
+
+    @Override
+    public void onUpdateViewOnUIThread(String code) {
+        switch (code) {
+            case DAPConstants.DAP_UPDATE_VIEW_ANDROID:
+                onRefresh();
+                break;
+            default:
+                super.onUpdateViewOnUIThread(code);
+        }
     }
 }
