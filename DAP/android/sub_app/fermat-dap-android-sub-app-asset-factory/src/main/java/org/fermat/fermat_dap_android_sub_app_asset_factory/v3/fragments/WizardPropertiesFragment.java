@@ -276,6 +276,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     }
     private boolean isValid(AssetFactory asset){
         Date newExpDate = null;
+        long amountSatoshi = asset.getAmount();
         try {
             newExpDate= new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
         } catch (ParseException e) {
@@ -303,7 +304,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             return false;
         }else{
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
-                    " \n This is needed to pay the fee of bitcoin transactions during delivery of the assets.", Toast.LENGTH_LONG).show();
+                    " \n This is needed to pay the fee of bitcoin transactions during delivery of the assets.\n "+"\n You selected "+amountSatoshi+" satoshis.\n", Toast.LENGTH_LONG).show();
             return false;
         }
     }
