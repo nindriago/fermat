@@ -29,6 +29,7 @@ public class DigitalAsset {
     private int redeemed;
     private int appropriated;
     private int unused;
+    private Timestamp lastTransactionDate;
 
     public DigitalAsset() {
     }
@@ -166,5 +167,13 @@ public class DigitalAsset {
 
     public void setUnused(int unused) {
         this.unused = unused;
+    }
+
+    public Timestamp getLastTransactionDate() {
+        return lastTransactionDate;
+    }
+
+    public void setLastTransactionDate(Timestamp lastTransactionDate) {
+        this.lastTransactionDate = lastTransactionDate;
     }
 }

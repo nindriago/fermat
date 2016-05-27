@@ -204,7 +204,7 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
                             .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
                                 @Override
                                 public void onClick() {
-                                    doDistributeToGroups(digitalAsset.getAssetPublicKey(), groups, groups.size());
+                                    doDistributeToGroups(digitalAsset.getAssetPublicKey(), getSelectedGroups(), getSelectedGroupsCount());
                                 }
                             }).build().show();
                 }
@@ -216,6 +216,22 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
                     Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private int getSelectedGroupsCount() {
+        int count = 0;
+        for (Group group : groups) {
+            if (group.isSelected()) count++;
+        }
+        return count;
+    }
+
+    private List<Group> getSelectedGroups() {
+        List<Group> selectedUsers = new ArrayList<>();
+        for (Group group : groups) {
+            if (group.isSelected()) selectedUsers.add(group);
+        }
+        return selectedUsers;
     }
 
     private boolean thereIsGroupSelected() {
@@ -329,8 +345,12 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
 
     @Override
     public void onItemClickListener(Group data, int position) {
-        data.setSelected(!data.isSelected());
-        adapter.notifyDataSetChanged();
+        if (data.isSelected() || digitalAsset.getAvailableBalanceQuantity() > getSelectedGroupsCount()) {
+            data.setSelected(!data.isSelected());
+            adapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getActivity(), R.string.dap_issuer_wallet_select_group, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

@@ -38,6 +38,7 @@ public class HomeCardViewHolder extends FermatViewHolder {
     private FermatTextView assetQuantityCardText2;
     private FermatTextView assetValueCardText;
     private FermatTextView assetExpDateCardText;
+    private FermatTextView assetPending;
     private ImageButton cardAppropriateButton;
     private ImageButton cardDeliverButton;
     private ImageButton cardTransactionsButton;
@@ -63,6 +64,7 @@ public class HomeCardViewHolder extends FermatViewHolder {
         assetQuantityCardText2 = (FermatTextView) itemView.findViewById(R.id.assetQuantityCardText2);
         assetValueCardText = (FermatTextView) itemView.findViewById(R.id.assetValueCardText);
         assetExpDateCardText = (FermatTextView) itemView.findViewById(R.id.assetExpDateCardText);
+        assetPending = (FermatTextView) itemView.findViewById(R.id.assetPending);
         cardAppropriateButton = (ImageButton) itemView.findViewById(R.id.cardAppropriateButton);
         cardDeliverButton = (ImageButton) itemView.findViewById(R.id.cardDeliverButton);
         cardTransactionsButton = (ImageButton) itemView.findViewById(R.id.cardTransactionsButton);
@@ -84,36 +86,45 @@ public class HomeCardViewHolder extends FermatViewHolder {
         assetValueCardText.setText(digitalAsset.getFormattedAvailableBalanceBitcoin());
         assetExpDateCardText.setText(digitalAsset.getFormattedExpDate());
 
-        if (available > 0) {
-            cardAppropriateButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (validateAppropriateAction(digitalAsset)) {
-                        new ConfirmDialog.Builder((Activity) context, appSession)
-                                .setTitle(res.getString(R.string.dap_issuer_wallet_confirm_title))
-                                .setMessage(res.getString(R.string.dap_issuer_wallet_v3_appropriate_confirm))
-                                .setColorStyle(res.getColor(R.color.dap_issuer_wallet_v3_dialog))
-                                .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
-                                    @Override
-                                    public void onClick() {
-                                        doAppropriate(digitalAsset.getAssetPublicKey(), digitalAsset.getWalletPublicKey());
-                                    }
-                                }).build().show();
-                    }
+        if (available == book) {
+            assetPending.setText(res.getString(R.string.dap_issuer_wallet_confirmed));
+            assetPending.setTextColor(res.getColor(R.color.dap_issuer_wallet_black_text));
+        } else {
+            assetPending.setText(res.getString(R.string.dap_issuer_wallet_pending));
+            assetPending.setTextColor(res.getColor(R.color.dap_issuer_wallet_blue_text));
+        }
+
+        cardAppropriateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateAppropriateAction(digitalAsset)) {
+                    new ConfirmDialog.Builder((Activity) context, appSession)
+                            .setTitle(res.getString(R.string.dap_issuer_wallet_confirm_title))
+                            .setMessage(res.getString(R.string.dap_issuer_wallet_v3_appropriate_confirm))
+                            .setColorStyle(res.getColor(R.color.dap_issuer_wallet_v3_dialog))
+                            .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
+                                @Override
+                                public void onClick() {
+                                    doAppropriate(digitalAsset.getAssetPublicKey(), digitalAsset.getWalletPublicKey());
+                                }
+                            }).build().show();
                 }
-            });
-            cardDeliverButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    appSession.setData("asset_data", digitalAsset);
-                    homeCardFragment.doDeliverAction();
-                }
-            });
+            }
+        });
+        cardDeliverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appSession.setData("asset_data", digitalAsset);
+                homeCardFragment.doDeliverAction();
+            }
+        });
+
+        if (available > 0 && available == book) {
             cardDeliverButton.setVisibility(View.VISIBLE);
             cardAppropriateButton.setVisibility(View.VISIBLE);
         } else {
-            cardDeliverButton.setVisibility(View.INVISIBLE);
-            cardAppropriateButton.setVisibility(View.INVISIBLE);
+            cardDeliverButton.setVisibility(View.GONE);
+            cardAppropriateButton.setVisibility(View.GONE);
         }
 
         cardTransactionsButton.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +172,10 @@ public class HomeCardViewHolder extends FermatViewHolder {
                 dialog.dismiss();
                 if (activity != null) {
                     Toast.makeText(activity, R.string.dap_issuer_wallet_appropriation_ok, Toast.LENGTH_LONG).show();
+                    cardDeliverButton.setVisibility(View.GONE);
+                    cardAppropriateButton.setVisibility(View.GONE);
+                    assetPending.setText(res.getString(R.string.dap_issuer_wallet_pending));
+                    assetPending.setTextColor(res.getColor(R.color.dap_issuer_wallet_blue_text));
                 }
             }
 

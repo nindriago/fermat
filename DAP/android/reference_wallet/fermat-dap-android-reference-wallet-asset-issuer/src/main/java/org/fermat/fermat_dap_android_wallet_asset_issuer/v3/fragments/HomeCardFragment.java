@@ -345,7 +345,7 @@ public class HomeCardFragment extends FermatWalletListFragment<DigitalAsset>
         List<DigitalAsset> digitalAssets = new ArrayList<>();
         if (moduleManager != null) {
             try {
-                digitalAssets = Data.getAllDigitalAssets(moduleManager);
+                digitalAssets = Data.getAllDigitalAssetsDateSorted(moduleManager);
 
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);

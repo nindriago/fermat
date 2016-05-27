@@ -53,6 +53,43 @@ public class Data {
         return digitalAssets;
     }
 
+    public static List<DigitalAsset> getAllDigitalAssetsDateSorted(AssetIssuerWalletSupAppModuleManager moduleManager) throws Exception {
+        List<AssetIssuerWalletList> balances = moduleManager.getAssetIssuerWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
+        List<DigitalAsset> digitalAssets = new ArrayList<>();
+        DigitalAsset digitalAsset;
+        for (AssetIssuerWalletList balance : balances) {
+            digitalAsset = new DigitalAsset();
+            digitalAsset.setAssetPublicKey(balance.getDigitalAsset().getPublicKey());
+            digitalAsset.setName(balance.getDigitalAsset().getName());
+            digitalAsset.setAvailableBalanceQuantity(balance.getQuantityAvailableBalance());
+            digitalAsset.setBookBalanceQuantity(balance.getQuantityBookBalance());
+            digitalAsset.setAvailableBalance(balance.getAvailableBalance());
+            Timestamp expirationDate = (Timestamp) balance.getDigitalAsset().getContract().getContractProperty(DigitalAssetContractPropertiesConstants.EXPIRATION_DATE).getValue();
+            digitalAsset.setExpDate(expirationDate);
+
+            List<Resource> resources = balance.getDigitalAsset().getResources();
+            if (resources != null && resources.size() > 0) {
+                digitalAsset.setImage(balance.getDigitalAsset().getResources().get(0).getResourceBinayData());
+            }
+
+            List<Transaction> transactions = getTransactions(moduleManager, digitalAsset);
+            digitalAsset.setLastTransactionDate(transactions.get(0).getDate());
+
+            digitalAssets.add(digitalAsset);
+        }
+
+        Collections.sort(digitalAssets, new Comparator<DigitalAsset>() {
+            @Override
+            public int compare(DigitalAsset lhs, DigitalAsset rhs) {
+                if (lhs.getLastTransactionDate().getTime() > rhs.getLastTransactionDate().getTime()) return -1;
+                else if (lhs.getLastTransactionDate().getTime() < rhs.getLastTransactionDate().getTime()) return 1;
+                return 0;
+            }
+        });
+
+        return digitalAssets;
+    }
+
     public static DigitalAsset getDigitalAsset(AssetIssuerWalletSupAppModuleManager moduleManager, String digitalAssetPublicKey) throws CantLoadWalletException {
         List<AssetIssuerWalletList> balances = moduleManager.getAssetIssuerWalletBalances(WalletUtilities.WALLET_PUBLIC_KEY);
         DigitalAsset digitalAsset;
