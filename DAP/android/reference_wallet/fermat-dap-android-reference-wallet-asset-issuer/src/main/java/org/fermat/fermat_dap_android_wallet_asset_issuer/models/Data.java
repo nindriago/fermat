@@ -207,7 +207,7 @@ public class Data {
         Collections.sort(users, new Comparator<User>() {
             @Override
             public int compare(User lhs, User rhs) {
-                return lhs.getName().compareTo(rhs.getName());
+                return rhs.getName().compareTo(lhs.getName());
             }
         });
 
