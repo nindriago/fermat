@@ -397,7 +397,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         return users;
     }
 
-    private void doDistributeToUsers(final String assetPublicKey, final List<User> users, final int assetsAmount) {
+    private void doDistributeToUsers(final String assetPublicKey, final List<User> usersSelected, final int assetsAmount) {
         final Activity activity = getActivity();
         final ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setMessage("Please wait...");
@@ -406,12 +406,10 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
         FermatWorker task = new FermatWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                for (User user : users) {
-                    if (user.isSelected()) {
+                for (User user : usersSelected) {
                         moduleManager.addUserToDeliver(user.getActorAssetUser());
-                    }
                 }
-                if (users.size() > 0) {
+                if (usersSelected.size() > 0) {
                     moduleManager.distributionAssets(assetPublicKey, WalletUtilities.WALLET_PUBLIC_KEY, assetsAmount);
                 }
                 return true;
