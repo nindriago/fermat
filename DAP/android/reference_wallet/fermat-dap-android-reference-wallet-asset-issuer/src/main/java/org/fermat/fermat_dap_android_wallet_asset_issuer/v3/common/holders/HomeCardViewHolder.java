@@ -90,6 +90,9 @@ public class HomeCardViewHolder extends FermatViewHolder {
             assetPending.setText(res.getString(R.string.dap_issuer_wallet_confirmed));
             assetPending.setTextColor(res.getColor(R.color.dap_issuer_wallet_black_text));
         } else {
+
+            //long pendings = book-available;
+            //assetPending.setText(""+pendings+" "+res.getString(R.string.dap_issuer_wallet_pending));
             assetPending.setText(res.getString(R.string.dap_issuer_wallet_pending));
             assetPending.setTextColor(res.getColor(R.color.dap_issuer_wallet_blue_text));
         }
@@ -119,7 +122,7 @@ public class HomeCardViewHolder extends FermatViewHolder {
             }
         });
 
-        if (available > 0 && available == book) {
+        if (available > 0) {
             cardDeliverButton.setVisibility(View.VISIBLE);
             cardAppropriateButton.setVisibility(View.VISIBLE);
         } else {
