@@ -54,6 +54,12 @@ public interface AssetFactory {
     boolean getIsRedeemable();
     void setIsRedeemable(boolean isRedeemable);
 
+    boolean getIsTransferable();
+    void setIsTransferable(boolean isTransferable);
+
+    boolean getIsExchangeable();
+    void setIsExchangeable(boolean isExchangeable);
+
     Timestamp getExpirationDate();
     void setExpirationDate(Timestamp expirationDate);
 

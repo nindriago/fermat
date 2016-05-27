@@ -300,6 +300,8 @@ public class WizardMultimediaFragment extends AbstractFermatFragment {
             }
             asset.setTotalQuantity(asset.getQuantity());
             asset.setIsRedeemable(asset.getIsRedeemable());
+            asset.setIsTransferable(asset.getIsTransferable());
+            asset.setIsExchangeable(asset.getIsExchangeable());
             asset.setState(State.DRAFT);
             asset.setAssetBehavior(AssetBehavior.REGENERATION_ASSET);
             asset.setCreationTimestamp(new Timestamp(System.currentTimeMillis()));
