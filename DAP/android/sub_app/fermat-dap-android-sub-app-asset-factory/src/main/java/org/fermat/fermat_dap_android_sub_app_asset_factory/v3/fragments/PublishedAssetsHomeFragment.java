@@ -176,18 +176,18 @@ public class PublishedAssetsHomeFragment extends FermatWalletListFragment<AssetF
 
         final AssetFactorySettings assetFactorySettingsTemp = settings;
 
-        if (manager.getLoggedIdentityAssetIssuer() == null) {
-            Handler handlerTimer = new Handler();
-            handlerTimer.postDelayed(new Runnable() {
-                public void run() {
-                    if (assetFactorySettingsTemp.isPresentationHelpEnabled()) {
-                        setUpPresentation(false);
-                    }
-                }
-            }, 500);
-        } else {
-//            create.setEnabled(true);
-        }
+//        if (manager.getLoggedIdentityAssetIssuer() == null) {
+//            Handler handlerTimer = new Handler();
+//            handlerTimer.postDelayed(new Runnable() {
+//                public void run() {
+//                    if (assetFactorySettingsTemp.isPresentationHelpEnabled()) {
+//                        setUpPresentation(false);
+//                    }
+//                }
+//            }, 500);
+//        } else {
+////            create.setEnabled(true);
+//        }
     }
 
     private void configureToolbar() {

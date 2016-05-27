@@ -157,7 +157,9 @@
                 android:layout_marginTop="5dp"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-light"
-                android:textColor="@color/wizard_properties_edit_text"/>
+                android:textColor="@color/wizard_properties_edit_text"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true" />
 
             <TextView
                 android:id="@+id/wizardPropertiesFeeLabel"
@@ -182,20 +184,25 @@
                 android:background="@color/wizard_properties_edit_background"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-light"
-                android:textColor="@color/wizard_properties_edit_text"/>
+                android:textColor="@color/wizard_properties_edit_text"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/wizardPropertiesChecksLayout"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_below="@+id/wizardPropertiesAssetDescEditText"
-                android:layout_marginTop="21dp">
+                android:layout_marginTop="21dp"
+                android:layout_centerHorizontal="true">
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox
                     android:id="@+id/wizardVerifyRedeemableCheck"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
-                    android:button="@drawable/check"/>
+                    android:button="@drawable/check"
+                    android:layout_weight="1.0"/>
 
                 <TextView
                     android:id="@+id/wizardVerifyRedeemableLabel"
@@ -205,7 +212,8 @@
                     android:textColor="@color/wizard_label_3"
                     android:textSize="12sp"
                     android:layout_toRightOf="@+id/wizardVerifyRedeemableCheck"
-                    android:layout_marginLeft="2dp"/>
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="3.0"/>
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox
                     android:id="@+id/wizardVerifyTransfereableCheck"
@@ -213,17 +221,19 @@
                     android:layout_height="14dp"
                     android:layout_toRightOf="@+id/wizardVerifyRedeemableLabel"
                     android:button="@drawable/check"
-                    android:layout_marginLeft="27dp"/>
+                    android:layout_marginLeft="27dp"
+                    android:layout_weight="1.0"/>
 
                 <TextView
                     android:id="@+id/wizardVerifyTransfereableLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Transfereable"
+                    android:text="Transferable"
                     android:textColor="@color/wizard_label_1"
                     android:textSize="12sp"
                     android:layout_toRightOf="@+id/wizardVerifyTransfereableCheck"
-                    android:layout_marginLeft="2dp"/>
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="3.0"/>
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox
                     android:id="@+id/wizardVerifyExchangeableCheck"
@@ -232,6 +242,7 @@
                     android:layout_toRightOf="@+id/wizardVerifyTransfereableLabel"
                     android:button="@drawable/check"
                     android:layout_marginLeft="27dp"
+                    android:layout_weight="1.0"
                     android:checked="true"/>
 
                 <TextView
@@ -242,9 +253,10 @@
                     android:textColor="@color/wizard_label_3"
                     android:textSize="12sp"
                     android:layout_toRightOf="@+id/wizardVerifyExchangeableCheck"
-                    android:layout_marginLeft="2dp"/>
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="3.0"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/wizardPropertiesQuantityLabel"

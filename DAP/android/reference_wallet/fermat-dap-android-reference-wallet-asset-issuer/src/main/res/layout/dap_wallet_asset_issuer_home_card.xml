@@ -168,14 +168,16 @@
                         android:layout_width="75dp"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:src="@drawable/bg_appropriate_button"/>
+                        android:src="@drawable/bg_appropriate_button"
+                        android:visibility="gone" />
 
                     <ImageButton
                         android:id="@+id/cardDeliverButton"
                         android:layout_width="75dp"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:src="@drawable/bg_deliver_button"/>
+                        android:src="@drawable/bg_deliver_button"
+                        android:visibility="gone" />
 
                     <ImageButton
                         android:id="@+id/cardTransactionsButton"

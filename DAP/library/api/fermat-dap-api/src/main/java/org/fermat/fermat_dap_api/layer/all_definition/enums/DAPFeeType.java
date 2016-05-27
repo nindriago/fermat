@@ -10,10 +10,13 @@ public enum DAPFeeType {
 
     //ENUM DECLARATION
 
-    SLOW("Slow", 1000),
-    NORMAL("Normal", 2000),
-    FAST("Fast", 3000)
-    ;
+//    SLOW("Slow", 1000),
+//    NORMAL("Normal", 2000),
+//    FAST("Fast", 3000);
+
+    SLOW("Slow", 30000),
+    NORMAL("Normal", 30000),
+    FAST("Fast", 30000);
     //VARIABLE DECLARATION
 
     private String description;

@@ -325,7 +325,7 @@
                     android:id="@+id/wizardVerifyTransfereableLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Transfereable"
+                    android:text="Transferable"
                     android:textColor="@color/wizard_label_1"
                     android:textSize="12sp"
                     android:layout_toRightOf="@+id/wizardVerifyTransfereableCheck"
