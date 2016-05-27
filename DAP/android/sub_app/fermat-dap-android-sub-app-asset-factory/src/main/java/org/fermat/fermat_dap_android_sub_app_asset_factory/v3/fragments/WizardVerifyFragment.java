@@ -83,7 +83,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
     private FermatTextView wizardVerifyExpDateValue;
     private FermatTextView wizardVerifyQuantityValue;
     private FermatCheckBox wizardVerifyRedeemableCheck;
-    private FermatCheckBox wizardVerifyTransfereableCheck;
+    private FermatCheckBox wizardVerifyTransferableCheck;
     private FermatCheckBox wizardVerifyExchangeableCheck;
     private FermatTextView wizardVerifyAssetValue;
     private FermatTextView wizardVerifyTotalValue;
@@ -189,7 +189,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         wizardVerifyExpDateValue = (FermatTextView) rootView.findViewById(R.id.wizardVerifyExpDateValue);
         wizardVerifyQuantityValue = (FermatTextView) rootView.findViewById(R.id.wizardVerifyQuantityValue);
         wizardVerifyRedeemableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyRedeemableCheck);
-        wizardVerifyTransfereableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyTransfereableCheck);
+        wizardVerifyTransferableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyTransfereableCheck);
         wizardVerifyExchangeableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyExchangeableCheck);
         wizardVerifyAssetValue = (FermatTextView) rootView.findViewById(R.id.wizardVerifyAssetValue);
         wizardVerifyTotalValue = (FermatTextView) rootView.findViewById(R.id.wizardVerifyTotalValue);
@@ -281,6 +281,8 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             }
             asset.setTotalQuantity(asset.getQuantity());
             asset.setIsRedeemable(wizardVerifyRedeemableCheck.isChecked());
+            asset.setIsTransferable(wizardVerifyTransferableCheck.isChecked());
+            asset.setIsExchangeable(wizardVerifyExchangeableCheck.isChecked());
             asset.setState(State.DRAFT);
             asset.setAssetBehavior(AssetBehavior.REGENERATION_ASSET);
             asset.setCreationTimestamp(new Timestamp(System.currentTimeMillis()));
@@ -380,7 +382,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         }
         List<ContractProperty> properties = asset.getContractProperties();
         wizardVerifyRedeemableCheck.setChecked(false);
-        wizardVerifyTransfereableCheck.setChecked(false);
+        wizardVerifyTransferableCheck.setChecked(false);
         wizardVerifyExchangeableCheck.setChecked(false);
         if (properties != null && properties.size() > 0) {
             for (ContractProperty property : properties) {
@@ -388,7 +390,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
                     wizardVerifyRedeemableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
                 }
                 if (property.getName().equals(DigitalAssetContractPropertiesConstants.TRANSFERABLE)) {
-                    wizardVerifyTransfereableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
+                    wizardVerifyTransferableCheck.setChecked(((Boolean) property.getValue()).booleanValue());
                 }
                 if (property.getName().equals(DigitalAssetContractPropertiesConstants.SALEABLE)) {
                     wizardVerifyExchangeableCheck.setChecked(((Boolean) property.getValue()).booleanValue());

@@ -95,6 +95,8 @@ public class AssetFactoryMiddlewareDao {
         record.setLongValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_QUANTITY_COLUMN, assetFactory.getQuantity());
         record.setLongValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_TOTAL_QUANTITY_COLUMN, assetFactory.getTotalQuantity());
         record.setStringValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_IS_REDEEMABLE, String.valueOf(assetFactory.getIsRedeemable()));
+        record.setStringValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_IS_TRANSFERABLE, String.valueOf(assetFactory.getIsTransferable()));
+        record.setStringValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_IS_EXCHANGEABLE, String.valueOf(assetFactory.getIsExchangeable()));
         if (assetFactory.getExpirationDate() != null) {
             record.setStringValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_EXPIRATION_DATE, assetFactory.getExpirationDate().toString());
         } else
@@ -344,6 +346,8 @@ public class AssetFactoryMiddlewareDao {
 
 
         assetFactory.setIsRedeemable(Boolean.valueOf(assetFactoriesRecord.getStringValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_IS_REDEEMABLE)));
+        assetFactory.setIsTransferable(Boolean.valueOf(assetFactoriesRecord.getStringValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_IS_TRANSFERABLE)));
+        assetFactory.setIsExchangeable(Boolean.valueOf(assetFactoriesRecord.getStringValue(AssetFactoryMiddlewareDatabaseConstant.ASSET_FACTORY_IS_EXCHANGEABLE)));
 
         return assetFactory;
     }
