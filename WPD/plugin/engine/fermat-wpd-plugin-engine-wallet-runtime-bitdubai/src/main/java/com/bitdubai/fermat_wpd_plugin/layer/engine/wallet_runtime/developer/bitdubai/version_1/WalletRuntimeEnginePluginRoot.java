@@ -1202,7 +1202,7 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
 
         final String publicKey = WalletsPublicKeys.DAP_ISSUER_WALLET.getCode();
 
-        final String statusBarColor = "#161616";
+        final String statusBarColor = "#e2e4e6";
         final String titleBarLabelColor = "#ffffff";
         final int titleBarLabelSize = 20;
 
@@ -1224,7 +1224,7 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         runtimeWalletNavigationStructure.changeActualStartActivity(Activities.DAP_WALLET_ASSET_ISSUER_MAIN_ACTIVITY.getCode());
 
         runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("My Assets");
+        runtimeTitleBar.setLabel("Asset Issuer");
         runtimeTitleBar.setLabelSize(titleBarLabelSize);
         runtimeTitleBar.setTitleColor("#ffffff");
 //        runtimeTitleBar.setIsTitleTextStatic(true);
@@ -1638,7 +1638,7 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         runtimeWalletNavigationStructure.changeActualStartActivity(Activities.DAP_WALLET_ASSET_USER_V3_HOME.getCode());
 
         runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("My Assets");
+        runtimeTitleBar.setLabel("Asset User");
         runtimeTitleBar.setLabelSize(titleBarLabelSize);
 //        runtimeTitleBar.setTitleColor(titleBarLabelColor);
 //        runtimeTitleBar.setIsTitleTextStatic(true);
@@ -2019,7 +2019,7 @@ public class WalletRuntimeEnginePluginRoot extends AbstractPlugin implements
         final String publicKey = WalletsPublicKeys.DAP_REDEEM_WALLET.getCode();
 
 //        final String statusBarColor = "#005580";
-        final String statusBarColor = "#004D40";
+        final String statusBarColor = "#009688";
         final String titleBarLabelColor = "#ffffff";
         final int titleBarLabelSize = 20;
 
