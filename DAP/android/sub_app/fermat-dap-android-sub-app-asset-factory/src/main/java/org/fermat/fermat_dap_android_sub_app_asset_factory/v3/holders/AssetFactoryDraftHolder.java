@@ -1,5 +1,7 @@
 package org.fermat.fermat_dap_android_sub_app_asset_factory.v3.holders;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,6 +15,8 @@ import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
  */
 public class AssetFactoryDraftHolder extends FermatViewHolder {
 
+    private Context context;
+    public Resources res;
     public FermatTextView draftItemQuantity;
     public FermatTextView draftItemState;
     public ImageView draftAssetImage;
@@ -38,6 +42,8 @@ public class AssetFactoryDraftHolder extends FermatViewHolder {
 
     public AssetFactoryDraftHolder(View itemView) {
         super(itemView);
+        this.context = context;
+        res = itemView.getResources();
 
         draftItemQuantity = (FermatTextView) itemView.findViewById(R.id.draftItemQuantity);
         draftItemState = (FermatTextView) itemView.findViewById(R.id.draftItemState);
