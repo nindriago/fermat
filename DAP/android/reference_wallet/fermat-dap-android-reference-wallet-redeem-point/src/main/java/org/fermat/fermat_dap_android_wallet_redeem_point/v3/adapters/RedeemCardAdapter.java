@@ -78,15 +78,9 @@ public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardVie
         } catch (Exception e) {
             settings = null;
         }
-
-        Bitmap bitmap;
-        if (asset.getImage() != null && asset.getImage().length > 0) {
-            bitmap = BitmapFactory.decodeByteArray(asset.getImage(), 0, asset.getImage().length);
-            bitmap = Bitmap.createScaledBitmap(bitmap, 42, 42, true);
-            holder.cardAssetImage.setImageDrawable(ImagesUtils.getRoundedBitmap(holder.res, bitmap));
-        } else {
-            holder.cardAssetImage.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.img_asset_without_image));
-        }
+        byte[] imgAsset = (asset.getImage() == null) ? new byte[0] : asset.getImage();
+        BitmapWorkerTask bitmapWorkerTaskAsset = new BitmapWorkerTask(holder.cardAssetImage, holder.res, R.drawable.img_asset_without_image, true);
+        bitmapWorkerTaskAsset.execute(imgAsset);
 
         holder.cardAssetName.setText(asset.getName());
         holder.cardTime.setText(asset.getFormattedDate());
