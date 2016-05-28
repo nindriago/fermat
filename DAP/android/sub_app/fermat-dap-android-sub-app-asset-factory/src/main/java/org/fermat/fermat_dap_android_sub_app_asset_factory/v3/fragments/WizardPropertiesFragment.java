@@ -278,9 +278,11 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         Date newExpDate = null;
         long amountSatoshi = asset.getAmount();
         try {
-            newExpDate= new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
+            if (!wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
+                newExpDate = new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
+            }
         } catch (ParseException e) {
-            Toast.makeText(getActivity(), "Invalid Date", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Invalid Date Format", Toast.LENGTH_SHORT).show();
         }
         boolean isValidDate = newExpDate == null ? true : newExpDate.after(new Date());
 

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.utils.ImagesUtils;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
+import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 import com.squareup.picasso.Picasso;
 
@@ -58,33 +59,25 @@ public class DigitalAssetHistoryItemViewHolder extends FermatViewHolder {
 
     public void bind(final DigitalAssetHistory digitalAssetHistory, String sectionTextDate, Integer assetsQuantity, boolean showSection) {
 
-        if (showSection)
-        {
+        if (showSection) {
             historySectionHeader.setVisibility(View.VISIBLE);
             historyDateHeader.setText(sectionTextDate);
-            String textSectionRight = (assetsQuantity > 1 ? (assetsQuantity+" Assets"):(assetsQuantity+" Asset"));
+            String textSectionRight = (assetsQuantity > 1 ? (assetsQuantity + " Assets") : (assetsQuantity + " Asset"));
             historyAssetsQuantity.setText(textSectionRight);
-        }
-        else
+        } else
             historySectionHeader.setVisibility(View.GONE);
 
         historyAssetName.setText(digitalAssetHistory.getHistoryNameAsset());
         historyUserName.setText(digitalAssetHistory.getHistoryNameUser());
 
-        if (digitalAssetHistory.getImageAsset() != null && digitalAssetHistory.getImageAsset().length > 0) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(digitalAssetHistory.getImageAsset(), 0, digitalAssetHistory.getImageAsset().length);
-            bitmap = Bitmap.createScaledBitmap(bitmap, 120, 120, true);
-            imageViewAssetRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), bitmap));
-        }
-        else
-            imageViewAssetRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.img_asset_without_image));
+        byte[] imgAsset = (digitalAssetHistory.getImageAsset() == null) ? new byte[0] : digitalAssetHistory.getImageAsset();
+        BitmapWorkerTask bitmapWorkerTaskAsset = new BitmapWorkerTask(imageViewAssetRedeemedAvatar, context.getResources(), R.drawable.img_asset_without_image, true);
+        bitmapWorkerTaskAsset.execute(imgAsset);
 
-        if (digitalAssetHistory.getImageActorUserFrom() != null && digitalAssetHistory.getImageActorUserFrom().length > 0) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(digitalAssetHistory.getImageActorUserFrom(), 0, digitalAssetHistory.getImageActorUserFrom().length);
-            bitmap = Bitmap.createScaledBitmap(bitmap, 120, 120, true);
-            imageViewUserRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), bitmap));
-        }else
-            imageViewUserRedeemedAvatar.setImageDrawable(ImagesUtils.getRoundedBitmap(context.getResources(), R.drawable.asset_user_identity_history));
+        byte[] imgUser = (digitalAssetHistory.getImageActorUserFrom() == null) ? new byte[0] : digitalAssetHistory.getImageActorUserFrom();
+        BitmapWorkerTask bitmapWorkerTaskUser = new BitmapWorkerTask(imageViewUserRedeemedAvatar, context.getResources(), R.drawable.asset_user_identity_history, true);
+        bitmapWorkerTaskUser.execute(imgUser);
+
 
     }
 

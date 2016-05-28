@@ -89,11 +89,9 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         holder.draftItemQuantity.setText((data.getQuantity() == 1)? data.getQuantity()+" Asset":data.getQuantity()+" Assets");
 
         List<Resource> resources = data.getResources();
-        if (resources != null && resources.size() > 0) {
-            holder.draftAssetImage.setImageBitmap(BitmapFactory.decodeStream(new ByteArrayInputStream(resources.get(0).getResourceBinayData())));
-        } else {
-            holder.draftAssetImage.setImageResource(R.drawable.img_asset_image);
-        }
+        byte[] imgAsset = (resources != null && resources.size() > 0) ? resources.get(0).getResourceBinayData() :  new byte[0];
+        BitmapWorkerTask bitmapWorkerTaskAsset = new BitmapWorkerTask(holder.draftAssetImage, holder.res, R.drawable.img_asset_image, false);
+        bitmapWorkerTaskAsset.execute(imgAsset);
 
         holder.draftItemAssetName.setText(data.getName());
         //holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountTotal));
