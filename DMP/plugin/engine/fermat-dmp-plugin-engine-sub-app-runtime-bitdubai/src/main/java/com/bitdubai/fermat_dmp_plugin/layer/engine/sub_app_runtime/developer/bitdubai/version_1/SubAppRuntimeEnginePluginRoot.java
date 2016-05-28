@@ -1321,6 +1321,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         SideMenu runtimeSideMenu;
         MenuItem runtimeMenuItem;
         String toolbarColor = "#4B5E75";
+        String statusBarColor = "#4B5E75";
 
         String dapFactoryPublicKey = SubAppsPublicKeys.DAP_FACTORY.getCode();
 
@@ -1335,7 +1336,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setBackPublicKey(dapFactoryPublicKey);
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1C1C1C");
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Asset Factory");
@@ -1395,7 +1396,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor("#1d1d25");
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Draft Asset");
@@ -1418,7 +1419,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor("#1d1d25");
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Settings");
@@ -1458,7 +1459,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor("#1d1d25");
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Network");
@@ -1482,7 +1483,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor("#1d1d25");
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Notifications");
@@ -1530,7 +1531,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
-        statusBar.setColor("#1d1d25");
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Properties");
@@ -1554,7 +1555,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
-        statusBar.setColor(toolbarColor);
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Crypto");
@@ -1578,7 +1579,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
-        statusBar.setColor(toolbarColor);
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Verify");
