@@ -1321,7 +1321,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         SideMenu runtimeSideMenu;
         MenuItem runtimeMenuItem;
         String toolbarColor = "#4B5E75";
-        String statusBarColor = "#4B5E75";
+        String statusBarColor = "#3f5b77";
 
         String dapFactoryPublicKey = SubAppsPublicKeys.DAP_FACTORY.getCode();
 
@@ -1507,7 +1507,7 @@ public class SubAppRuntimeEnginePluginRoot extends AbstractPlugin implements Sub
         runtimeActivity.setColor(toolbarColor);
 
         statusBar = new StatusBar();
-        statusBar.setColor(toolbarColor);
+        statusBar.setColor(statusBarColor);
 
         runtimeTitleBar = new TitleBar();
         runtimeTitleBar.setLabel("Multimedia");
