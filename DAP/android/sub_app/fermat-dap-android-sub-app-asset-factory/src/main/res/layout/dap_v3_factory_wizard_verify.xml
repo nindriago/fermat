@@ -182,7 +182,7 @@
                 android:layout_toRightOf="@+id/wizardVerifyImageLayout"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="70dp">
+                android:layout_marginTop="30dp">
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView
                     android:id="@+id/wizardVerifyDescLabel"
@@ -297,8 +297,8 @@
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox
                     android:id="@+id/wizardVerifyRedeemableCheck"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:button="@drawable/check"
                     android:enabled="false"/>
 
@@ -314,8 +314,8 @@
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox
                     android:id="@+id/wizardVerifyTransfereableCheck"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/wizardVerifyRedeemableLabel"
                     android:button="@drawable/check"
                     android:layout_marginLeft="25dp"
@@ -333,8 +333,8 @@
 
                 <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox
                     android:id="@+id/wizardVerifyExchangeableCheck"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/wizardVerifyTransfereableLabel"
                     android:button="@drawable/check"
                     android:layout_marginLeft="25dp"

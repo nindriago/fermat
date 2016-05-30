@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,7 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFra
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatCheckBox;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatEditText;
+import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
 import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
@@ -78,6 +80,8 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private FermatCheckBox wizardPropertiesRedeemableCheck;
     private FermatCheckBox wizardPropertiesTransfereableCheck;
     private FermatCheckBox wizardPropertiesExchangeableCheck;
+    private FermatTextView wizardPropertiesAssetNameEditCountText;
+    private FermatTextView wizardPropertiesAssetDescEditCountText;
     private FermatEditText wizardPropertiesExpDateEditText;
     private ImageButton wizardPropertiesDateButton;
     private FermatButton wizardPropertiesBackButton;
@@ -181,6 +185,8 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private void setupUI() {
         wizardPropertiesAssetNameEditText = (FermatEditText) rootView.findViewById(R.id.wizardCryptoValueEditText);
         wizardPropertiesAssetDescEditText = (FermatEditText) rootView.findViewById(R.id.wizardPropertiesAssetDescEditText);
+        wizardPropertiesAssetNameEditCountText = (FermatTextView) rootView.findViewById(R.id.wizardCryptoValueEditCountText);
+        wizardPropertiesAssetDescEditCountText = (FermatTextView) rootView.findViewById(R.id.wizardPropertiesAssetDescEditCountText);
         wizardPropertiesRedeemableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyRedeemableCheck);
         wizardPropertiesTransfereableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyTransfereableCheck);
         wizardPropertiesExchangeableCheck = (FermatCheckBox) rootView.findViewById(R.id.wizardVerifyExchangeableCheck);
@@ -198,7 +204,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         wizardPropertiesEraseDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
+                if (!wizardPropertiesExpDateEditText.getText().toString().equals("")) {
                     wizardPropertiesExpDateEditText.setText("");
                     wizardPropertiesEraseDateButton.setVisibility(View.GONE);
                 }
@@ -269,6 +275,24 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
                 changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_VERIFY.getCode(), appSession.getAppPublicKey());
             }
         });
+
+        wizardPropertiesAssetNameEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String count = Integer.toString(wizardPropertiesAssetNameEditText.getText().toString().length());
+                wizardPropertiesAssetNameEditCountText.setText(count + "/24");
+                return false;
+            }
+        });
+        wizardPropertiesAssetDescEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String count = Integer.toString(wizardPropertiesAssetDescEditText.getText().toString().length());
+                wizardPropertiesAssetDescEditCountText.setText(count + "/160");
+                return false;
+            }
+        });
+
     }
 
     private boolean validate() {
@@ -278,7 +302,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         Date newExpDate = null;
         long amountSatoshi = asset.getAmount();
         try {
-            if (!wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
+            if (!wizardPropertiesExpDateEditText.getText().toString().equals("")) {
                 newExpDate = new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime());
             }
         } catch (ParseException e) {
@@ -374,7 +398,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             }
 
             try {
-                if (wizardPropertiesExpDateEditText.getText().toString().length() > 0 && !wizardPropertiesExpDateEditText.getText().toString().equals("None")) {
+                if (wizardPropertiesExpDateEditText.getText().toString().length() > 0 && !wizardPropertiesExpDateEditText.getText().toString().equals("")) {
                     asset.setExpirationDate(new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime()));
                 }else{
                     asset.setExpirationDate(null);
@@ -410,11 +434,15 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private void loadProperties() {
         if (asset.getName() != null && asset.getName().length() > 0) {
             wizardPropertiesAssetNameEditText.setText(asset.getName());
+            String count = Integer.toString(wizardPropertiesAssetNameEditText.getText().toString().length());
+            wizardPropertiesAssetNameEditCountText.setText(count + "/24");
         } else {
             wizardPropertiesAssetNameEditText.setText("");
         }
         if (asset.getDescription() != null && asset.getDescription().length() > 0) {
             wizardPropertiesAssetDescEditText.setText(asset.getDescription());
+            String count = Integer.toString(wizardPropertiesAssetDescEditText.getText().toString().length());
+            wizardPropertiesAssetDescEditCountText.setText(count + "/160");
         } else {
             wizardPropertiesAssetDescEditText.setText("");
         }
@@ -438,7 +466,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         if (asset.getExpirationDate() != null) {
             wizardPropertiesExpDateEditText.setText(DAPStandardFormats.DATE_FORMAT.format(new Date(asset.getExpirationDate().getTime())));
         } else {
-            wizardPropertiesExpDateEditText.setText("None");
+            wizardPropertiesExpDateEditText.setText("");
         }
     }
 
