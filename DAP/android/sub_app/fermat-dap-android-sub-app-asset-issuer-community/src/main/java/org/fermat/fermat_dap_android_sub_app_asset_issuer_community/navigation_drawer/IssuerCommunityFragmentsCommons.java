@@ -19,7 +19,6 @@ import com.squareup.picasso.Picasso;
  */
 public class IssuerCommunityFragmentsCommons {
 
-
     public static View setUpHeaderScreen(LayoutInflater inflater, Context activity, ActiveActorIdentityInformation identityAssetIssuer) throws CantGetIdentityAssetUserException {
         /**
          * Navigation view header
@@ -41,7 +40,6 @@ public class IssuerCommunityFragmentsCommons {
             FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
             fermatTextView.setText(identityAssetIssuer.getAlias());
         }
-
         return view;
     }
 }
