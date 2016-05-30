@@ -255,7 +255,7 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
         if(asset.getName() != null && asset.getName().trim().length() > 0 &&
                 asset.getDescription() != null && asset.getDescription().trim().length() > 0
                 && Integer.parseInt(wizardCryptoQuantityEditText.getText().toString()) > 0
-                && Double.parseDouble(wizardCryptoValueEditText.getText().toString())>= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND
+                && amountSatoshi >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND
                 && isValidDate){
             return true;
 
@@ -435,11 +435,16 @@ public class WizardCryptoFragment extends AbstractFermatFragment {
                 e.printStackTrace();
             }
             BitcoinConverter.Currency to = (BitcoinConverter.Currency) wizardCryptoValueSpinner.getSelectedItem();
-            long amountToLoad = ((Double) BitcoinConverter.convert(asset.getAmount(), SATOSHI, to)).longValue();
-            wizardCryptoValueEditText.setText(Long.toString(amountToLoad));
+            double amountToLoad = BitcoinConverter.convert(asset.getAmount(), SATOSHI, to);
+            String amountToLoadStr;
+            if (to.equals(SATOSHI)) {
+                amountToLoadStr = Long.toString(Double.valueOf(amountToLoad).longValue());
+            } else {
+                amountToLoadStr = DAPStandardFormats.BITCOIN_FORMAT.format(amountToLoad);
+            }
+            wizardCryptoValueEditText.setText(amountToLoadStr);
         } else {
             wizardCryptoValueEditText.setText("0");
-
         }
 
         if (asset.getFee() > 0) {
