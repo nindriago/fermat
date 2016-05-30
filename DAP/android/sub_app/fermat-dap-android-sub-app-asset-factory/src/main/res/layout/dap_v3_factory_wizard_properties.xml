@@ -317,8 +317,8 @@
 
             <ImageButton
                 android:id="@+id/wizardPropertiesEraseDateButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:src="@drawable/x_icon_blue"
                 android:scaleType="fitCenter"
                 android:background="@null"

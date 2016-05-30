@@ -39,7 +39,7 @@
                     android:text="Asset Name"
                     android:fontFamily="sans-serif"
                     android:textColor="@color/card_header_text"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"/>
 
