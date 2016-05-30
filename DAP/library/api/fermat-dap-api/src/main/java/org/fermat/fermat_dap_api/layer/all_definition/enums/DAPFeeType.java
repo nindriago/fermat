@@ -14,8 +14,8 @@ public enum DAPFeeType {
 //    NORMAL("Normal", 2000),
 //    FAST("Fast", 3000);
 
-    SLOW("Slow", 30000),
-    NORMAL("Normal", 30000),
+    SLOW("Slow", 20000),
+    NORMAL("Normal", 25000),
     FAST("Fast", 30000);
     //VARIABLE DECLARATION
 
