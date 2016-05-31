@@ -268,7 +268,7 @@ public class RedeemPointCommunityNotificationsFragment extends AbstractFermatFra
             }
         } catch (Exception e) {
             errorManager.reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.UNSTABLE, FermatException.wrapException(e));
-            makeText(getActivity(), "Asset User system error",
+            makeText(getActivity(), "Redeem Point system error",
                     Toast.LENGTH_SHORT).show();
         }
 
