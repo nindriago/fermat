@@ -172,7 +172,7 @@ public class CreateRedeemPointIdentityFragment extends AbstractFermatFragment {
     private void setUpPresentation(boolean checkButton) {
         try {
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
-                    .setBannerRes(R.drawable.banner_redeem_point)
+                    .setBannerRes(R.drawable.banner_redeem_point_identity)
                     .setIconRes(R.drawable.redeem_point)
                     .setVIewColor(R.color.dap_identity_redeem_view_color)
                     .setTitleTextColor(R.color.dap_identity_redeem_view_color)

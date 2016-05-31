@@ -75,7 +75,7 @@ public class DigitalAssetHistoryItemViewHolder extends FermatViewHolder {
         bitmapWorkerTaskAsset.execute(imgAsset);
 
         byte[] imgUser = (digitalAssetHistory.getImageActorUserFrom() == null) ? new byte[0] : digitalAssetHistory.getImageActorUserFrom();
-        BitmapWorkerTask bitmapWorkerTaskUser = new BitmapWorkerTask(imageViewUserRedeemedAvatar, context.getResources(), R.drawable.asset_user_identity_history, true);
+        BitmapWorkerTask bitmapWorkerTaskUser = new BitmapWorkerTask(imageViewUserRedeemedAvatar, context.getResources(), R.drawable.redeem_point_identity, true);
         bitmapWorkerTaskUser.execute(imgUser);
 
 

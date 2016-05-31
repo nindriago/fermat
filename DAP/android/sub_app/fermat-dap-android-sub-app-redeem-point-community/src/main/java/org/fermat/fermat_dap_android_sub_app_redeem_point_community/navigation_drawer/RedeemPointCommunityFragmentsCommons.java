@@ -34,9 +34,9 @@ public class RedeemPointCommunityFragmentsCommons {
                     BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(imageView, activity.getResources(), 0, false);
                     bitmapWorkerTask.execute(identityAssetRedeem.getImage());
                 } else
-                    Picasso.with(activity).load(R.drawable.banner_redeem_point).into(imageView);
+                    Picasso.with(activity).load(R.drawable.banner_redeem_point_community).into(imageView);
             } else
-                Picasso.with(activity).load(R.drawable.banner_redeem_point).into(imageView);
+                Picasso.with(activity).load(R.drawable.banner_redeem_point_community).into(imageView);
             FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
             fermatTextView.setText(identityAssetRedeem.getAlias());
         }
