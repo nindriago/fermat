@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
  */
 public class UserCommunityNavigationViewPainter implements NavigationViewPainter {
 
-    private  WeakReference<Context> activity;
+    private WeakReference<Context> activity;
     private ActiveActorIdentityInformation activeIdentity;
     AssetUserCommunitySubAppSession assetUserCommunitySubAppSession;
 
@@ -35,7 +35,7 @@ public class UserCommunityNavigationViewPainter implements NavigationViewPainter
     public View addNavigationViewHeader(ActiveActorIdentityInformation identityAssetUser) {
         try {
             return UserCommunityFragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetUserCommunitySubAppSession,
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetUserCommunitySubAppSession,
                     identityAssetUser);
         } catch (CantGetIdentityAssetUserException e) {
             e.printStackTrace();

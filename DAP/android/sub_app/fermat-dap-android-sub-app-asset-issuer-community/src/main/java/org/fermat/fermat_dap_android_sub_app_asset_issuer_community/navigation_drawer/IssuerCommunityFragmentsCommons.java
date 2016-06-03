@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_dap_android_sub_app_asset_issuer_community_bitdubai.R;
@@ -55,7 +56,7 @@ public class IssuerCommunityFragmentsCommons {
                 fermatTextView.setText(identity.getAlias());
             } else
                 imageView.setImageResource(R.drawable.profile_actor); //Picasso.with(activity).load(R.drawable.banner_asset_issuer_community).into(imageView);
-        }catch (CantGetIdentityAssetIssuerException e) {
+        } catch (CantGetIdentityAssetIssuerException e) {
             e.printStackTrace();
         }
 

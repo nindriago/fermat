@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
-
 import com.bitdubai.fermat_android_api.engine.NavigationViewPainter;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
+import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_asset_user.sessions.AssetUserSession;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
@@ -39,7 +38,7 @@ public class UserWalletNavigationViewPainter implements NavigationViewPainter {
     public View addNavigationViewHeader(ActiveActorIdentityInformation identityAssetUser) {
         try {
             return FragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetUserSession,
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetUserSession,
                     identityAssetUser);
         } catch (CantGetIdentityAssetUserException e) {
             e.printStackTrace();

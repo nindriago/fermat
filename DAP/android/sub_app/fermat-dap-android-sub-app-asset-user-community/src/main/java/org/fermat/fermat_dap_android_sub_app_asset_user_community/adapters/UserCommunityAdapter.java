@@ -7,11 +7,12 @@ import android.view.View;
 
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_dap_android_sub_app_asset_user_community_bitdubai.R;
+import com.squareup.picasso.Picasso;
+
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.holders.UserViewHolder;
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.interfaces.AdapterChangeListener;
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.models.Actor;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class UserCommunityAdapter extends FermatAdapter<Actor, UserViewHolder> {
                 holder.connect.setVisibility(View.GONE);
                 //holder.crypto.setText("CryptoAddress: YES");
             } else {
-                switch (data.getDapConnectionState()){
+                switch (data.getDapConnectionState()) {
                     case CONNECTING:
                     case PENDING_LOCALLY:
                     case PENDING_REMOTELY:
@@ -110,8 +111,10 @@ public class UserCommunityAdapter extends FermatAdapter<Actor, UserViewHolder> {
                 if (profileImage.length > 0) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length);
                     holder.thumbnail.setImageBitmap(bitmap);
-                } else Picasso.with(context).load(R.drawable.asset_user_comunity).into(holder.thumbnail);
-            } else Picasso.with(context).load(R.drawable.asset_user_comunity).into(holder.thumbnail);
+                } else
+                    Picasso.with(context).load(R.drawable.asset_user_comunity).into(holder.thumbnail);
+            } else
+                Picasso.with(context).load(R.drawable.asset_user_comunity).into(holder.thumbnail);
 
         } catch (Exception ex) {
             ex.printStackTrace();

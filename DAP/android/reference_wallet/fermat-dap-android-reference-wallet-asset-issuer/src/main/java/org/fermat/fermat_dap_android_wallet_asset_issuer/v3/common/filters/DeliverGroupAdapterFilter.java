@@ -3,9 +3,7 @@ package org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.filters;
 import android.widget.Filter;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Group;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.models.User;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverGroupAdapter;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.DeliverUserAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,7 @@ public class DeliverGroupAdapterFilter extends Filter {
         int count = list.size();
         final ArrayList<Group> nlist = new ArrayList<>(count);
 
-        String filterableString ;
+        String filterableString;
         Group group;
 
         for (int i = 0; i < count; i++) {

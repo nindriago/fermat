@@ -1,17 +1,11 @@
 package org.fermat.fermat_dap_android_sub_app_asset_issuer_identity.util;
 
-import android.app.ActionBar;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -20,11 +14,12 @@ import com.bitdubai.fermat_android_api.ui.dialogs.FermatDialog;
 import com.bitdubai.fermat_api.layer.pip_engine.interfaces.ResourceProviderManager;
 import com.bitdubai.fermat_dap_android_sub_app_asset_issuer_identity_bitdubai.R;
 import com.edmodo.cropper.CropImageView;
+
 /**
  * FERMAT-ORG
  * Developed by Lozadaa on 13/05/16.
  */
-public class IdentityIssuerDialogCropImage extends FermatDialog implements View.OnClickListener{
+public class IdentityIssuerDialogCropImage extends FermatDialog implements View.OnClickListener {
 
     /**
      * UI components
@@ -39,6 +34,7 @@ public class IdentityIssuerDialogCropImage extends FermatDialog implements View.
     CropImageView cropImageView;
     Bitmap image;
     Bitmap croppedImage;
+
     public IdentityIssuerDialogCropImage(Context activity, FermatSession fermatSession, ResourceProviderManager resources, Bitmap image) {
         super(activity, fermatSession, resources);
         this.image = image;
@@ -48,15 +44,15 @@ public class IdentityIssuerDialogCropImage extends FermatDialog implements View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            cropImageView = (CropImageView) findViewById(R.id.CropImageView);
-            cropImageView.setImageBitmap(image);
-            cropImageView.setGuidelines(2);
-            Button btnCrop = (Button) findViewById(R.id.btnCrop);
-              Button btnRotate = (Button) findViewById(R.id.btnRotateCropper);
-            Button btnCancel = (Button) findViewById(R.id.btnCancel);
-            btnCrop.setOnClickListener(this);
-            btnCancel.setOnClickListener(this);
-            btnRotate.setOnClickListener(this);
+        cropImageView = (CropImageView) findViewById(R.id.CropImageView);
+        cropImageView.setImageBitmap(image);
+        cropImageView.setGuidelines(2);
+        Button btnCrop = (Button) findViewById(R.id.btnCrop);
+        Button btnRotate = (Button) findViewById(R.id.btnRotateCropper);
+        Button btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCrop.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
+        btnRotate.setOnClickListener(this);
     }
 
     @Override
@@ -69,7 +65,7 @@ public class IdentityIssuerDialogCropImage extends FermatDialog implements View.
         return Window.FEATURE_NO_TITLE;
     }
 
-    public Bitmap getCroppedImage(){
+    public Bitmap getCroppedImage() {
         return croppedImage;
     }
 
@@ -77,17 +73,17 @@ public class IdentityIssuerDialogCropImage extends FermatDialog implements View.
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btnCrop) {
-            if(cropImageView.getCroppedImage().getHeight() >= 200 && cropImageView.getCroppedImage().getWidth() >= 200) {
+            if (cropImageView.getCroppedImage().getHeight() >= 200 && cropImageView.getCroppedImage().getWidth() >= 200) {
                 croppedImage = cropImageView.getCroppedImage();
                 dismiss();
-            }else{
+            } else {
                 Toast.makeText(getActivity(), "Image crop is too small", Toast.LENGTH_SHORT).show();
             }
         }
         if (i == R.id.btnCancel) {
             dismiss();
         }
-        if( i == R.id.btnRotateCropper){
+        if (i == R.id.btnRotateCropper) {
             cropImageView.rotateImage(90);
         }
     }

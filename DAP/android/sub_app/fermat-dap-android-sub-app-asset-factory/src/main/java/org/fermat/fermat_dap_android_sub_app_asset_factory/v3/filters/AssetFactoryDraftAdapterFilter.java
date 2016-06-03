@@ -16,7 +16,7 @@ public class AssetFactoryDraftAdapterFilter extends Filter {
     private List<AssetFactory> data;
     private AssetFactoryDraftAdapter adapter;
 
-    public AssetFactoryDraftAdapterFilter(List<AssetFactory> data, AssetFactoryDraftAdapter adapter){
+    public AssetFactoryDraftAdapterFilter(List<AssetFactory> data, AssetFactoryDraftAdapter adapter) {
 
         this.data = data;
         this.adapter = adapter;

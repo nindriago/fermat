@@ -18,6 +18,9 @@ import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityI
 import com.bitdubai.fermat_api.layer.modules.exceptions.ActorIdentityNotSelectedException;
 import com.bitdubai.fermat_api.layer.modules.exceptions.CantGetSelectedActorIdentityException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
 import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
@@ -56,8 +59,6 @@ import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSet
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_sub_app_module.asset_user_community.interfaces.AssetUserCommunitySubAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_transaction.common.exceptions.RecordsNotFoundException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -514,7 +515,7 @@ public class AssetUserCommunitySubAppModulePluginRoot extends AbstractPlugin imp
 
             //TODO Mejorar Implementacion para tener informacion mas completa
             for (DAPActor record : dapActor) {
-                actorAssetUsers.add((new AssetUserActorRecord (
+                actorAssetUsers.add((new AssetUserActorRecord(
                         record.getActorPublicKey(),
                         record.getName(),
                         null,
@@ -523,14 +524,14 @@ public class AssetUserCommunitySubAppModulePluginRoot extends AbstractPlugin imp
                         (double) 0,
                         (double) 0,
                         null,
-                        (long)  0,
-                        (long)  0,
+                        (long) 0,
+                        (long) 0,
                         null,
                         record.getType(),
                         record.getProfileImage())));
             }
 
-            return  actorAssetUsers;
+            return actorAssetUsers;
         } catch (CantGetActorAssetWaitingException e) {
             errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_DAP_ASSET_USER_COMMUNITY_SUB_APP_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
             throw new CantGetActorAssetWaitingException("CAN'T GET ACTOR ASSET USER WAITING YOUR ACCEPTANCE", e, "", "");
@@ -549,11 +550,11 @@ public class AssetUserCommunitySubAppModulePluginRoot extends AbstractPlugin imp
             dapActor = this.actorAssetIssuerManager.getWaitingTheirConnectionActorAssetIssuer(actorAssetUserLoggedInPublicKey, max, offset);
 
             if (dapActor.size() <= 0)
-                dapActor =  this.actorAssetUserManager.getWaitingTheirConnectionActorAssetUser(actorAssetUserLoggedInPublicKey, max, offset);
+                dapActor = this.actorAssetUserManager.getWaitingTheirConnectionActorAssetUser(actorAssetUserLoggedInPublicKey, max, offset);
 
             //TODO Mejorar Implementacion para tener informacion mas completa
             for (DAPActor record : dapActor) {
-                actorAssetUsers.add((new AssetUserActorRecord (
+                actorAssetUsers.add((new AssetUserActorRecord(
                         record.getActorPublicKey(),
                         record.getName(),
                         null,
@@ -562,14 +563,14 @@ public class AssetUserCommunitySubAppModulePluginRoot extends AbstractPlugin imp
                         (double) 0,
                         (double) 0,
                         null,
-                        (long)  0,
-                        (long)  0,
+                        (long) 0,
+                        (long) 0,
                         null,
                         record.getType(),
                         record.getProfileImage())));
             }
 
-            return  actorAssetUsers;
+            return actorAssetUsers;
         } catch (CantGetActorAssetWaitingException e) {
             errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_DAP_ASSET_USER_COMMUNITY_SUB_APP_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
             throw new CantGetActorAssetWaitingException("CAN'T GET ACTOR ASSET USER WAITING THEIR ACCEPTANCE", e, "", "Error on ACTOR ASSET USER MANAGER");

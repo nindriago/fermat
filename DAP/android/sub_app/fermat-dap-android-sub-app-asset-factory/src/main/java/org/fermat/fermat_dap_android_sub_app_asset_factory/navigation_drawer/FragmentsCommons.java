@@ -1,14 +1,12 @@
 package org.fermat.fermat_dap_android_sub_app_asset_factory.navigation_drawer;
 
 import android.content.Context;
-import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
@@ -18,8 +16,6 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactory
 import org.fermat.fermat_dap_android_sub_app_asset_factory.util.FactoryUtils;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetIssuerException;
 import org.fermat.fermat_dap_api.layer.dap_identity.asset_issuer.interfaces.IdentityAssetIssuer;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayInputStream;
 
@@ -59,7 +55,7 @@ public class FragmentsCommons {
                 FermatTextView fermatTextView = (FermatTextView) view.findViewById(R.id.txt_name);
                 fermatTextView.setText(identity.getAlias());
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

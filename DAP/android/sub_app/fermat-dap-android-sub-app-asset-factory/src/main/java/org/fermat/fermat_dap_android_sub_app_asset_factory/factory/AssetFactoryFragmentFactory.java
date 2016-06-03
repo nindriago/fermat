@@ -3,24 +3,20 @@ package org.fermat.fermat_dap_android_sub_app_asset_factory.factory;
 import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.enums.FermatFragmentsEnumType;
-
 import com.bitdubai.fermat_android_api.layer.definition.wallet.exceptions.FragmentNotFoundException;
+import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
+
 import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.AssetEditorFragment;
-import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.EditableAssetsFragment;
-import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.PublishedAssetsFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFactoryFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFactoryNetworkFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.fragments.SettingsFactoryNotificationFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.PublishedAssetsHomeFragment;
-
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.WizardCryptoFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.WizardMultimediaFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.WizardPropertiesFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.WizardVerifyFragment;
-
-import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
 
 /**
  * AssetFactoryFragmentFactory
@@ -33,9 +29,9 @@ public class AssetFactoryFragmentFactory extends FermatFragmentFactory<AssetFact
     @Override
     public AbstractFermatFragment getFermatFragment(AssetFactoryFragmentsEnumType fragments) throws FragmentNotFoundException {
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_EDITABLE_TAB_FRAGMENT))
-                return DraftAssetsHomeFragment.newInstance();
+            return DraftAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_PUBLISHED_TAB_FRAGMENT))
-                return PublishedAssetsHomeFragment.newInstance();
+            return PublishedAssetsHomeFragment.newInstance();
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_EDITOR_ACTIVITY))
             return AssetEditorFragment.newInstance(DraftAssetsHomeFragment.getAssetForEdit());
         if (fragments.equals(AssetFactoryFragmentsEnumType.DAP_SUB_APP_ASSET_FACTORY_SETTINGS))

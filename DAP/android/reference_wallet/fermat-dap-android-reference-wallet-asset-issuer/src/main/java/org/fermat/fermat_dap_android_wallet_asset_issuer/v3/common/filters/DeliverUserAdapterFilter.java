@@ -32,7 +32,7 @@ public class DeliverUserAdapterFilter extends Filter {
         int count = list.size();
         final ArrayList<User> nlist = new ArrayList<>(count);
 
-        String filterableString ;
+        String filterableString;
         User user;
 
         for (int i = 0; i < count; i++) {

@@ -262,7 +262,8 @@ public class StatsFragment extends FermatWalletListFragment<UserDelivery> {
         List<UserDelivery> users = new ArrayList<>();
         if (moduleManager != null) {
             try {
-                if (digitalAsset == null) digitalAsset = (DigitalAsset) appSession.getData("asset_data");
+                if (digitalAsset == null)
+                    digitalAsset = (DigitalAsset) appSession.getData("asset_data");
                 users = Data.getStats(WalletUtilities.WALLET_PUBLIC_KEY, digitalAsset, moduleManager);
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);

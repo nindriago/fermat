@@ -42,6 +42,12 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.FileNotF
 import com.bitdubai.fermat_bch_api.layer.crypto_network.bitcoin.interfaces.BitcoinNetworkConfiguration;
 import com.bitdubai.fermat_bch_api.layer.crypto_vault.classes.CryptoVault;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
+import com.software.shell.fab.ActionButton;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.adapters.AssetFactoryAdapter;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.interfaces.PopupMenu;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
@@ -56,12 +62,6 @@ import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfac
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_transaction.asset_issuing.exceptions.NotAvailableKeysToPublishAssetsException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
-import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
-import com.software.shell.fab.ActionButton;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -459,8 +459,7 @@ public class EditableAssetsFragment extends AbstractFermatFragment implements
             appSession.setData("asset_factory", getAssetForEdit());
             changeActivity(Activities.DAP_SUB_APP_ASSET_FACTORY_WIZARD_MULTIMEDIA.getCode(), appSession.getAppPublicKey());
 //            changeActivity(Activities.DAP_ASSET_EDITOR_ACTIVITY.getCode(), appSession.getAppPublicKey(), getAssetForEdit());
-        }
-        else
+        } else
             selectedAsset = null;
     }
 
@@ -480,13 +479,11 @@ public class EditableAssetsFragment extends AbstractFermatFragment implements
                 return false;
             }
             String description = assetFactory.getDescription();
-            if (description.length() == 0)
-            {
+            if (description.length() == 0) {
                 Toast.makeText(getActivity(), "Invalid Asset Description.", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            if (quantity == 0)
-            {
+            if (quantity == 0) {
                 Toast.makeText(getActivity(), "Invalid Quantity of Assets", Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -560,7 +557,7 @@ public class EditableAssetsFragment extends AbstractFermatFragment implements
                         ex.printStackTrace();
                     }
                 });
-                    worker.execute();
+                worker.execute();
             }
         } catch (CantPublishAssetFactoy cantPublishAssetFactoy) {
             cantPublishAssetFactoy.printStackTrace();

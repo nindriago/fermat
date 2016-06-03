@@ -44,6 +44,7 @@ public class AssetFactorySettings implements WalletSettings {
     public boolean isPresentationHelpEnabled() {
         return isPresentationHelpEnabled;
     }
+
     @Override
     public UUID getDefaultLanguage() throws CantGetDefaultLanguageException, CantLoadWalletSettings {
         return null;

@@ -10,6 +10,10 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginBinaryFile;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantCreateFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.FileNotFoundException;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.exceptions.CantListWalletsException;
+
 import org.fermat.fermat_dap_api.layer.all_definition.enums.State;
 import org.fermat.fermat_dap_api.layer.dap_identity.asset_issuer.interfaces.IdentityAssetIssuer;
 import org.fermat.fermat_dap_api.layer.dap_identity.asset_issuer.interfaces.IdentityAssetIssuerManager;
@@ -21,23 +25,21 @@ import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.exceptio
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.exceptions.CantSaveAssetFactoryException;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactoryManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
-import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.exceptions.CantListWalletsException;
 
 import java.util.List;
 
 /**
  * Created by franklin on 20/09/15.
  */
-public class AssetFactorySupAppModuleManager  {
+public class AssetFactorySupAppModuleManager {
 
     private final AssetFactoryManager assetFactoryManager;
     private final IdentityAssetIssuerManager identityAssetIssuerManager;
-    private ErrorManager  errorManager;
+    private ErrorManager errorManager;
 
     /**
      * constructor
+     *
      * @param assetFactoryManager
      */
     public AssetFactorySupAppModuleManager(final AssetFactoryManager assetFactoryManager,
@@ -48,11 +50,11 @@ public class AssetFactorySupAppModuleManager  {
         this.errorManager = errorManager;
     }
 
-    public AssetFactory getAssetFactory(String assetPublicKey)  throws CantGetAssetFactoryException, CantCreateFileException {
+    public AssetFactory getAssetFactory(String assetPublicKey) throws CantGetAssetFactoryException, CantCreateFileException {
         return assetFactoryManager.getAssetFactoryByPublicKey(assetPublicKey);
     }
 
-    public AssetFactory newAssetFactoryEmpty()  throws CantCreateEmptyAssetFactoryException, CantCreateAssetFactoryException {
+    public AssetFactory newAssetFactoryEmpty() throws CantCreateEmptyAssetFactoryException, CantCreateAssetFactoryException {
         return assetFactoryManager.createEmptyAssetFactory();
     }
 
@@ -85,11 +87,10 @@ public class AssetFactorySupAppModuleManager  {
     }
 
     public List<com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet> getInstallWallets() throws CantListWalletsException {
-        return  assetFactoryManager.getInstallWallets();
+        return assetFactoryManager.getInstallWallets();
     }
 
-    public boolean isReadyToPublish(String assetPublicKey) throws CantPublishAssetFactoy
-    {
+    public boolean isReadyToPublish(String assetPublicKey) throws CantPublishAssetFactoy {
         return assetFactoryManager.isReadyToPublish(assetPublicKey);
     }
 

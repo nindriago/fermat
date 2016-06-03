@@ -1,7 +1,6 @@
 package org.fermat.fermat_dap_android_wallet_redeem_point.v3.util;
 
 
-
 import java.util.Date;
 
 
@@ -46,7 +45,7 @@ public class Utils {
     }
 
     public static String getTimeAgoHistory(long time) {
-        String temp= null;
+        String temp = null;
         if (time < 1000000000000L) {
             // if timestamp given in seconds, convert to millis
             time *= 1000;

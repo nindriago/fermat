@@ -1,7 +1,6 @@
 package org.fermat.fermat_dap_android_wallet_asset_issuer.models;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.util.Utils;
-import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetStatistic;
 
 import java.sql.Timestamp;

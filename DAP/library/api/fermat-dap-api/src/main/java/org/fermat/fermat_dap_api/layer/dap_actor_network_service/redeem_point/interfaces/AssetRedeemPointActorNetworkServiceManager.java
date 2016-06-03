@@ -44,13 +44,13 @@ public interface AssetRedeemPointActorNetworkServiceManager extends FermatManage
     /**
      * The method <code>askConnectionActorAsset</code> sends a connection request to another Actor.
      *
-     * @param actorAssetLoggedInPublicKey   The logged public key of the
-     * @param actorAssetLoggedName          The logged name
-     * @param senderType                    The senderType
-     * @param actorAssetToAddPublicKey      The actorAssetToAddPublicKey
-     * @param actorAssetToAddName           The actorAssetToAddName
-     * @param destinationType               The public key of the
-     * @param profileImage                  The profile image of the user sending the request
+     * @param actorAssetLoggedInPublicKey The logged public key of the
+     * @param actorAssetLoggedName        The logged name
+     * @param senderType                  The senderType
+     * @param actorAssetToAddPublicKey    The actorAssetToAddPublicKey
+     * @param actorAssetToAddName         The actorAssetToAddName
+     * @param destinationType             The public key of the
+     * @param profileImage                The profile image of the user sending the request
      */
     void askConnectionActorAsset(String actorAssetLoggedInPublicKey,
                                  String actorAssetLoggedName,
@@ -80,7 +80,7 @@ public interface AssetRedeemPointActorNetworkServiceManager extends FermatManage
     /**
      * The method <coda>disconnectConnectionActorAsset</coda> disconnects and informs the other intra user the disconnecting
      *
-     * @param actorAssetLoggedInPublicKey The public key of the actor asset disconnecting the connection
+     * @param actorAssetLoggedInPublicKey     The public key of the actor asset disconnecting the connection
      * @param actorAssetToDisconnectPublicKey The public key of the user to disconnect
      * @throws org.fermat.fermat_dap_api.layer.dap_actor_network_service.exceptions.CantDisconnectConnectionActorAssetException
      */

@@ -39,10 +39,10 @@ public class StatsSpinnerAdapter extends ArrayAdapter<String> {
 
     public View getCustomView(int position, View convertView, ViewGroup parent, boolean dropDown) {
 
-        LayoutInflater inflater=(LayoutInflater) context.getSystemService(  Context.LAYOUT_INFLATER_SERVICE );
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int res = (dropDown) ? R.layout.dap_wallet_asset_issuer_stats_spinner_item : R.layout.dap_wallet_asset_issuer_stats_spinner;
-        View row=inflater.inflate(res, parent, false);
-        TextView label=(TextView)row.findViewById(R.id.itemText);
+        View row = inflater.inflate(res, parent, false);
+        TextView label = (TextView) row.findViewById(R.id.itemText);
         label.setText(objects.get(position));
 
 //        if (position == 0) {//Special style for dropdown header

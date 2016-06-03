@@ -1,8 +1,6 @@
 package org.fermat.fermat_dap_android_sub_app_asset_factory.v3.adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -14,17 +12,14 @@ import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource
 import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 
-import org.fermat.fermat_dap_android_sub_app_asset_factory.holders.AssetHolder;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.filters.AssetFactoryDraftAdapterFilter;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.DraftAssetsHomeFragment;
-import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.fragments.PublishedAssetsHomeFragment;
 import org.fermat.fermat_dap_android_sub_app_asset_factory.v3.holders.AssetFactoryDraftHolder;
 import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.BITCOIN;
@@ -39,7 +34,7 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
     private final AssetFactorySession assetFactorySession;
     private DraftAssetsHomeFragment fragment;
     private AssetFactoryModuleManager manager;
-    private  List<AssetFactory> allAssets;
+    private List<AssetFactory> allAssets;
 
     public AssetFactoryDraftAdapter(DraftAssetsHomeFragment fragment, Context context, List<AssetFactory> dataSet, AssetFactoryModuleManager manager,
                                     FermatSession appSession) {
@@ -51,7 +46,8 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
         this.assetFactorySession = (AssetFactorySession) appSession;
         this.allAssets = dataSet;
     }
-    public AssetFactoryDraftAdapter( Context context, List<AssetFactory> dataSet, AssetFactoryModuleManager manager,
+
+    public AssetFactoryDraftAdapter(Context context, List<AssetFactory> dataSet, AssetFactoryModuleManager manager,
                                     FermatSession appSession) {
         super(context, dataSet);
 
@@ -86,17 +82,17 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
 
         double amountTotal = BitcoinConverter.convert(Double.valueOf(data.getAmount() * data.getQuantity()), SATOSHI, BITCOIN);
         double amountPerAsset = BitcoinConverter.convert(Double.valueOf(data.getAmount()), SATOSHI, BITCOIN);
-        holder.draftItemQuantity.setText((data.getQuantity() == 1)? data.getQuantity()+" Asset":data.getQuantity()+" Assets");
+        holder.draftItemQuantity.setText((data.getQuantity() == 1) ? data.getQuantity() + " Asset" : data.getQuantity() + " Assets");
 
         List<Resource> resources = data.getResources();
-        byte[] imgAsset = (resources != null && resources.size() > 0) ? resources.get(0).getResourceBinayData() :  new byte[0];
+        byte[] imgAsset = (resources != null && resources.size() > 0) ? resources.get(0).getResourceBinayData() : new byte[0];
         BitmapWorkerTask bitmapWorkerTaskAsset = new BitmapWorkerTask(holder.draftAssetImage, holder.res, R.drawable.img_asset_image, false);
         bitmapWorkerTaskAsset.execute(imgAsset);
 
         holder.draftItemAssetName.setText(data.getName());
         //holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountTotal));
         holder.draftItemAssetValue.setText(String.format(context.getString(R.string.dapV3_home_row_asset_bitcoins), amountPerAsset));
-        holder.draftItemExpDate.setText((data.getExpirationDate() == null)? "No Exp Date": DAPStandardFormats.DATE_FORMAT.format(data.getExpirationDate()));
+        holder.draftItemExpDate.setText((data.getExpirationDate() == null) ? "No Exp Date" : DAPStandardFormats.DATE_FORMAT.format(data.getExpirationDate()));
 
         switch (data.getState()) {
             case DRAFT:
@@ -184,8 +180,8 @@ public class AssetFactoryDraftAdapter extends FermatAdapter<AssetFactory, AssetF
             @Override
             public void onClick(View v) {
                 assetFactorySession.setData("asset_factory", data);
-                if(fragment.validate())
-                fragment.doPublishAsset();
+                if (fragment.validate())
+                    fragment.doPublishAsset();
             }
         });
         holder.draftItemEraseButton.setOnClickListener(new View.OnClickListener() {

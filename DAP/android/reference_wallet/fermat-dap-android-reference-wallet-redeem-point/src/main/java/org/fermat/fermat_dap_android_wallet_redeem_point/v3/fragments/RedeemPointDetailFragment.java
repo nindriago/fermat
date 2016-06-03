@@ -72,11 +72,11 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
     private ViewPager viewPager;
     private RedeemDetailAdapter adapter;
 
-    public RedeemPointDetailFragment(){
+    public RedeemPointDetailFragment() {
 
     }
 
-    public static RedeemPointDetailFragment newInstance(){
+    public static RedeemPointDetailFragment newInstance() {
         return new RedeemPointDetailFragment();
     }
 
@@ -93,7 +93,7 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         activity = getActivity();
 
         digitalAsset = (DigitalAsset) appSession.getData("asset_data");
-        adapter = new RedeemDetailAdapter(this,getActivity(),digitalAsset);
+        adapter = new RedeemDetailAdapter(this, getActivity(), digitalAsset);
 
         configureToolbar();
     }
@@ -125,13 +125,12 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         viewPager = (ViewPager) rootView.findViewById(R.id.redeemDetailViewPager);
 
 
-        
         setViewData();
 
         return rootView;
     }
 
-    private void setViewData(){
+    private void setViewData() {
 
         viewPager.setAdapter(adapter);
         assetDetailDescription.setText(digitalAsset.getAssetDescription());
@@ -151,13 +150,13 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         assetIssuerAddress.setText(digitalAsset.getActorIssuerAddress());
 
         /*Listeners*/
-        if(digitalAsset.getStatus() == DigitalAsset.Status.PENDING){
+        if (digitalAsset.getStatus() == DigitalAsset.Status.PENDING) {
 
             actionButtonsDetail.setVisibility(View.GONE);
             cardDetailStatusImage.setImageResource(R.drawable.wait);
 
 
-        }else if(digitalAsset.getStatus() == DigitalAsset.Status.CONFIRMED) {
+        } else if (digitalAsset.getStatus() == DigitalAsset.Status.CONFIRMED) {
 
             actionButtonsDetail.setVisibility(View.GONE);
             cardDetailStatusImage.setImageResource(R.drawable.received);

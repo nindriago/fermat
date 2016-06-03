@@ -31,7 +31,6 @@ public class DeliverUserViewHolder extends FermatViewHolder {
     private FermatTextView letterText;
 
 
-
     /**
      * Constructor
      *

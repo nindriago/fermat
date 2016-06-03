@@ -1,9 +1,10 @@
 package org.fermat.fermat_dap_core.layer.sub_app_module;
 
+import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
 import com.bitdubai.fermat_core_api.layer.all_definition.system.abstract_classes.AbstractLayer;
 import com.bitdubai.fermat_core_api.layer.all_definition.system.exceptions.CantRegisterPluginException;
 import com.bitdubai.fermat_core_api.layer.all_definition.system.exceptions.CantStartLayerException;
-import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
+
 import org.fermat.fermat_dap_core.layer.sub_app_module.asset_factory.AssetFactoryPluginSubsystem;
 import org.fermat.fermat_dap_core.layer.sub_app_module.asset_user_community.AssetUserCommunityPluginSubsystem;
 import org.fermat.fermat_dap_core.layer.sub_app_module.redeem_point_community.RedeemPointCommunityPluginSubsystem;
@@ -24,12 +25,12 @@ public class SubAppModuleLayer extends AbstractLayer {
 
         try {
 
-            registerPlugin(new AssetFactoryPluginSubsystem()        );
+            registerPlugin(new AssetFactoryPluginSubsystem());
             registerPlugin(new org.fermat.fermat_dap_core.layer.sub_app_module.asset_issuer_community.AssetIssuerCommunityPluginSubsystem());
-            registerPlugin(new AssetUserCommunityPluginSubsystem()  );
+            registerPlugin(new AssetUserCommunityPluginSubsystem());
             registerPlugin(new RedeemPointCommunityPluginSubsystem());
 
-        } catch(CantRegisterPluginException e) {
+        } catch (CantRegisterPluginException e) {
 
             throw new CantStartLayerException(
                     e,

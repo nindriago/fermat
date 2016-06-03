@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_android_wallet_asset_issuer.models;
 
 import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
+
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetContractPropertiesConstants;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.AssetCurrentStatus;
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
@@ -22,7 +23,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,8 +81,10 @@ public class Data {
         Collections.sort(digitalAssets, new Comparator<DigitalAsset>() {
             @Override
             public int compare(DigitalAsset lhs, DigitalAsset rhs) {
-                if (lhs.getLastTransactionDate().getTime() > rhs.getLastTransactionDate().getTime()) return -1;
-                else if (lhs.getLastTransactionDate().getTime() < rhs.getLastTransactionDate().getTime()) return 1;
+                if (lhs.getLastTransactionDate().getTime() > rhs.getLastTransactionDate().getTime())
+                    return -1;
+                else if (lhs.getLastTransactionDate().getTime() < rhs.getLastTransactionDate().getTime())
+                    return 1;
                 return 0;
             }
         });
@@ -199,7 +201,7 @@ public class Data {
     public static List<User> getConnectedUsers(AssetIssuerWalletSupAppModuleManager moduleManager, List<User> usersSelected) throws CantGetAssetUserActorsException {
         List<User> users = new ArrayList<>();
         List<ActorAssetUser> actorAssetUsers = moduleManager.getAllAssetUserActorConnected();
-        for (ActorAssetUser actorAssetUser:actorAssetUsers) {
+        for (ActorAssetUser actorAssetUser : actorAssetUsers) {
             User newUser = new User(actorAssetUser.getName(), actorAssetUser);
             users.add(newUser);
         }
@@ -269,7 +271,7 @@ public class Data {
     public static List<Group> getGroups(AssetIssuerWalletSupAppModuleManager moduleManager, List<Group> groupsSelected) throws CantGetAssetUserGroupException, CantGetAssetUserActorsException {
         List<Group> groups = new ArrayList<>();
         List<ActorAssetUserGroup> actorAssetUserGroups = moduleManager.getAssetUserGroupsList();
-        for (ActorAssetUserGroup actorAssetUserGroup:actorAssetUserGroups) {
+        for (ActorAssetUserGroup actorAssetUserGroup : actorAssetUserGroups) {
             Group newGroup = new Group(actorAssetUserGroup.getGroupName(), actorAssetUserGroup);
             List<ActorAssetUser> actorAssetUsers = moduleManager.getListActorAssetUserByGroups(actorAssetUserGroup.getGroupId());
             List<User> users = new ArrayList<>();
@@ -373,7 +375,7 @@ public class Data {
         List<String> arr = new ArrayList<>();
         arr.add("All");
         AssetCurrentStatus[] statuses = AssetCurrentStatus.values();
-        for (AssetCurrentStatus status: statuses) {
+        for (AssetCurrentStatus status : statuses) {
             if (!status.equals(AssetCurrentStatus.ASSET_CREATED.ASSET_CREATED)) {
                 arr.add(status.getDescription());
             }

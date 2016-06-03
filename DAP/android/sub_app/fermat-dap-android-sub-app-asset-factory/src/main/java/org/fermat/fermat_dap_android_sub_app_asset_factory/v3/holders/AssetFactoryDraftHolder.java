@@ -61,7 +61,7 @@ public class AssetFactoryDraftHolder extends FermatViewHolder {
         draftSeparatorLine = itemView.findViewById(R.id.draftSeparatorLine);
 
         publishedAssetButtons = itemView.findViewById(R.id.publishedAssetButtons);
-        publishedItemEditButton  = (ImageButton) itemView.findViewById(R.id.publishedItemEditButton);
+        publishedItemEditButton = (ImageButton) itemView.findViewById(R.id.publishedItemEditButton);
         publishedItemEraseButton = (ImageButton) itemView.findViewById(R.id.publishedItemEraseButton);
         publishedItemPublishButton = (ImageButton) itemView.findViewById(R.id.publishedItemPublishButton);
 

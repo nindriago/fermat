@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Jinmy Bohorquez on 20/04/16.
  */
 public class RedeemHomeCardAdapterFilter extends Filter {
-    
+
     private List<DigitalAsset> data;
     private RedeemCardAdapter adapter;
 
@@ -20,7 +20,7 @@ public class RedeemHomeCardAdapterFilter extends Filter {
         this.data = data;
         this.adapter = adapter;
     }
-    
+
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
         String filterString = constraint.toString().toLowerCase();

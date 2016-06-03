@@ -1,20 +1,15 @@
 package org.fermat.fermat_dap_android_wallet_redeem_point.v3.holders;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bitdubai.fermat_android_api.layer.definition.wallet.utils.ImagesUtils;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
-import com.squareup.picasso.Picasso;
 
-import org.fermat.fermat_dap_android_wallet_redeem_point.models.UserRedeemed;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 

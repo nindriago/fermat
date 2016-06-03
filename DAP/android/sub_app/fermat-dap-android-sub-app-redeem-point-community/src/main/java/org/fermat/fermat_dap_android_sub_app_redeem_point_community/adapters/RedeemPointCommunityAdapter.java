@@ -7,11 +7,12 @@ import android.view.View;
 
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_dap_android_sub_app_redeem_point_community_bitdubai.R;
+import com.squareup.picasso.Picasso;
+
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.holders.RedeemPointViewHolder;
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.interfaces.AdapterChangeListener;
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.models.Actor;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class RedeemPointCommunityAdapter extends FermatAdapter<Actor, RedeemPoin
                 holder.connectedStateWaiting.setVisibility(View.GONE);
                 holder.connect.setVisibility(View.GONE);
             } else {
-                switch (data.getDapConnectionState()){
+                switch (data.getDapConnectionState()) {
                     case CONNECTING:
                     case PENDING_LOCALLY:
                     case PENDING_REMOTELY:
@@ -111,7 +112,8 @@ public class RedeemPointCommunityAdapter extends FermatAdapter<Actor, RedeemPoin
                 if (profileImage.length > 0) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(profileImage, 0, profileImage.length);
                     holder.thumbnail.setImageBitmap(bitmap);
-                } else Picasso.with(context).load(R.drawable.reddem_point_community).into(holder.thumbnail);
+                } else
+                    Picasso.with(context).load(R.drawable.reddem_point_community).into(holder.thumbnail);
             } else
                 Picasso.with(context).load(R.drawable.reddem_point_community).into(holder.thumbnail);
 

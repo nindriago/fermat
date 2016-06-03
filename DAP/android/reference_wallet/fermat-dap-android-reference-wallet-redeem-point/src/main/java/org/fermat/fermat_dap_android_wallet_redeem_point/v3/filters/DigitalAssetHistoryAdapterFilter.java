@@ -2,8 +2,6 @@ package org.fermat.fermat_dap_android_wallet_redeem_point.v3.filters;
 
 import android.widget.Filter;
 
-import org.fermat.fermat_dap_android_wallet_redeem_point.adapters.MyAssetsAdapter;
-import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.adapters.DigitalAssetHistoryAdapter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
 

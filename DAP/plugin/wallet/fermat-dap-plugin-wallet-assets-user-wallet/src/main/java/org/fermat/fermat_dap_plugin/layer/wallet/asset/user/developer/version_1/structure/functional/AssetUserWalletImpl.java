@@ -244,6 +244,7 @@ public class AssetUserWalletImpl implements AssetUserWallet {
         }
         return available;
     }
+
     @Override
     public List<AssetUserWalletTransaction> getTransactions(BalanceType balanceType, TransactionType transactionType, CryptoAddress cryptoAddress) throws CantGetTransactionsException {
         try {

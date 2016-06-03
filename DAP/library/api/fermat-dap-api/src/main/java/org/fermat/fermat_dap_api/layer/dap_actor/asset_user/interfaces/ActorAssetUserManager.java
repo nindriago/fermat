@@ -4,12 +4,13 @@ import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.Fer
 import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
 import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantDeleteRecordException;
+
 import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.ActorAssetUserGroupAlreadyExistException;
-import org.fermat.fermat_dap_api.layer.dap_actor.exceptions.CantConnectToActorAssetException;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantCreateAssetUserActorException;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantCreateAssetUserGroupException;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantGetAssetUserActorsException;
+import org.fermat.fermat_dap_api.layer.dap_actor.exceptions.CantConnectToActorAssetException;
 import org.fermat.fermat_dap_api.layer.dap_actor.redeem_point.exceptions.CantConnectToActorAssetRedeemPointException;
 import org.fermat.fermat_dap_api.layer.dap_transaction.common.exceptions.RecordsNotFoundException;
 
@@ -23,8 +24,8 @@ public interface ActorAssetUserManager extends FermatManager {
     /**
      * The method <code>getActorRegisteredByPublicKey</code> shows the information associated with the actorPublicKey
      *
-     * @param actorPublicKey                    The public key of the Asset Actor User
-     * @return                                  THe information associated with the actorPublicKey.
+     * @param actorPublicKey The public key of the Asset Actor User
+     * @return THe information associated with the actorPublicKey.
      * @throws CantGetAssetUserActorsException
      * @throws org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantAssetUserActorNotFoundException
      */
@@ -33,18 +34,19 @@ public interface ActorAssetUserManager extends FermatManager {
     /**
      * The method <code>getActorRegisteredByPublicKey</code> shows the information associated with the actorPublicKey
      *
-     * @param actorPublicKey                    The public key of the Asset Actor User
-     * @return                                  THe information associated with the actorPublicKey.
+     * @param actorPublicKey The public key of the Asset Actor User
+     * @return THe information associated with the actorPublicKey.
      * @throws CantGetAssetUserActorsException
      * @throws org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantAssetUserActorNotFoundException
      */
     ActorAssetUser getActorByPublicKey(String actorPublicKey, BlockchainNetworkType blockchainNetworkType) throws CantGetAssetUserActorsException, org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantAssetUserActorNotFoundException;
+
     /**
      * The method <code>createActorAssetUserFactory</code> create Actor by a Identity
      *
-     * @param assetUserActorPublicKey                       Referred to the Identity publicKey
-     * @param assetUserActorName                            Referred to the Identity Alias
-     * @param assetUserActorprofileImage                    Eeferred to the Identity profileImage
+     * @param assetUserActorPublicKey    Referred to the Identity publicKey
+     * @param assetUserActorName         Referred to the Identity Alias
+     * @param assetUserActorprofileImage Eeferred to the Identity profileImage
      * @throws CantCreateAssetUserActorException
      */
     void createActorAssetUserFactory(String assetUserActorPublicKey, String assetUserActorName, byte[] assetUserActorprofileImage) throws CantCreateAssetUserActorException;
@@ -58,7 +60,7 @@ public interface ActorAssetUserManager extends FermatManager {
     /**
      * The method <code>createActorAssetUserRegisterInNetworkService</code> create Actor Registered
      *
-     * @param actorAssetUsers                       Referred to the Identity publicKey
+     * @param actorAssetUsers Referred to the Identity publicKey
      * @throws CantCreateAssetUserActorException
      */
     void createActorAssetUserRegisterInNetworkService(List<ActorAssetUser> actorAssetUsers) throws CantCreateAssetUserActorException;
@@ -66,6 +68,7 @@ public interface ActorAssetUserManager extends FermatManager {
     void updateOfflineUserRegisterInNetworkService(List<ActorAssetUser> actorAssetUsers) throws CantGetAssetUserActorsException;
 
     void createActorAssetUserRegisterInNetworkService(ActorAssetUser actorAssetUsers) throws CantCreateAssetUserActorException;
+
     /**
      * The method <code>getActorPublicKey</code> get All Information about Actor
      *
@@ -114,6 +117,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>createAssetUserGroup</code> Register a group in database Actor Asset User
+     *
      * @param groupName
      * @throws CantCreateAssetUserGroupException
      */
@@ -121,6 +125,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>updateAssetUserGroup</code> Update a group in database Actor Asset User
+     *
      * @param assetUserGroup
      * @throws org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantUpdateAssetUserGroupException
      */
@@ -128,6 +133,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>deleteAssetUserGroup</code> Delete a group in database Actor Asset User
+     *
      * @param assetUserGroupId
      * @throws org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantDeleteAssetUserGroupException
      */
@@ -135,6 +141,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>addAssetUserToGroup</code> Add a user to a group
+     *
      * @param actorAssetUserGroupMember
      * @throws CantCreateAssetUserGroupException
      */
@@ -142,6 +149,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>removeAssetUserFromGroup</code> Remove a user from group
+     *
      * @param assetUserGroupMember
      * @throws CantCreateAssetUserGroupException
      */
@@ -149,6 +157,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>getAssetUserGroupsList</code> Returns a list of groups
+     *
      * @return
      * @throws org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantGetAssetUserGroupException
      */
@@ -157,6 +166,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>getListActorAssetUserByGroups</code> Returns a list of groups by name
+     *
      * @param groupId
      * @return
      * @throws CantGetAssetUserActorsException
@@ -165,6 +175,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>getListAssetUserGroupsByActorAssetUser</code> Returns a list of groups by asset user
+     *
      * @param actorAssetUserPublicKey
      * @return
      * @throws org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantGetAssetUserGroupException
@@ -173,6 +184,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>getAssetUserGroup</code> Returns a group by id
+     *
      * @param groupId
      * @return
      * @throws org.fermat.fermat_dap_api.layer.dap_actor.asset_user.exceptions.CantGetAssetUserGroupException
@@ -189,8 +201,7 @@ public interface ActorAssetUserManager extends FermatManager {
      * @param actorAssetUserIdentityToLinkPublicKey The public key of the actor asset user sending the connection request.
      * @param actorAssetUserToAddName               The name of the actor asset user to add
      * @param actorAssetUserToAddPublicKey          The public key of the actor asset  user to add
-     * @param profileImage                           The profile image that the actor asset user has
-     *
+     * @param profileImage                          The profile image that the actor asset user has
      * @throws org.fermat.fermat_dap_api.layer.dap_actor_network_service.exceptions.CantAskConnectionActorAssetException if something goes wrong.
      */
     void askActorAssetUserForConnection(String actorAssetUserIdentityToLinkPublicKey,
@@ -204,8 +215,8 @@ public interface ActorAssetUserManager extends FermatManager {
      * The method <code>acceptIntraWalletUser</code> takes the information of a connection request, accepts
      * the request and adds the intra user to the list managed by this plugin with ContactState CONTACT.
      *
-     * @param actorAssetUserInPublicKey The public key of the intra user sending the connection request.
-     * @param actorAssetUserToAddPublicKey    The public key of the intra user to add
+     * @param actorAssetUserInPublicKey    The public key of the intra user sending the connection request.
+     * @param actorAssetUserToAddPublicKey The public key of the intra user to add
      * @throws org.fermat.fermat_dap_api.layer.dap_actor_network_service.exceptions.CantAcceptActorAssetUserException
      */
     void acceptActorAssetUser(String actorAssetUserInPublicKey, String actorAssetUserToAddPublicKey) throws org.fermat.fermat_dap_api.layer.dap_actor_network_service.exceptions.CantAcceptActorAssetUserException;
@@ -245,6 +256,7 @@ public interface ActorAssetUserManager extends FermatManager {
 
     /**
      * The method <code>cancelIntraWalletUser</code> cancels an intra user from the connections registry
+     *
      * @param actorAssetUserToCancelPublicKey The public key of the intra user to cancel as connection
      * @throws org.fermat.fermat_dap_api.layer.dap_actor_network_service.exceptions.CantCancelConnectionActorAssetException
      */
@@ -271,7 +283,8 @@ public interface ActorAssetUserManager extends FermatManager {
     List<DAPActor> getWaitingTheirConnectionActorAssetUser(String actorAssetUserLoggedInPublicKey, int max, int offset) throws org.fermat.fermat_dap_api.layer.dap_actor_network_service.exceptions.CantGetActorAssetWaitingException;
 
     /**
-     *The method <code>getLastNotificationActorAssetUser</code> get the last notification received by actor public key
+     * The method <code>getLastNotificationActorAssetUser</code> get the last notification received by actor public key
+     *
      * @param actorAssetUserConnectedPublicKey
      * @return ActorAssetUser notification object
      * @throws org.fermat.fermat_dap_api.layer.dap_actor_network_service.exceptions.CantGetActorAssetNotificationException

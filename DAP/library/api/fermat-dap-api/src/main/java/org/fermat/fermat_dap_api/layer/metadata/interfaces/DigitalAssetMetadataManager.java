@@ -14,6 +14,7 @@ import java.util.UUID;
 public interface DigitalAssetMetadataManager extends FermatManager {
     /**
      * Stores the passed digital asset Metadata
+     *
      * @param digitalAssetMetadata
      * @throws CantStoreDigitalAssetMetadataException
      */
@@ -21,6 +22,7 @@ public interface DigitalAssetMetadataManager extends FermatManager {
 
     /**
      * Gets a previously stored asset metadata
+     *
      * @param id the id of the metadata to get (must exists)
      * @return the stored metadata
      * @throws CantGetDigitalAssetMetadataException if not found.

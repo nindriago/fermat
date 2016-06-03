@@ -68,7 +68,7 @@ public class RedeemPointWalletNavigationViewAdapter extends FermatAdapter<MenuIt
 //    }
 
     // DAP V3 BIN HOLDER
-   @Override
+    @Override
     protected void bindHolder(RedeemPointWalletNavigationItemMenuViewHolder holder, MenuItem data, int position) {
         try {
 
@@ -78,7 +78,7 @@ public class RedeemPointWalletNavigationViewAdapter extends FermatAdapter<MenuIt
                 //DAP V3
                 holder.getRow_container().setBackgroundResource(R.color.black_overlay_dap_v3);
 
-                //holder.getRow_container().setBackgroundResource(R.color.black_overlay_2);
+            //holder.getRow_container().setBackgroundResource(R.color.black_overlay_2);
 
             switch (position) {
                 case 0:

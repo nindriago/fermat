@@ -219,7 +219,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
         wizardVerifySaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isValid(asset)) {
+                if (isValid(asset)) {
                     doFinish();
                     changeActivity(Activities.DAP_MAIN.getCode(), appSession.getAppPublicKey());
                     Toast.makeText(getActivity(), String.format("Asset %s has been edited", asset.getName()), Toast.LENGTH_SHORT).show();
@@ -245,35 +245,36 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             }
         });
     }
-    private boolean isValid(AssetFactory asset){
+
+    private boolean isValid(AssetFactory asset) {
         boolean isValidDate = asset.getExpirationDate() == null ? true : asset.getExpirationDate().after(new Date());
         long amountSatoshi = asset.getAmount();
 
-        if(asset.getName() != null && asset.getName().trim().length() > 0 &&
+        if (asset.getName() != null && asset.getName().trim().length() > 0 &&
                 asset.getDescription() != null && asset.getDescription().trim().length() > 0
                 && asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND
-                && isValidDate){
+                && isValidDate) {
             return true;
 
-        }else if(asset.getName() == null || asset.getName().trim().length() == 0){
+        } else if (asset.getName() == null || asset.getName().trim().length() == 0) {
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(asset.getDescription() == null || asset.getDescription().trim().length() == 0 ){
+        } else if (asset.getDescription() == null || asset.getDescription().trim().length() == 0) {
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_description), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(asset.getQuantity() == 0){
+        } else if (asset.getQuantity() == 0) {
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else if (asset.getExpirationDate() != null && asset.getExpirationDate().before(new Date())){
+        } else if (asset.getExpirationDate() != null && asset.getExpirationDate().before(new Date())) {
             Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
             return false;
-        }else{
+        } else {
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
-                    " \n This is needed to pay the fee of bitcoin transactions during delivery of the assets.\n "+"\n You selected "+amountSatoshi+" satoshis.\n", Toast.LENGTH_LONG).show();
+                    " \n This is needed to pay the fee of bitcoin transactions during delivery of the assets.\n " + "\n You selected " + amountSatoshi + " satoshis.\n", Toast.LENGTH_LONG).show();
             return false;
         }
     }
+
     private void doFinish() {
         if (asset != null) {
             if (asset.getFactoryId() == null) {

@@ -21,7 +21,7 @@ public class DigitalAssetHistory implements Comparable<DigitalAssetHistory> {
     private byte[] imageAsset;
     private byte[] imageActorUserFrom;
 
-    public DigitalAssetHistory(String historyNameAsset, String historyNameUser ) {
+    public DigitalAssetHistory(String historyNameAsset, String historyNameUser) {
         this.historyNameAsset = historyNameAsset;
         this.historyNameUser = historyNameUser;
     }

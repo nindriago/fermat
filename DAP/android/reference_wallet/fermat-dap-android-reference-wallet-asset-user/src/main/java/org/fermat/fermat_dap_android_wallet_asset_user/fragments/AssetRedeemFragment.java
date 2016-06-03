@@ -31,10 +31,12 @@ import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
 import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
-import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
 import org.fermat.fermat_dap_android_wallet_asset_user.models.Data;
 import org.fermat.fermat_dap_android_wallet_asset_user.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_user.models.RedeemPoint;
@@ -44,8 +46,6 @@ import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSet
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWalletException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -181,15 +181,15 @@ public class AssetRedeemFragment extends AbstractFermatFragment {
                         if (redeemPoints.size() > 0) {
                             new ConfirmDialog.Builder(getActivity(), appSession)
                                     .setTitle(getResources().getString(R.string.dap_user_wallet_confirm_title))
-                                            .setMessage(getResources().getString(R.string.dap_user_wallet_confirm_entered_info))
-                                                    .setColorStyle(getResources().getColor(R.color.dap_user_wallet_principal))
-                                                            .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
-                                                                @Override
-                                                                public void onClick() {
-                                                                    int assetsAmount = Integer.parseInt(assetsToRedeemEditText.getText().toString());
-                                                                    doRedeem(digitalAsset, redeemPoints, assetsAmount);
-                                                                }
-                                                            }).build().show();
+                                    .setMessage(getResources().getString(R.string.dap_user_wallet_confirm_entered_info))
+                                    .setColorStyle(getResources().getColor(R.color.dap_user_wallet_principal))
+                                    .setYesBtnListener(new ConfirmDialog.OnClickAcceptListener() {
+                                        @Override
+                                        public void onClick() {
+                                            int assetsAmount = Integer.parseInt(assetsToRedeemEditText.getText().toString());
+                                            doRedeem(digitalAsset, redeemPoints, assetsAmount);
+                                        }
+                                    }).build().show();
                         }
                     }
                 } else {
@@ -217,7 +217,7 @@ public class AssetRedeemFragment extends AbstractFermatFragment {
 
             @Override
             protected void onPreExecute() {
-                view = new WeakReference(rootView) ;
+                view = new WeakReference(rootView);
             }
 
             @Override
@@ -228,8 +228,8 @@ public class AssetRedeemFragment extends AbstractFermatFragment {
                     options.inScaled = true;
                     options.inSampleSize = 5;
                     drawable = BitmapFactory.decodeResource(
-                            getResources(), R.drawable.bg_app_image_user,options);
-                }catch (OutOfMemoryError error){
+                            getResources(), R.drawable.bg_app_image_user, options);
+                } catch (OutOfMemoryError error) {
                     error.printStackTrace();
                 }
                 return drawable;
@@ -237,11 +237,11 @@ public class AssetRedeemFragment extends AbstractFermatFragment {
 
             @Override
             protected void onPostExecute(Bitmap drawable) {
-                if (drawable!= null) {
-                    view.get().setBackground(new BitmapDrawable(getResources(),drawable));
+                if (drawable != null) {
+                    view.get().setBackground(new BitmapDrawable(getResources(), drawable));
                 }
             }
-        } ;
+        };
         asyncTask.execute();
     }
 
@@ -338,7 +338,7 @@ public class AssetRedeemFragment extends AbstractFermatFragment {
 
         assetRedeemNameText.setText(digitalAsset.getName());
 //        assetsToRedeemEditText.setText(digitalAsset.getAvailableBalanceQuantity() + "");
-        assetsToRedeemEditText.setText(selectedRPCount+"");
+        assetsToRedeemEditText.setText(selectedRPCount + "");
         long quantity = digitalAsset.getUsableAssetsQuantity();
         assetRedeemRemainingText.setText(quantity + ((quantity == 1) ? " Asset" : " Assets") + " Remaining");
     }

@@ -8,21 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
-import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemPointDetailFragment;
-import org.fermat.fermat_dap_android_wallet_redeem_point.v3.holders.RedeemDetailHolder;
 
 /**
  * Created by Jinmy Bohorquez on 25/04/16.
  */
-public class RedeemDetailAdapter extends PagerAdapter{
+public class RedeemDetailAdapter extends PagerAdapter {
     private DigitalAsset digitalAsset;
     private Context context;
     private LayoutInflater layoutInflater;
@@ -32,7 +29,7 @@ public class RedeemDetailAdapter extends PagerAdapter{
     private Resources res;
 
 
-    public RedeemDetailAdapter(RedeemPointDetailFragment fragment,Context context,DigitalAsset digitalAsset ){
+    public RedeemDetailAdapter(RedeemPointDetailFragment fragment, Context context, DigitalAsset digitalAsset) {
         this.fragment = fragment;
         this.digitalAsset = digitalAsset;
         this.context = context;
@@ -54,20 +51,20 @@ public class RedeemDetailAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        layoutInflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View item_view = layoutInflater.inflate(R.layout.dap_v3_wallet_asset_redeem_detail_item,container,false);
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View item_view = layoutInflater.inflate(R.layout.dap_v3_wallet_asset_redeem_detail_item, container, false);
         redeemDetailItemImageView = (ImageView) item_view.findViewById(R.id.redeemDetailItemImageView);
         redeemDetailItemTextView = (FermatTextView) item_view.findViewById(R.id.redeemDetailItemTextView);
         res = item_view.getResources();
 
-        if (position == 0){
+        if (position == 0) {
             byte[] img = (digitalAsset.getImageActorUserFrom() == null) ? new byte[0] : digitalAsset.getImageActorUserFrom(); /*modificar modelo Digital Asset*/
             BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(redeemDetailItemImageView,
                     res, R.drawable.img_asset_without_image, false);
             bitmapWorkerTask.execute(img);
 
             redeemDetailItemTextView.setText(digitalAsset.getActorUserNameFrom());
-        }else{
+        } else {
             byte[] img = (digitalAsset.getImage() == null) ? new byte[0] : digitalAsset.getImage(); /*modificar modelo Digital Asset*/
             BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(redeemDetailItemImageView,
                     res, R.drawable.img_asset_without_image, false);

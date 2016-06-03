@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_api.layer.dap_transaction.asset_distribution.interfaces;
 
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.FermatManager;
+
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetMetadata;
 
 import java.util.HashMap;

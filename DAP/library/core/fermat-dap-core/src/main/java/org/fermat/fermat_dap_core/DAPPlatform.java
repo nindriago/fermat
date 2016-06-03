@@ -8,22 +8,14 @@ import com.bitdubai.fermat_core_api.layer.all_definition.system.exceptions.CantS
 
 import org.fermat.fermat_dap_core.layer.actor.ActorLayer;
 import org.fermat.fermat_dap_core.layer.actor_network_service.ActorNetworkServiceLayer;
-import org.fermat.fermat_dap_core.layer.business_transaction.BusinessTransactionLayer;
-import org.fermat.fermat_dap_core.layer.crypto_transaction.CryptoTransactionLayer;
 import org.fermat.fermat_dap_core.layer.digital_asset_transaction.DigitalAssetTransactionLayer;
 import org.fermat.fermat_dap_core.layer.funds_transaction.FundsTransactionLayer;
 import org.fermat.fermat_dap_core.layer.identity.IdentityLayer;
 import org.fermat.fermat_dap_core.layer.metadata.MetadataLayer;
-import org.fermat.fermat_dap_core.layer.metadata_transaction.MetadataTransactionLayer;
 import org.fermat.fermat_dap_core.layer.middleware.MiddlewareLayer;
 import org.fermat.fermat_dap_core.layer.network_service.NetworkServiceLayer;
 import org.fermat.fermat_dap_core.layer.offer.OfferLayer;
-import org.fermat.fermat_dap_core.layer.offer_transaction.OfferTransactionLayer;
-import org.fermat.fermat_dap_core.layer.statistic_aggregator.StatisticAggregatorLayer;
-import org.fermat.fermat_dap_core.layer.statistic_collector.StatisticCollectorLayer;
 import org.fermat.fermat_dap_core.layer.sub_app_module.SubAppModuleLayer;
-import org.fermat.fermat_dap_core.layer.swap_transaction.SwapTransactionLayer;
-import org.fermat.fermat_dap_core.layer.user_level_business_transaction.UserLevelBusinessTransactionLayer;
 import org.fermat.fermat_dap_core.layer.wallet.WalletLayer;
 import org.fermat.fermat_dap_core.layer.wallet_module.WalletModuleLayer;
 

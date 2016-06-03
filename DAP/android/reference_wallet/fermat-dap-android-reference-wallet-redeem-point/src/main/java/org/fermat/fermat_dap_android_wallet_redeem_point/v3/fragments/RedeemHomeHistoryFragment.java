@@ -2,15 +2,9 @@ package org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -30,7 +23,6 @@ import com.bitdubai.fermat_android_api.ui.fragments.FermatWalletListFragment;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
-import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
@@ -39,10 +31,7 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.Un
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
-import org.fermat.fermat_dap_android_wallet_redeem_point.adapters.MyAssetsAdapter;
-import org.fermat.fermat_dap_android_wallet_redeem_point.filters.MyAssetsAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.Data;
-import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSession;
 import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.SessionConstantsRedeemPoint;
 import org.fermat.fermat_dap_android_wallet_redeem_point.util.CommonLogger;
@@ -55,7 +44,6 @@ import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.interfaces.Rede
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.RedeemPointSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +53,7 @@ import static android.widget.Toast.makeText;
  * Created by Penny on 18/04/16.
  */
 public class RedeemHomeHistoryFragment extends FermatWalletListFragment<DigitalAssetHistory>
-implements FermatListItemListeners<DigitalAssetHistory> {
+        implements FermatListItemListeners<DigitalAssetHistory> {
 
     private Activity activity;
     // Constants
@@ -158,7 +146,7 @@ implements FermatListItemListeners<DigitalAssetHistory> {
 
     @Override
     protected int getSwipeRefreshLayoutId() {
-        return  R.id.swipe_refresh_redeempoint_history;
+        return R.id.swipe_refresh_redeempoint_history;
     }
 
     @Override
@@ -182,7 +170,7 @@ implements FermatListItemListeners<DigitalAssetHistory> {
                     adapter.changeDataSet(digitalAssetsHistory);
                     if (searchView != null) {
                         if (!searchView.getQuery().toString().isEmpty())
-                        ((DigitalAssetHistoryAdapterFilter) ((DigitalAssetHistoryAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                            ((DigitalAssetHistoryAdapterFilter) ((DigitalAssetHistoryAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
                     }
                 }
                 showOrHideNoAssetsView(digitalAssetsHistory.isEmpty());

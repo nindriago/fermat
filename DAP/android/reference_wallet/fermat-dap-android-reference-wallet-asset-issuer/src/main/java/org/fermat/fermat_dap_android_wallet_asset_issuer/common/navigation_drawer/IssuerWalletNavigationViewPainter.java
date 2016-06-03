@@ -37,7 +37,7 @@ public class IssuerWalletNavigationViewPainter implements NavigationViewPainter 
     public View addNavigationViewHeader(ActiveActorIdentityInformation identityAssetIssuer) {
         try {
             return FragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetIssuerSession,
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetIssuerSession,
                     identityAssetIssuer);
         } catch (CantGetIdentityAssetIssuerException e) {
             e.printStackTrace();

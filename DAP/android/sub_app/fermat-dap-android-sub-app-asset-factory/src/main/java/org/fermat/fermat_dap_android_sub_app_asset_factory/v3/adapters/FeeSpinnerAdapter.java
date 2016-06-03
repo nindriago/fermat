@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 
 import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPFeeType;
@@ -28,14 +27,14 @@ public class FeeSpinnerAdapter extends ArrayAdapter<DAPFeeType> {
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        if(row == null) {
+        if (row == null) {
             //inflate your customlayout for the textview
             LayoutInflater inflater = context.getLayoutInflater();
             row = inflater.inflate(R.layout.dap_v3_factory_wizard_crypto_asset_value_spinner_item, parent, false);
         }
         //put the data in it
         String item = data[position].getDescription();
-        if(item != null) {
+        if (item != null) {
             TextView text1 = (TextView) row.findViewById(R.id.textItem);
 //            text1.setTextColor(Color.WHITE);
             text1.setText(item);
