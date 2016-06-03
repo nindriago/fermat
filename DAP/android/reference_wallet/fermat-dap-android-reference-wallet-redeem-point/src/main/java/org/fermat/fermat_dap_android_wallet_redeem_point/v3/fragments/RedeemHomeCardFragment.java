@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,17 +22,11 @@ import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.enums.FermatRefreshTypes;
 import com.bitdubai.fermat_android_api.ui.fragments.FermatWalletListFragment;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
-
-import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
-import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
-
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
-import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantGetSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
-import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.SettingsNotFoundException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.exceptions.CantListCryptoWalletIntraUserIdentityException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exceptions.CantGetCryptoLossProtectedWalletException;
@@ -50,14 +44,11 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.util.CommonLogger;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.adapters.RedeemCardAdapter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.filters.RedeemHomeCardAdapterFilter;
 import org.fermat.fermat_dap_api.layer.all_definition.DAPConstants;
-import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityRedeemPointException;
-import org.fermat.fermat_dap_api.layer.dap_identity.asset_user.interfaces.IdentityAssetUser;
 import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.interfaces.RedeemPointIdentity;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.RedeemPointSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletList;
-import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +71,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
     private ErrorManager errorManager;
     private SettingsManager<RedeemPointSettings> settingsManager;
 
-    public static RedeemHomeCardFragment newInstance(){
+    public static RedeemHomeCardFragment newInstance() {
         return new RedeemHomeCardFragment();
     }
 
@@ -123,7 +114,9 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
     }
 
     @Override
-    protected int getLayoutResource() {return R.layout.dap_v3_wallet_asset_redeem_point_home_card;}
+    protected int getLayoutResource() {
+        return R.layout.dap_v3_wallet_asset_redeem_point_home_card;
+    }
 
     @Override
     protected int getSwipeRefreshLayoutId() {
@@ -150,7 +143,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
                 if (adapter != null) {
                     adapter.changeDataSet(assets);
                     if (!searchView.getQuery().toString().isEmpty())
-                    ((RedeemHomeCardAdapterFilter) ((RedeemCardAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
+                        ((RedeemHomeCardAdapterFilter) ((RedeemCardAdapter) getAdapter()).getFilter()).filter(searchView.getQuery().toString());
                 }
                 showOrHideNoAssetsView(assets.isEmpty());
             }
@@ -235,7 +228,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
 
     }
 
-    private void initSettings(){
+    private void initSettings() {
         settingsManager = appSession.getModuleManager().getSettingsManager();
         RedeemPointSettings settings = null;
         try {
@@ -354,7 +347,7 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         if (moduleManager != null) {
             try {
 //                assets = Data.getAllDigitalAssets(moduleManager);
-                    assets = Data.getAllRedeemPointAssetsNew(moduleManager);
+                assets = Data.getAllRedeemPointAssetsNew(moduleManager);
             } catch (Exception ex) {
                 CommonLogger.exception(TAG, ex.getMessage(), ex);
                 if (errorManager != null)
@@ -372,16 +365,19 @@ public class RedeemHomeCardFragment extends FermatWalletListFragment<DigitalAsse
         return assets;
     }
 
-    public void activityChange(){
+    public void activityChange() {
         changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
     }
-    public void doAcceptAsset(){
+
+    public void doAcceptAsset() {
 
     }
 
-    public void doRejectAsset(){}
+    public void doRejectAsset() {
+    }
 
-    public void doDeliver(){}
+    public void doDeliver() {
+    }
 
     public SettingsManager<RedeemPointSettings> getSettingsManager() {
         return settingsManager;
