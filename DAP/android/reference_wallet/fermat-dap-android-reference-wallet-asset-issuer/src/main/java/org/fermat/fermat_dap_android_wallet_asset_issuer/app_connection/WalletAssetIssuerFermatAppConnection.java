@@ -63,7 +63,7 @@ public class WalletAssetIssuerFermatAppConnection extends AppConnections<AssetIs
 
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new IssuerWalletNavigationViewPainter(getContext(), getActiveIdentity());
+        return new IssuerWalletNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override

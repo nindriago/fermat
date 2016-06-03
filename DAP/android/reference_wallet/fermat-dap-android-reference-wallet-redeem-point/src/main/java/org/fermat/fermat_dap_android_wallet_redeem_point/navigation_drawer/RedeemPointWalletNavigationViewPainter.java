@@ -13,6 +13,8 @@ import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 import com.bitdubai.fermat_android_api.engine.NavigationViewPainter;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
+
+import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSession;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityRedeemPointException;
 
 import java.lang.ref.WeakReference;
@@ -24,17 +26,20 @@ public class RedeemPointWalletNavigationViewPainter implements NavigationViewPai
 
     private WeakReference<Context> activity;
     private final ActiveActorIdentityInformation redeemPointIdentity;
+    RedeemPointSession redeemPointSession;
 
-    public RedeemPointWalletNavigationViewPainter(Context activity, ActiveActorIdentityInformation redeemPointIdentity) {
+    public RedeemPointWalletNavigationViewPainter(Context activity, RedeemPointSession redeemPointSession, ActiveActorIdentityInformation redeemPointIdentity) {
         this.activity = new WeakReference<Context>(activity);
         this.redeemPointIdentity = redeemPointIdentity;
+        this.redeemPointSession = redeemPointSession;
     }
 
     @Override
     public View addNavigationViewHeader(ActiveActorIdentityInformation redeemPointIdentity) {
         try {
             return FragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), redeemPointIdentity);
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), redeemPointSession,
+                    redeemPointIdentity);
         } catch (CantGetIdentityRedeemPointException e) {
             e.printStackTrace();
         }

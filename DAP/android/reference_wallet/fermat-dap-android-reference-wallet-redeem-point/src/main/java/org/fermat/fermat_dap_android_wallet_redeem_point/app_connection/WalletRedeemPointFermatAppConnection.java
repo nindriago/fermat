@@ -62,7 +62,7 @@ public class WalletRedeemPointFermatAppConnection extends AppConnections<RedeemP
 
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new RedeemPointWalletNavigationViewPainter(getContext() ,getActiveIdentity());
+        return new RedeemPointWalletNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override

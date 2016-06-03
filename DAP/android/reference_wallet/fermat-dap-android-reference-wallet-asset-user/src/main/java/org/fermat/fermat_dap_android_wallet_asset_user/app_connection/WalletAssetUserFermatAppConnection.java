@@ -34,7 +34,6 @@ public class WalletAssetUserFermatAppConnection extends AppConnections<AssetUser
 
     public WalletAssetUserFermatAppConnection(Context activity) {
         super(activity);
-        this.identityAssetUser = identityAssetUser;
     }
 
     @Override
@@ -58,10 +57,9 @@ public class WalletAssetUserFermatAppConnection extends AppConnections<AssetUser
         return new AssetUserSession();
     }
 
-
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new UserWalletNavigationViewPainter(getContext(), getActiveIdentity());
+        return new UserWalletNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override
