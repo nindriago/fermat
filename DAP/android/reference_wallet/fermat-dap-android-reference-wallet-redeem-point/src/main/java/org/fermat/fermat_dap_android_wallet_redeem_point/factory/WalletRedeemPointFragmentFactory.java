@@ -4,8 +4,8 @@ import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.enums.FermatFragmentsEnumType;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.exceptions.FragmentNotFoundException;
-import org.fermat.fermat_dap_android_wallet_redeem_point.fragments.RedeemPointDetailActivityFragment;
-import org.fermat.fermat_dap_android_wallet_redeem_point.fragments.RedeemPointDetailTransactionsFragment;
+import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
+
 import org.fermat.fermat_dap_android_wallet_redeem_point.fragments.RedeemPointHistoryActivityFragment;
 import org.fermat.fermat_dap_android_wallet_redeem_point.fragments.RedeemPointMainActivityFragment;
 import org.fermat.fermat_dap_android_wallet_redeem_point.fragments.RedeemPointStadisticsActivityFragment;
@@ -16,8 +16,6 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSes
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemHomeCardFragment;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemHomeHistoryFragment;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemPointDetailFragment;
-
-import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
 
 /**
  * WalletRedeemPointFragmentFactory
@@ -80,33 +78,6 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
                     throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
             }
 
-            /*
-            // Switch for DAP V3
-            switch (fragment) {
-                case DAP_WALLET_REDEEM_POINT_MAIN_PENDING_TAB_FRAGMENT:
-                    //currentFragment = new RedeemHomeCardFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_MAIN_HISTORY_TAB_FRAGMENT:
-                    //currentFragment = new RedeemPointHomeHistoryFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_STADISTICS_FRAGMENT:
-                    currentFragment = new RedeemPointStadisticsActivityFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_USER_DETAIL_FRAGMENT:
-                    //currentFragment = new RedeemPointDetailFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_SETTINGS_MAIN_NETWORK_FRAGMENT:
-                    currentFragment = new SettingsMainNetworkFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_ASSET_SETTINGS_FRAGMENT:
-                    currentFragment = new SettingsFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_ASSET_SETTINGS_NOTIFICATIONS_FRAGMENT:
-                    currentFragment = new SettingsNotificationsFragment();
-                    break;
-                default:
-                    throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
-            }*/
         }catch (Exception e){
             e.printStackTrace();
         }
