@@ -8,21 +8,14 @@ import android.widget.Filterable;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 
-import org.fermat.fermat_dap_android_wallet_redeem_point.filters.MyAssetsAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.filters.DigitalAssetHistoryAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.holders.DigitalAssetHistoryItemViewHolder;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetHistory;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.util.Utils;
-import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Penny on 19/04/16.
@@ -60,10 +53,6 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
         }
     }
 
-    private Timestamp getSection(DigitalAssetHistory digitalAssetHistory) {
-        return digitalAssetHistory.getAcceptedDate();
-    }
-
     @Override
     protected DigitalAssetHistoryItemViewHolder createHolder(View itemView, int type) {
         return new DigitalAssetHistoryItemViewHolder(itemView, manager, context);
@@ -76,7 +65,7 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
 
     @Override
     protected void bindHolder(DigitalAssetHistoryItemViewHolder holder, DigitalAssetHistory data, int position) {
-        holder.bind(data, Utils.getTimeAgoHistory(data.getAcceptedDate().getTime()), mapAssetQuantity.get(Utils.getTimeAgoHistory(data.getAcceptedDate().getTime())) , mapIndex.get(Utils.getTimeAgoHistory(data.getAcceptedDate().getTime())) == position);
+        holder.bind(data, Utils.getTimeAgoHistory(data.getAcceptedDate().getTime()), mapAssetQuantity.get(Utils.getTimeAgoHistory(data.getAcceptedDate().getTime())), mapIndex.get(Utils.getTimeAgoHistory(data.getAcceptedDate().getTime())) == position);
     }
 
     @Override
