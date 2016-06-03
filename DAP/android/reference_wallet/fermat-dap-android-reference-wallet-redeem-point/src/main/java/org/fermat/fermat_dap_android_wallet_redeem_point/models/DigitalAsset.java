@@ -1,18 +1,19 @@
 package org.fermat.fermat_dap_android_wallet_redeem_point.models;
 
 import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter;
-import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.*;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.util.Utils;
 import org.fermat.fermat_dap_api.layer.all_definition.util.DAPStandardFormats;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAssetUser;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_redeem_point.interfaces.AssetRedeemPointWalletTransaction;
 
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.BITCOIN;
+import static com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency.SATOSHI;
 
 /**
  * Created by francisco on 08/10/15.
