@@ -330,7 +330,7 @@ public class CreateRedeemPointIdentityFragment extends AbstractFermatFragment {
                 bitmap = BitmapFactory.decodeByteArray(identitySelected.getImage(), 0, identitySelected.getImage().length);
 //                bitmap = Bitmap.createScaledBitmap(bitmap, mBrokerImage.getWidth(), mBrokerImage.getHeight(), true);
             } else {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.redeem_point_identity);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.redeem_profile);
 
                 //Picasso.with(getActivity()).load(R.drawable.profile_image).into(mBrokerImage);
             }
@@ -442,7 +442,7 @@ public class CreateRedeemPointIdentityFragment extends AbstractFermatFragment {
                             @Override
                             public void run() {
                                 try {
-                                    moduleManager.createNewRedeemPoint(brokerNameText, (brokerImageByteArray == null) ? convertImage(R.drawable.redeem_point_identity) : brokerImageByteArray,
+                                    moduleManager.createNewRedeemPoint(brokerNameText, (brokerImageByteArray == null) ? convertImage(R.drawable.redeem_profile) : brokerImageByteArray,
                                             brokerContactInformation, brokerAddressCountryName, brokerAddressProvinceName, brokerAddressCityName, brokerAddressPostalCode,
                                             brokerAddressStreetName, brokerAddressHouseNumber);
                                     publishResult(CREATE_IDENTITY_SUCCESS);

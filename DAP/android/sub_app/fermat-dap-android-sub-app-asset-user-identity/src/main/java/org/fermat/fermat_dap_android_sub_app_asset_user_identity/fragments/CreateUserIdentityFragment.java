@@ -307,7 +307,7 @@ public class CreateUserIdentityFragment extends AbstractFermatFragment {
                 bitmap = BitmapFactory.decodeByteArray(identitySelected.getImage(), 0, identitySelected.getImage().length);
 //                bitmap = Bitmap.createScaledBitmap(bitmap, mBrokerImage.getWidth(), mBrokerImage.getHeight(), true);
             } else {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.asset_user_identity);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.asset_user_profile);
 
                 //Picasso.with(getActivity()).load(R.drawable.ic_profile_male).into(mBrokerImage);
             }
@@ -405,7 +405,7 @@ public class CreateUserIdentityFragment extends AbstractFermatFragment {
                             @Override
                             public void run() {
                                 try {
-                                    moduleManager.createNewIdentityAssetUser(brokerNameText, (brokerImageByteArray == null) ? convertImage(R.drawable.asset_user_identity) : brokerImageByteArray);
+                                    moduleManager.createNewIdentityAssetUser(brokerNameText, (brokerImageByteArray == null) ? convertImage(R.drawable.asset_user_profile) : brokerImageByteArray);
                                     publishResult(CREATE_IDENTITY_SUCCESS);
                                 } catch (CantCreateNewIdentityAssetUserException e) {
                                     e.printStackTrace();

@@ -309,7 +309,7 @@ public class CreateIssuerIdentityFragment extends AbstractFermatFragment {
                 bitmap = BitmapFactory.decodeByteArray(identitySelected.getImage(), 0, identitySelected.getImage().length);
 //                bitmap = Bitmap.createScaledBitmap(bitmap, mBrokerImage.getWidth(), mBrokerImage.getHeight(), true);
             } else {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.asset_issuer_identity);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.asset_issuer_profile);
 
                 //Picasso.with(getActivity()).load(R.drawable.profile_image).into(mBrokerImage);
             }
@@ -407,7 +407,7 @@ public class CreateIssuerIdentityFragment extends AbstractFermatFragment {
                             @Override
                             public void run() {
                                 try {
-                                    moduleManager.createNewIdentityAssetIssuer(brokerNameText, (brokerImageByteArray == null) ? convertImage(R.drawable.asset_issuer_identity) : brokerImageByteArray);
+                                    moduleManager.createNewIdentityAssetIssuer(brokerNameText, (brokerImageByteArray == null) ? convertImage(R.drawable.asset_issuer_profile) : brokerImageByteArray);
                                     publishResult(CREATE_IDENTITY_SUCCESS);
                                 } catch (CantCreateNewIdentityAssetIssuerException e) {
                                     e.printStackTrace();

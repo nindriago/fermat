@@ -163,7 +163,7 @@ public class UserMainActivityFragment extends FermatWalletListFragment<DigitalAs
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
                     .setBannerRes(R.drawable.banner_asset_user_wallet)
                     .setIconRes(R.drawable.asset_user_wallet)
-                    .setImageLeft(R.drawable.asset_user_identity)
+                    .setImageLeft(R.drawable.user_profile)
                     .setVIewColor(R.color.dap_user_view_color)
                     .setTitleTextColor(R.color.dap_user_view_color)
                     .setTextNameLeft(R.string.dap_user_wallet_welcome_name_left)

@@ -198,7 +198,7 @@ public class HomeCardFragment extends FermatWalletListFragment<Asset> implements
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
                     .setBannerRes(R.drawable.banner_asset_user_wallet)
                     .setIconRes(R.drawable.asset_user_wallet)
-                    .setImageLeft(R.drawable.asset_user_identity)
+                    .setImageLeft(R.drawable.user_profile)
                     .setVIewColor(R.color.card_toolbar)
                     .setTitleTextColor(R.color.card_toolbar)
                     .setTextNameLeft(R.string.dap_user_wallet_welcome_name_left)

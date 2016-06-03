@@ -140,7 +140,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
                     .setBannerRes(R.drawable.banner_asset_factory)
                     .setIconRes(R.drawable.asset_factory)
-                    .setImageLeft(R.drawable.asset_issuer_identity)
+                    .setImageLeft(R.drawable.asset_issuer_profile)
                     .setVIewColor(R.color.dap_asset_factory_view_color)
                     .setTitleTextColor(R.color.dap_asset_factory_view_color)
                     .setTextNameLeft(R.string.dap_asset_factory_welcome_name_left)
