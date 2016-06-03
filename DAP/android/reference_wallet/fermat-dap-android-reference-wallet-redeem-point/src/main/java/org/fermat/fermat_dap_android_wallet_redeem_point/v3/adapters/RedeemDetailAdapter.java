@@ -8,16 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
-import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemPointDetailFragment;
-import org.fermat.fermat_dap_android_wallet_redeem_point.v3.holders.RedeemDetailHolder;
 
 /**
  * Created by Jinmy Bohorquez on 25/04/16.
@@ -36,7 +33,6 @@ public class RedeemDetailAdapter extends PagerAdapter{
         this.fragment = fragment;
         this.digitalAsset = digitalAsset;
         this.context = context;
-        //images = new byte[][]{digitalAsset.getImageActorUserFrom(),digitalAsset.getImage()};
 
     }
 
@@ -61,14 +57,14 @@ public class RedeemDetailAdapter extends PagerAdapter{
         res = item_view.getResources();
 
         if (position == 0){
-            byte[] img = (digitalAsset.getImageActorUserFrom() == null) ? new byte[0] : digitalAsset.getImageActorUserFrom(); /*modificar modelo Digital Asset*/
+            byte[] img = (digitalAsset.getImageActorUserFrom() == null) ? new byte[0] : digitalAsset.getImageActorUserFrom();
             BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(redeemDetailItemImageView,
                     res, R.drawable.img_asset_without_image, false);
             bitmapWorkerTask.execute(img);
 
             redeemDetailItemTextView.setText(digitalAsset.getActorUserNameFrom());
         }else{
-            byte[] img = (digitalAsset.getImage() == null) ? new byte[0] : digitalAsset.getImage(); /*modificar modelo Digital Asset*/
+            byte[] img = (digitalAsset.getImage() == null) ? new byte[0] : digitalAsset.getImage();
             BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(redeemDetailItemImageView,
                     res, R.drawable.img_asset_without_image, false);
             bitmapWorkerTask.execute(img);
