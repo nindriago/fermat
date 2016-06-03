@@ -58,7 +58,7 @@ public class CommunityAssetUserFermatAppConnection extends AppConnections<AssetU
 
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new UserCommunityNavigationViewPainter(getContext(), getActiveIdentity());
+        return new UserCommunityNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override

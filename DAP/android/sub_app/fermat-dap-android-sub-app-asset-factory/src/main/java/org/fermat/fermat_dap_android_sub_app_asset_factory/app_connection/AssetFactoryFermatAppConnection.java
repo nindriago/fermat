@@ -20,7 +20,7 @@ import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactory
 /**
  * Created by Matias Furszyfer on 2015.12.09..
  */
-public class AssetFactoryFermatAppConnection extends AppConnections {
+public class AssetFactoryFermatAppConnection extends AppConnections<AssetFactorySession> {
 
     public AssetFactoryFermatAppConnection(Context activity) {
         super(activity);
@@ -49,7 +49,7 @@ public class AssetFactoryFermatAppConnection extends AppConnections {
 
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new AssetFactoryNavigationViewPainter(getContext(), getActiveIdentity());
+        return new AssetFactoryNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override

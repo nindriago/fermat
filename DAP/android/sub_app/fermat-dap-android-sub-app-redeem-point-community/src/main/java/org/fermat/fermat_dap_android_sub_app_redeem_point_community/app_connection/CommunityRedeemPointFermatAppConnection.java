@@ -55,7 +55,7 @@ public class CommunityRedeemPointFermatAppConnection extends AppConnections<Asse
 
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new RedeemPointCommunityNavigationViewPainter(getContext(), getActiveIdentity());
+        return new RedeemPointCommunityNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override

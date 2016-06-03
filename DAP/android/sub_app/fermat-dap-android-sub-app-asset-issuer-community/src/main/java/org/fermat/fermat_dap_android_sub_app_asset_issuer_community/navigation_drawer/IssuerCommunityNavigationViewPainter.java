@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.bitdubai.fermat_android_api.engine.NavigationViewPainter;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
+
+import org.fermat.fermat_dap_android_sub_app_asset_issuer_community.sessions.AssetIssuerCommunitySubAppSession;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
 
 import java.lang.ref.WeakReference;
@@ -20,13 +22,15 @@ public class IssuerCommunityNavigationViewPainter implements NavigationViewPaint
 
     private WeakReference<Context> activity;
     private ActiveActorIdentityInformation activeIdentity;
+    AssetIssuerCommunitySubAppSession assetIssuerCommunitySubAppSession;
 
     public IssuerCommunityNavigationViewPainter(Context activity) {
         this.activity = new WeakReference<Context>(activity);
     }
 
-    public IssuerCommunityNavigationViewPainter(Context activity, ActiveActorIdentityInformation activeIdentity) {
+    public IssuerCommunityNavigationViewPainter(Context activity, AssetIssuerCommunitySubAppSession assetIssuerCommunitySubAppSession, ActiveActorIdentityInformation activeIdentity) {
         this.activity = new WeakReference<Context>(activity);
+        this.assetIssuerCommunitySubAppSession = assetIssuerCommunitySubAppSession;
         this.activeIdentity = activeIdentity;
     }
 
@@ -34,7 +38,8 @@ public class IssuerCommunityNavigationViewPainter implements NavigationViewPaint
     public View addNavigationViewHeader(ActiveActorIdentityInformation identityAssetIssuer) {
         try {
             return IssuerCommunityFragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), identityAssetIssuer);
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetIssuerCommunitySubAppSession,
+                    identityAssetIssuer);
         } catch (CantGetIdentityAssetUserException e) {
             e.printStackTrace();
             return null;

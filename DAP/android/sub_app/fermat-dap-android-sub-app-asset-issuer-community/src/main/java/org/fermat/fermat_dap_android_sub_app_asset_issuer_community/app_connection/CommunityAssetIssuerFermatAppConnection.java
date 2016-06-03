@@ -52,7 +52,7 @@ public class CommunityAssetIssuerFermatAppConnection extends AppConnections<Asse
 
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new IssuerCommunityNavigationViewPainter(getContext(), getActiveIdentity());
+        return new IssuerCommunityNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override
