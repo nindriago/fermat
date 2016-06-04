@@ -78,34 +78,9 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
                     throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
             }
 
-            /*
-            // Switch for DAP V3
-            switch (fragment) {
-                case DAP_WALLET_REDEEM_POINT_MAIN_PENDING_TAB_FRAGMENT:
-                    //currentFragment = new RedeemHomeCardFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_MAIN_HISTORY_TAB_FRAGMENT:
-                    //currentFragment = new RedeemPointHomeHistoryFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_STADISTICS_FRAGMENT:
-                    currentFragment = new RedeemPointStadisticsActivityFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_USER_DETAIL_FRAGMENT:
-                    //currentFragment = new RedeemPointDetailFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_SETTINGS_MAIN_NETWORK_FRAGMENT:
-                    currentFragment = new SettingsMainNetworkFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_ASSET_SETTINGS_FRAGMENT:
-                    currentFragment = new SettingsFragment();
-                    break;
-                case DAP_WALLET_REDEEM_POINT_ASSET_SETTINGS_NOTIFICATIONS_FRAGMENT:
-                    currentFragment = new SettingsNotificationsFragment();
-                    break;
-                default:
-                    throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
-            }*/
-        } catch (Exception e) {
+
+        }catch (Exception e){
+
             e.printStackTrace();
         }
         return currentFragment;

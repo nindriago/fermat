@@ -100,7 +100,7 @@
                 <ImageView
                     android:id="@+id/cardAssetImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="300dp"
                     android:adjustViewBounds="true"
                     android:background="@color/fab_material_white"
                     android:src="@drawable/img_asset_without_image"

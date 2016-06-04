@@ -14,7 +14,9 @@ import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 
+
 import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSession;
+
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityRedeemPointException;
 
 import java.lang.ref.WeakReference;

@@ -13,12 +13,16 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextV
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 
+import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityRedeemPointException;
+
+
 import org.fermat.fermat_dap_android_wallet_redeem_point.common.views.WalletRedeemUtils;
 import org.fermat.fermat_dap_android_wallet_redeem_point.sessions.RedeemPointSession;
-import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityRedeemPointException;
+
 import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.interfaces.RedeemPointIdentity;
 
 import java.io.ByteArrayInputStream;
+
 
 /**
  * Created by Matias Furszyfer on 2015.11.12..

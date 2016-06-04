@@ -171,7 +171,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginRight="30dp"
             android:layout_marginLeft="30dp"
-            android:layout_below="@+id/wizardMultimediaButtonsLayout"/>
+            android:layout_below="@+id/wizardMultimediaButtonsLayout"
+            android:layout_above="@+id/wizardMultimediaNextButton" />
 
         <com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton
             android:id="@+id/wizardMultimediaNextButton"

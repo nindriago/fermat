@@ -33,7 +33,6 @@ public class RedeemDetailAdapter extends PagerAdapter {
         this.fragment = fragment;
         this.digitalAsset = digitalAsset;
         this.context = context;
-        //images = new byte[][]{digitalAsset.getImageActorUserFrom(),digitalAsset.getImage()};
 
     }
 
@@ -57,15 +56,19 @@ public class RedeemDetailAdapter extends PagerAdapter {
         redeemDetailItemTextView = (FermatTextView) item_view.findViewById(R.id.redeemDetailItemTextView);
         res = item_view.getResources();
 
-        if (position == 0) {
-            byte[] img = (digitalAsset.getImageActorUserFrom() == null) ? new byte[0] : digitalAsset.getImageActorUserFrom(); /*modificar modelo Digital Asset*/
+
+        if (position == 0){
+            byte[] img = (digitalAsset.getImageActorUserFrom() == null) ? new byte[0] : digitalAsset.getImageActorUserFrom();
+
             BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(redeemDetailItemImageView,
                     res, R.drawable.img_asset_without_image, false);
             bitmapWorkerTask.execute(img);
 
             redeemDetailItemTextView.setText(digitalAsset.getActorUserNameFrom());
-        } else {
-            byte[] img = (digitalAsset.getImage() == null) ? new byte[0] : digitalAsset.getImage(); /*modificar modelo Digital Asset*/
+
+        }else{
+            byte[] img = (digitalAsset.getImage() == null) ? new byte[0] : digitalAsset.getImage();
+
             BitmapWorkerTask bitmapWorkerTask = new BitmapWorkerTask(redeemDetailItemImageView,
                     res, R.drawable.img_asset_without_image, false);
             bitmapWorkerTask.execute(img);

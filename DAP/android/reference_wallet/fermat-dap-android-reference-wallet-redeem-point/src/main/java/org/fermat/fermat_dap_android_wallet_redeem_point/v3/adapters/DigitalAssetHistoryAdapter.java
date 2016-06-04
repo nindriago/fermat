@@ -14,7 +14,8 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.v3.models.DigitalAssetH
 import org.fermat.fermat_dap_android_wallet_redeem_point.v3.util.Utils;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
 
-import java.sql.Timestamp;
+
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -52,10 +53,6 @@ public class DigitalAssetHistoryAdapter extends FermatAdapter<DigitalAssetHistor
                 }
             }
         }
-    }
-
-    private Timestamp getSection(DigitalAssetHistory digitalAssetHistory) {
-        return digitalAssetHistory.getAcceptedDate();
     }
 
     @Override
