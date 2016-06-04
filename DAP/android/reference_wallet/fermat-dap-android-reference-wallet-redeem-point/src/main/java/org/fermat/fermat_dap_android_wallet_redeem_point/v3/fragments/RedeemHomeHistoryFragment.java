@@ -206,9 +206,7 @@ public class RedeemHomeHistoryFragment extends FermatWalletListFragment<DigitalA
 
     @Override
     public void onItemClickListener(DigitalAssetHistory data, int position) {
-        //TODO
-        //appSession.setData("asset_data",data.getAssetPublicKey());
-        //changeActivity(Activities.DAP_WALLET_REDEEM_POINT_DETAILS_ACTIVITY, appSession.getAppPublicKey());
+
     }
 
     @Override
@@ -283,7 +281,6 @@ public class RedeemHomeHistoryFragment extends FermatWalletListFragment<DigitalA
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.dap_wallet_asset_redeem_home_menu, menu);
         searchView = (SearchView) menu.findItem(R.id.action_wallet_redeem_point_search).getActionView();
         searchView.setQueryHint(getResources().getString(R.string.dap_redeem_point_wallet_search_hint));

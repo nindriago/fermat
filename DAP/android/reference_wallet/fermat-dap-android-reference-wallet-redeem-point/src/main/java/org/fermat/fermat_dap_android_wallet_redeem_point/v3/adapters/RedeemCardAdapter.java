@@ -6,8 +6,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.FermatSession;
+
+
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
+
+
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;
@@ -21,7 +25,7 @@ import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.inte
 import java.util.List;
 
 /**
- * Created by madscientist on 19/04/16.
+ * Created by Jinmy Bohorquez on 19/04/16.
  */
 public class RedeemCardAdapter extends FermatAdapter<DigitalAsset, RedeemCardViewHolder> implements Filterable {
 
