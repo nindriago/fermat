@@ -4,7 +4,6 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
 import com.bitdubai.fermat_core_api.layer.all_definition.system.abstract_classes.AbstractLayer;
 import com.bitdubai.fermat_core_api.layer.all_definition.system.exceptions.CantStartLayerException;
 
-import org.fermat.fermat_dap_core.layer.offer.asset_general.AssetGeneralPluginSubsystem;
 import org.fermat.fermat_dap_core.layer.offer.asset_specific.AssetSpecificPluginSubsystem;
 
 /**

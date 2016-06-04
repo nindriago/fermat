@@ -2,7 +2,6 @@ package org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.filters;
 
 import android.widget.Filter;
 
-import org.fermat.fermat_dap_android_wallet_asset_issuer.common.adapters.MyAssetsAdapter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.adapters.HomeCardAdapter;
 
@@ -33,7 +32,7 @@ public class HomeCardAdapterFilter extends Filter {
         int count = list.size();
         final ArrayList<DigitalAsset> nlist = new ArrayList<>(count);
 
-        String filterableString ;
+        String filterableString;
         DigitalAsset digitalAsset;
 
         for (int i = 0; i < count; i++) {

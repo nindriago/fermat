@@ -134,7 +134,6 @@ public class AssetIssuerIdentityDeveloperDatabaseFactory implements DealsWithPlu
         tables.add(assetIssuerTable);
 
 
-
         return tables;
     }
 
@@ -150,12 +149,12 @@ public class AssetIssuerIdentityDeveloperDatabaseFactory implements DealsWithPlu
         try {
             selectedTable.loadToMemory();
             List<DatabaseTableRecord> records = selectedTable.getRecords();
-            for (DatabaseTableRecord row: records){
+            for (DatabaseTableRecord row : records) {
                 List<String> developerRow = new ArrayList<String>();
                 /**
                  * for each row in the table list
                  */
-                for (DatabaseRecord field : row.getValues()){
+                for (DatabaseRecord field : row.getValues()) {
                     /**
                      * I get each row and save them into a List<String>
                      */
@@ -175,7 +174,7 @@ public class AssetIssuerIdentityDeveloperDatabaseFactory implements DealsWithPlu
              */
             database.closeDatabase();
             return returnedRecords;
-        } catch (Exception e){
+        } catch (Exception e) {
             database.closeDatabase();
             return returnedRecords;
         }

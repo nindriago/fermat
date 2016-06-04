@@ -28,7 +28,6 @@ public class DeliverGroupViewHolder extends FermatViewHolder {
     private FermatTextView letterText;
 
 
-
     /**
      * Constructor
      *

@@ -11,6 +11,7 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginBinaryFile;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantCreateFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
+
 import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.interfaces.RedeemPointIdentity;
 
 import java.util.UUID;
@@ -112,9 +113,10 @@ public class IdentityAssetRedeemPointImpl implements DealsWithPluginFileSystem, 
         this.publicKey = publicKey;
         this.profileImage = profileImage;
     }
+
     public IdentityAssetRedeemPointImpl(String alias, String publicKey, String privateKey, byte[] profileImage,
-                                        PluginFileSystem pluginFileSystem, UUID pluginId,String contactInformation,
-                                         String countryName, String provinceName, String cityName,
+                                        PluginFileSystem pluginFileSystem, UUID pluginId, String contactInformation,
+                                        String countryName, String provinceName, String cityName,
                                         String postalCode, String streetName, String houseNumber) {
         this.alias = alias;
         this.publicKey = publicKey;
@@ -132,6 +134,7 @@ public class IdentityAssetRedeemPointImpl implements DealsWithPluginFileSystem, 
 
 
     }
+
     public IdentityAssetRedeemPointImpl(String alias, String publicKey, byte[] profileImage, String contactInformation,
                                         String countryName, String provinceName, String cityName,
                                         String postalCode, String streetName, String houseNumber) {

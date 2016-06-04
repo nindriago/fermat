@@ -2,10 +2,11 @@ package org.fermat.fermat_dap_android_wallet_asset_issuer.sessions;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.abstracts.AbstractFermatSession;
 import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.InstalledWallet;
-import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_settings.interfaces.WalletSettings;
 import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
+
+import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  * @author Francisco Vasquez
  * @version 1.0
  */
-public class AssetIssuerSession extends AbstractFermatSession<InstalledWallet,AssetIssuerWalletSupAppModuleManager,WalletResourcesProviderManager> {
+public class AssetIssuerSession extends AbstractFermatSession<InstalledWallet, AssetIssuerWalletSupAppModuleManager, WalletResourcesProviderManager> {
 
     public static final String BASIC_DATA = "catalog_item_wallet_issuer";
     public static final String PREVIEW_IMGS = "preview_images_wallet_issuer";
@@ -39,7 +40,7 @@ public class AssetIssuerSession extends AbstractFermatSession<InstalledWallet,As
     private ErrorManager errorManager;
 
     /**
-     *  Wallet Settings
+     * Wallet Settings
      */
     private WalletSettings settings;
 

@@ -2,11 +2,11 @@ package org.fermat.fermat_dap_android_sub_app_asset_issuer_community.sessions;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.abstracts.AbstractFermatSession;
 import com.bitdubai.fermat_api.layer.dmp_module.sub_app_manager.InstalledSubApp;
-
-import org.fermat.fermat_dap_api.layer.dap_sub_app_module.asset_issuer_community.interfaces.AssetIssuerCommunitySubAppModuleManager;
 import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_settings.interfaces.WalletSettings;
+
+import org.fermat.fermat_dap_api.layer.dap_sub_app_module.asset_issuer_community.interfaces.AssetIssuerCommunitySubAppModuleManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by francisco on 21/10/15.
  */
-public class AssetIssuerCommunitySubAppSession extends AbstractFermatSession<InstalledSubApp,AssetIssuerCommunitySubAppModuleManager,SubAppResourcesProviderManager> {
+public class AssetIssuerCommunitySubAppSession extends AbstractFermatSession<InstalledSubApp, AssetIssuerCommunitySubAppModuleManager, SubAppResourcesProviderManager> {
 
     public static final String BASIC_DATA = "catalog_item_issuer";
     public static final String PREVIEW_IMGS = "preview_images_issuer";
@@ -28,13 +28,14 @@ public class AssetIssuerCommunitySubAppSession extends AbstractFermatSession<Ins
     }
 
     public AssetIssuerCommunitySubAppSession(String publicKey,
-                                           InstalledSubApp fermatApp,
-                                           ErrorManager errorManager,
+                                             InstalledSubApp fermatApp,
+                                             ErrorManager errorManager,
                                              AssetIssuerCommunitySubAppModuleManager moduleManager,
-                                           SubAppResourcesProviderManager resourceProviderManager) {
+                                             SubAppResourcesProviderManager resourceProviderManager) {
 
         super(publicKey, fermatApp, errorManager, moduleManager, resourceProviderManager);
     }
+
     private AssetIssuerCommunitySubAppModuleManager manager;
 
 
@@ -49,7 +50,7 @@ public class AssetIssuerCommunitySubAppSession extends AbstractFermatSession<Ins
     private ErrorManager errorManager;
 
     /**
-     *  Wallet Settings
+     * Wallet Settings
      */
     private WalletSettings settings;
 

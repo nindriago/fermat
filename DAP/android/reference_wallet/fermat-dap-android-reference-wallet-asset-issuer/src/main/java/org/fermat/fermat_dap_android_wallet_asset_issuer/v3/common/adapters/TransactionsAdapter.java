@@ -6,7 +6,6 @@ import android.view.View;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
 
-import org.fermat.fermat_dap_android_wallet_asset_issuer.holders.AssetDetailTransactionHolder;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Transaction;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.common.holders.TransactionsViewHolder;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;

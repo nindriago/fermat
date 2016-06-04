@@ -298,7 +298,8 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
     private boolean validate() {
         return true;
     }
-    private boolean isValid(AssetFactory asset){
+
+    private boolean isValid(AssetFactory asset) {
         Date newExpDate = null;
         long amountSatoshi = asset.getAmount();
         try {
@@ -310,27 +311,27 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         }
         boolean isValidDate = newExpDate == null ? true : newExpDate.after(new Date());
 
-        if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() > 0 &&
+        if (wizardPropertiesAssetNameEditText.getText().toString().trim().length() > 0 &&
                 wizardPropertiesAssetDescEditText.getText().toString().trim().length() > 0 &&
                 asset.getQuantity() > 0 && asset.getAmount() >= BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND &&
-                isValidDate){
+                isValidDate) {
             return true;
 
-        }else if(wizardPropertiesAssetNameEditText.getText().toString().trim().length() == 0){
+        } else if (wizardPropertiesAssetNameEditText.getText().toString().trim().length() == 0) {
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_name), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(wizardPropertiesAssetDescEditText.getText().toString().trim().length() == 0){
+        } else if (wizardPropertiesAssetDescEditText.getText().toString().trim().length() == 0) {
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_description), Toast.LENGTH_SHORT).show();
             return false;
-        }else if(asset.getQuantity() == 0){
+        } else if (asset.getQuantity() == 0) {
             Toast.makeText(getActivity(), getResources().getString(R.string.dap_asset_factory_invalid_quantity), Toast.LENGTH_SHORT).show();
             return false;
-        }else if (newExpDate != null && newExpDate.before(new Date())){
+        } else if (newExpDate != null && newExpDate.before(new Date())) {
             Toast.makeText(getActivity(), "Expiration date can't be in the past. Please modify the expiration date.", Toast.LENGTH_SHORT).show();
             return false;
-        }else{
+        } else {
             Toast.makeText(getActivity(), "The minimum monetary amount for any Asset is " + BitcoinNetworkConfiguration.MIN_ALLOWED_SATOSHIS_ON_SEND + " satoshis.\n" +
-                    " \n This is needed to pay the fee of bitcoin transactions during delivery of the assets.\n "+"\n You selected "+amountSatoshi+" satoshis.\n", Toast.LENGTH_LONG).show();
+                    " \n This is needed to pay the fee of bitcoin transactions during delivery of the assets.\n " + "\n You selected " + amountSatoshi + " satoshis.\n", Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -400,7 +401,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
             try {
                 if (wizardPropertiesExpDateEditText.getText().toString().length() > 0 && !wizardPropertiesExpDateEditText.getText().toString().equals("")) {
                     asset.setExpirationDate(new Timestamp(DAPStandardFormats.DATE_FORMAT.parse(wizardPropertiesExpDateEditText.getText().toString()).getTime()));
-                }else{
+                } else {
                     asset.setExpirationDate(null);
                 }
             } catch (ParseException e) {
@@ -428,7 +429,7 @@ public class WizardPropertiesFragment extends AbstractFermatFragment {
         }
 
         wizardPropertiesEraseDateButton.setVisibility(
-                (wizardPropertiesExpDateEditText.getText().toString().equals(""))?View.GONE:View.VISIBLE);
+                (wizardPropertiesExpDateEditText.getText().toString().equals("")) ? View.GONE : View.VISIBLE);
     }
 
     private void loadProperties() {

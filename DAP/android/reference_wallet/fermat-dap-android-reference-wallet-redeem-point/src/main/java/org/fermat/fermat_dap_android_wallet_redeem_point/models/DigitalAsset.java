@@ -40,7 +40,7 @@ public class DigitalAsset {
     private Status status;
     private String assetDescription;
 
-    public enum Status{
+    public enum Status {
         PENDING("PENDING"),
         CONFIRMED("CONFIRMED"),
         ACEPTED("ACEPTED"),
@@ -48,9 +48,13 @@ public class DigitalAsset {
 
         private String status;
 
-        Status(String status) {this.status = status;}
+        Status(String status) {
+            this.status = status;
+        }
 
-        public String getStatus(){return this.status;}
+        public String getStatus() {
+            return this.status;
+        }
     }
 
 
@@ -184,12 +188,15 @@ public class DigitalAsset {
     public void setImageActorUserFrom(byte[] imageActorUserFrom) {
         this.imageActorUserFrom = imageActorUserFrom;
     }
+
     public Timestamp getDate() {
         return date;
     }
+
     public void setDate(Timestamp date) {
         this.date = date;
     }
+
     public String getFormattedDate() {
         return (date == null) ? "No date" : Utils.getTimeAgo(date.getTime());
     }

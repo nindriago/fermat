@@ -5,15 +5,15 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.FileLifeSpan;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.FilePrivacy;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginTextFile;
-import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetMetadata;
 import com.bitdubai.fermat_dap_api.layer.all_definition.enums.AssetBalanceType;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
+import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetMetadata;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWallet;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletBalance;
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_issuing.developer.version_1.structure.functional.DigitalAssetIssuingVault;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,10 +76,10 @@ public class DeliverDigitalAssetMetadataToAssetWallet {
         assetBalanceType = AssetBalanceType.AVAILABLE;
         balanceType = BalanceType.AVAILABLE;
         internalId = "internalId";
-        LOCAL_STORAGE_PATH="digital-asset-swap/";
+        LOCAL_STORAGE_PATH = "digital-asset-swap/";
         digitalAssetMetadataFileName = internalId + ".xml";
-        FILE_PRIVACY=FilePrivacy.PUBLIC;
-        FILE_LIFE_SPAN=FileLifeSpan.PERMANENT;
+        FILE_PRIVACY = FilePrivacy.PUBLIC;
+        FILE_LIFE_SPAN = FileLifeSpan.PERMANENT;
         walletPublicKey = "walletPublicKeyTest";
 
         mockitoRules();

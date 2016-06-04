@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
-
 import com.bitdubai.fermat_android_api.engine.NavigationViewPainter;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
+import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
 
+import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetIssuerException;
 
 import java.lang.ref.WeakReference;
@@ -26,17 +26,19 @@ public class AssetFactoryNavigationViewPainter implements NavigationViewPainter 
 
     private WeakReference<Context> activity;
     private final ActiveActorIdentityInformation identityAssetIssuer;
+    AssetFactorySession assetFactorySession;
 
-    public AssetFactoryNavigationViewPainter(Context activity, ActiveActorIdentityInformation identityAssetIssuer) {
+    public AssetFactoryNavigationViewPainter(Context activity, AssetFactorySession assetFactorySession, ActiveActorIdentityInformation identityAssetIssuer) {
         this.activity = new WeakReference<Context>(activity);
         this.identityAssetIssuer = identityAssetIssuer;
+        this.assetFactorySession = assetFactorySession;
     }
 
     @Override
     public View addNavigationViewHeader(ActiveActorIdentityInformation identityAssetIssuer) {
         try {
             return FragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), identityAssetIssuer);
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetFactorySession, identityAssetIssuer);
         } catch (CantGetIdentityAssetIssuerException e) {
             e.printStackTrace();
         }

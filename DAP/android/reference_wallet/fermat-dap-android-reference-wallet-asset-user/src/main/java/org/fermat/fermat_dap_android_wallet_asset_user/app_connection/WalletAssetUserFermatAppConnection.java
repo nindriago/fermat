@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_android_wallet_asset_user.app_connection;
 
 import android.content.Context;
+
 import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.engine.FooterViewPainter;
 import com.bitdubai.fermat_android_api.engine.HeaderViewPainter;
@@ -15,6 +16,7 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
+
 import org.fermat.fermat_dap_android_wallet_asset_user.common.header.WalletAssetUserHeaderPainter;
 import org.fermat.fermat_dap_android_wallet_asset_user.factory.WalletAssetUserFragmentFactory;
 import org.fermat.fermat_dap_android_wallet_asset_user.navigation_drawer.UserWalletNavigationViewPainter;
@@ -34,7 +36,6 @@ public class WalletAssetUserFermatAppConnection extends AppConnections<AssetUser
 
     public WalletAssetUserFermatAppConnection(Context activity) {
         super(activity);
-        this.identityAssetUser = identityAssetUser;
     }
 
     @Override
@@ -58,10 +59,9 @@ public class WalletAssetUserFermatAppConnection extends AppConnections<AssetUser
         return new AssetUserSession();
     }
 
-
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new UserWalletNavigationViewPainter(getContext(), getActiveIdentity());
+        return new UserWalletNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override

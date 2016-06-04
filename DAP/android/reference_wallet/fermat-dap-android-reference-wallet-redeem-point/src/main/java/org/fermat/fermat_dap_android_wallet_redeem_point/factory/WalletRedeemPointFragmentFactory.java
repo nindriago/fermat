@@ -23,7 +23,7 @@ import org.fermat.fermat_dap_android_wallet_redeem_point.v3.fragments.RedeemPoin
  * @author Francisco Vasquez on 15/09/15.
  * @version 1.0
  */
-public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<RedeemPointSession,WalletResourcesProviderManager, WalletRedeemPointFragmentsEnumType> {
+public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<RedeemPointSession, WalletResourcesProviderManager, WalletRedeemPointFragmentsEnumType> {
 
 
     @Override
@@ -78,7 +78,9 @@ public class WalletRedeemPointFragmentFactory extends FermatFragmentFactory<Rede
                     throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
             }
 
+
         }catch (Exception e){
+
             e.printStackTrace();
         }
         return currentFragment;

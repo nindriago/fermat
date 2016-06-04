@@ -28,6 +28,9 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.A
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_sub_app_asset_user_community_bitdubai.R;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.adapters.UserCommunityAdapter;
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.holders.UserViewHolder;
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.interfaces.AdapterChangeListener;
@@ -41,8 +44,6 @@ import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.AssetUserGroupMember
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAssetUser;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSettings;
 import org.fermat.fermat_dap_api.layer.dap_sub_app_module.asset_user_community.interfaces.AssetUserCommunitySubAppModuleManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,6 @@ import static android.widget.Toast.makeText;
 
 /**
  * UserCommuinityUsersFragment, Shows all the users in current network not in the seleted group for adding
- *
  */
 public class UserCommuinityUsersFragment extends AbstractFermatFragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -121,18 +121,18 @@ public class UserCommuinityUsersFragment extends AbstractFermatFragment implemen
                 actors = dataSet;
 
                 boolean someSelected = false;
-                for (Actor actor : actors){
-                    if (actor.selected){
+                for (Actor actor : actors) {
+                    if (actor.selected) {
                         someSelected = true;
                         break;
                     }
                 }
 
-                if (someSelected)
-                {
+                if (someSelected) {
                     menuItemAdd.setVisible(true);
+                } else {
+                    menuItemAdd.setVisible(false);
                 }
-                else {menuItemAdd.setVisible(false);}
             }
         });
         recyclerView.setAdapter(adapter);
@@ -292,7 +292,7 @@ public class UserCommuinityUsersFragment extends AbstractFermatFragment implemen
 
         if (result != null && result.size() > 0) {
             for (AssetUserActorRecord record : result) {
-                    dataSet.add((new Actor(record)));
+                dataSet.add((new Actor(record)));
             }
         }
         return dataSet;
@@ -306,8 +306,7 @@ public class UserCommuinityUsersFragment extends AbstractFermatFragment implemen
             if (id == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_HELP_USERS) {
                 setUpPresentation(settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isPresentationHelpEnabled());
                 return true;
-            }
-            else if (id == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_ADD_USERS) {
+            } else if (id == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_ADD_USERS) {
                 final ProgressDialog dialog = new ProgressDialog(getActivity());
                 dialog.setMessage("Adding users to group...");
                 dialog.setCancelable(false);

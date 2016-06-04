@@ -24,6 +24,10 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseS
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.user.device_user.interfaces.DeviceUserManager;
+
 import org.fermat.fermat_dap_api.layer.dap_actor.redeem_point.interfaces.ActorAssetRedeemPointManager;
 import org.fermat.fermat_dap_api.layer.dap_actor_network_service.redeem_point.exceptions.CantRegisterActorAssetRedeemPointException;
 import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.exceptions.CantCreateNewRedeemPointException;
@@ -34,10 +38,6 @@ import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.interfaces.Rede
 import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.interfaces.RedeemPointIdentityManager;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.RedeemPointSettings;
 import org.fermat.fermat_dap_plugin.layer.identity.redeem.point.developer.version_1.database.AssetRedeemPointIdentityDeveloperDatabaseFactory;
-
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
-import com.bitdubai.fermat_pip_api.layer.user.device_user.interfaces.DeviceUserManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -192,7 +192,7 @@ public class ReedemPointIdentityPluginRoot extends AbstractPlugin implements
     public RedeemPointIdentity createNewRedeemPoint(String alias, byte[] profileImage,
                                                     String contactInformation, String countryName, String provinceName, String cityName,
                                                     String postalCode, String streetName, String houseNumber) throws CantCreateNewRedeemPointException {
-        return identityAssetRedeemPointManager.createNewIdentityAssetRedeemPoint(alias, profileImage,  contactInformation,
+        return identityAssetRedeemPointManager.createNewIdentityAssetRedeemPoint(alias, profileImage, contactInformation,
                 countryName, provinceName, cityName, postalCode, streetName, houseNumber);
     }
 
@@ -200,7 +200,7 @@ public class ReedemPointIdentityPluginRoot extends AbstractPlugin implements
     public void updateIdentityRedeemPoint(String identityPublicKey, String identityAlias, byte[] profileImage,
                                           String contactInformation, String countryName, String provinceName, String cityName,
                                           String postalCode, String streetName, String houseNumber) throws CantUpdateIdentityRedeemPointException {
-        identityAssetRedeemPointManager.updateIdentityRedeemPoint(identityPublicKey, identityAlias, profileImage,  contactInformation,
+        identityAssetRedeemPointManager.updateIdentityRedeemPoint(identityPublicKey, identityAlias, profileImage, contactInformation,
                 countryName, provinceName, cityName, postalCode, streetName, houseNumber);
     }
 
@@ -247,7 +247,7 @@ public class ReedemPointIdentityPluginRoot extends AbstractPlugin implements
     public void createIdentity(String name, byte[] profile_img,
                                String contactInformation, String countryName, String provinceName, String cityName,
                                String postalCode, String streetName, String houseNumber) throws Exception {
-        identityAssetRedeemPointManager.createNewIdentityAssetRedeemPoint(name, profile_img,contactInformation,
+        identityAssetRedeemPointManager.createNewIdentityAssetRedeemPoint(name, profile_img, contactInformation,
                 countryName, provinceName, cityName, postalCode, streetName, houseNumber);
     }
 

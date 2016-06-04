@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_android_sub_app_redeem_point_community.app_connection;
 
 import android.content.Context;
+
 import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.engine.FooterViewPainter;
 import com.bitdubai.fermat_android_api.engine.HeaderViewPainter;
@@ -14,6 +15,7 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
+
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.factory.AssetRedeemPointCommunityFragmentFactory;
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.navigation_drawer.RedeemPointCommunityNavigationViewPainter;
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.sessions.AssetRedeemPointCommunitySubAppSession;
@@ -55,7 +57,7 @@ public class CommunityRedeemPointFermatAppConnection extends AppConnections<Asse
 
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
-        return new RedeemPointCommunityNavigationViewPainter(getContext(), getActiveIdentity());
+        return new RedeemPointCommunityNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
     }
 
     @Override
@@ -67,6 +69,7 @@ public class CommunityRedeemPointFermatAppConnection extends AppConnections<Asse
     public FooterViewPainter getFooterViewPainter() {
         return null;
     }
+
     @Override
 
     public NotificationPainter getNotificationPainter(String code) {
@@ -95,7 +98,7 @@ public class CommunityRedeemPointFermatAppConnection extends AppConnections<Asse
 //                        ActorAssetUser senderActor = manager.getLastNotification(senderActorPublicKey);
                         notification = new RedeemAssetCommunityNotificationPainter("CryptoAddress Arrive", "A New CryptoAddress was Received From: " + senderActorPublicKey, "", "");
                     } else {
-                        notification = new RedeemAssetCommunityNotificationPainter("CryptoAddress Arrive", "Was Received for: "+ senderActorPublicKey, "", "");
+                        notification = new RedeemAssetCommunityNotificationPainter("CryptoAddress Arrive", "Was Received for: " + senderActorPublicKey, "", "");
                     }
                     break;
             }

@@ -208,8 +208,8 @@ public class AssetUserNetworkServiceDeveloperDatabaseFactory implements DealsWit
         List<DeveloperDatabaseTable> tables = new ArrayList<>();
 
         /**
-        * Table incoming messages columns.
-        */
+         * Table incoming messages columns.
+         */
         List<String> incomingMessagesColumns = new ArrayList<String>();
 
         incomingMessagesColumns.add(CommunicationNetworkServiceDatabaseConstants.INCOMING_MESSAGES_ID_COLUMN_NAME);

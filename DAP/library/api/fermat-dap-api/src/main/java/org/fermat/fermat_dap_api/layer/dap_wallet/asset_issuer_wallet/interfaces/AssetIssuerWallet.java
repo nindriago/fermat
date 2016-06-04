@@ -6,7 +6,6 @@ import org.fermat.fermat_dap_api.layer.dap_actor.DAPActor;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.exceptions.CantGetAssetStatisticException;
 import org.fermat.fermat_dap_api.layer.dap_transaction.common.exceptions.CantGetDigitalAssetFromLocalStorageException;
 import org.fermat.fermat_dap_api.layer.dap_transaction.common.exceptions.RecordsNotFoundException;
-
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantGetTransactionsException;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantStoreMemoException;
 
@@ -23,25 +22,25 @@ public interface AssetIssuerWallet {
     AssetIssuerWalletBalance getBalance() throws CantGetTransactionsException;
 
     List<org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletTransaction> getTransactionsAll(org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType balanceType,
-                                                          org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType transactionType,
-                                                          String assetPublicKey) throws CantGetTransactionsException;
+                                                                                                                                    org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType transactionType,
+                                                                                                                                    String assetPublicKey) throws CantGetTransactionsException;
 
     List<org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletTransaction> getTransactions(org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType balanceType,
-                                                       org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType transactionType,
-                                                       int max,
-                                                       int offset, String assetPublicKey) throws CantGetTransactionsException;
+                                                                                                                                 org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType transactionType,
+                                                                                                                                 int max,
+                                                                                                                                 int offset, String assetPublicKey) throws CantGetTransactionsException;
 
     List<org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletTransaction> getAvailableTransactions(String assetPublicKey) throws CantGetTransactionsException;
 
     List<org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletTransaction> getTransactionsByActor(String actorPublicKey,
-                                                              org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType balanceType,
-                                                              int max,
-                                                              int offset) throws CantGetTransactionsException;
+                                                                                                                                        org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType balanceType,
+                                                                                                                                        int max,
+                                                                                                                                        int offset) throws CantGetTransactionsException;
 
     List<org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletTransaction> gettLastActorTransactionsByTransactionType(org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType balanceType,
-                                                                                  org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType transactionType,
-                                                                                  int max,
-                                                                                  int offset) throws CantGetTransactionsException;
+                                                                                                                                                            org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.TransactionType transactionType,
+                                                                                                                                                            int max,
+                                                                                                                                                            int offset) throws CantGetTransactionsException;
 
     void setTransactionDescription(UUID transactionID,
                                    String description) throws org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantFindTransactionException, CantStoreMemoException;

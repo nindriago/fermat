@@ -1189,7 +1189,7 @@ public class AssetUserActorNetworkServicePluginRoot extends AbstractNetworkServi
     @Override
     public List<ActorNotification> getPendingNotifications() throws CantGetActorAssetNotificationException {
         try {
-            if(incomingNotificationsDao == null)
+            if (incomingNotificationsDao == null)
                 incomingNotificationsDao = new org.fermat.fermat_dap_plugin.layer.actor.network.service.asset.user.developer.version_1.database.communications.IncomingNotificationDao(dataBase, pluginFileSystem, pluginId);
             return incomingNotificationsDao.listUnreadNotifications();
 
@@ -1262,7 +1262,7 @@ public class AssetUserActorNetworkServicePluginRoot extends AbstractNetworkServi
 
     @Override
     public List<DeveloperDatabaseTable> getDatabaseTableList(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase) {
-        if(developerDatabase.getName().equals(org.fermat.fermat_dap_plugin.layer.actor.network.service.asset.user.developer.version_1.database.communications.AssetUserNetworkServiceDatabaseConstants.DATA_BASE_NAME))
+        if (developerDatabase.getName().equals(org.fermat.fermat_dap_plugin.layer.actor.network.service.asset.user.developer.version_1.database.communications.AssetUserNetworkServiceDatabaseConstants.DATA_BASE_NAME))
             return new AssetUserNetworkServiceDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId).getDatabaseTableList(developerObjectFactory);
         else
             return new AssetUserNetworkServiceDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId).getDatabaseTableListCommunication(developerObjectFactory);

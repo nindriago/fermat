@@ -11,15 +11,11 @@ import android.widget.ImageView;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.utils.ImagesUtils;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
-import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
 import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.UserDelivery;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 
-import static org.fermat.fermat_dap_api.layer.all_definition.enums.AssetCurrentStatus.ASSET_APPROPRIATED;
-import static org.fermat.fermat_dap_api.layer.all_definition.enums.AssetCurrentStatus.ASSET_CREATED;
-import static org.fermat.fermat_dap_api.layer.all_definition.enums.AssetCurrentStatus.ASSET_REDEEMED;
 import static org.fermat.fermat_dap_api.layer.all_definition.enums.AssetCurrentStatus.ASSET_UNUSED;
 
 /**

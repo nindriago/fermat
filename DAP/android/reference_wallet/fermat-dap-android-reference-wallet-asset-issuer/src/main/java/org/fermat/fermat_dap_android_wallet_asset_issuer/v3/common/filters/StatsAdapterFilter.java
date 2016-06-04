@@ -32,7 +32,7 @@ public class StatsAdapterFilter extends Filter {
         int count = list.size();
         final ArrayList<UserDelivery> nlist = new ArrayList<>(count);
 
-        String filterableString ;
+        String filterableString;
         UserDelivery userDelivery;
 
         for (int i = 0; i < count; i++) {

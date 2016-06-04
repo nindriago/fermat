@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.bitdubai.fermat_android_api.engine.NavigationViewPainter;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
+
+import org.fermat.fermat_dap_android_sub_app_asset_user_community.sessions.AssetUserCommunitySubAppSession;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
 
 import java.lang.ref.WeakReference;
@@ -19,19 +21,22 @@ import java.lang.ref.WeakReference;
  */
 public class UserCommunityNavigationViewPainter implements NavigationViewPainter {
 
-    private  WeakReference<Context> activity;
+    private WeakReference<Context> activity;
     private ActiveActorIdentityInformation activeIdentity;
+    AssetUserCommunitySubAppSession assetUserCommunitySubAppSession;
 
-    public UserCommunityNavigationViewPainter(Context activity, ActiveActorIdentityInformation activeIdentity) {
+    public UserCommunityNavigationViewPainter(Context activity, AssetUserCommunitySubAppSession assetUserCommunitySubAppSession, ActiveActorIdentityInformation activeIdentity) {
         this.activity = new WeakReference<Context>(activity);
         this.activeIdentity = activeIdentity;
+        this.assetUserCommunitySubAppSession = assetUserCommunitySubAppSession;
     }
 
     @Override
     public View addNavigationViewHeader(ActiveActorIdentityInformation identityAssetUser) {
         try {
             return UserCommunityFragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), identityAssetUser);
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetUserCommunitySubAppSession,
+                    identityAssetUser);
         } catch (CantGetIdentityAssetUserException e) {
             e.printStackTrace();
             return null;

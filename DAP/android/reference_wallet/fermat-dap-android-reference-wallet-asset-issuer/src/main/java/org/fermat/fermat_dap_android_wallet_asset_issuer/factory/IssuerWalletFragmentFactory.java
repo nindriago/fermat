@@ -4,19 +4,14 @@ import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.enums.FermatFragmentsEnumType;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.exceptions.FragmentNotFoundException;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.AssetDeliveryFragment;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.AssetDeliverySelectGroupsFragment;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.AssetDeliverySelectUsersFragment;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.AssetDetailTransactionsFragment;
+import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
+
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.MainActivityFragment;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.MyAssetsActivityFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.SettingsAssetIssuerFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.SettingsAssetIssuerNetworkFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.SettingsAssetIssuerNotificationFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.UserAppropiateListFragment;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.UserDeliveryListFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.fragments.UserRedeemedListFragment;
-
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.DeliverGroupFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.DeliverUserFragment;
@@ -24,10 +19,8 @@ import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.HomeCardFr
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.StatsFragment;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.v3.fragments.TransactionsFragment;
 
-import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
 
-
-public class IssuerWalletFragmentFactory extends FermatFragmentFactory<AssetIssuerSession,WalletResourcesProviderManager, WalletAssetIssuerFragmentsEnumType> {//implements com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.WalletFragmentFactory {
+public class IssuerWalletFragmentFactory extends FermatFragmentFactory<AssetIssuerSession, WalletResourcesProviderManager, WalletAssetIssuerFragmentsEnumType> {//implements com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.WalletFragmentFactory {
 
 
     @Override
@@ -85,7 +78,7 @@ public class IssuerWalletFragmentFactory extends FermatFragmentFactory<AssetIssu
                 default:
                     throw new FragmentNotFoundException("Fragment not found", new Exception(), fragment.getKey(), "Swith failed");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return currentFragment;

@@ -17,7 +17,7 @@ public interface AssetIssuingManager extends FermatManager {
      *
      * @param digitalAssetToIssue   The asset which we want to create
      * @param assetsAmount          The amount of asset that we are willing to create
-     * @param issuerWalletPk       The issuer wallet public key where the assets will go.
+     * @param issuerWalletPk        The issuer wallet public key where the assets will go.
      * @param btcWalletPublicKey    The btc wallet public key where we'll take the bitcoins from.
      * @param blockchainNetworkType The kind of network where this asset will be created.
      * @throws org.fermat.fermat_dap_api.layer.dap_transaction.asset_issuing.exceptions.CantIssueDigitalAssetsException In case something went wrong.

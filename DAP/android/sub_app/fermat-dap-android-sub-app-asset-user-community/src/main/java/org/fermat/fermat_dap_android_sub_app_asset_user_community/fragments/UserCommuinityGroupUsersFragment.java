@@ -28,6 +28,10 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.A
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_sub_app_asset_user_community_bitdubai.R;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.software.shell.fab.ActionButton;
+
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.adapters.UserCommunityAdapter;
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.dialogs.ConfirmDeleteDialog;
 import org.fermat.fermat_dap_android_sub_app_asset_user_community.holders.UserViewHolder;
@@ -46,9 +50,6 @@ import org.fermat.fermat_dap_api.layer.dap_actor.asset_user.interfaces.ActorAsse
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSettings;
 import org.fermat.fermat_dap_api.layer.dap_sub_app_module.asset_user_community.interfaces.AssetUserCommunitySubAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_transaction.common.exceptions.RecordsNotFoundException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
-import com.software.shell.fab.ActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,6 @@ import static android.widget.Toast.makeText;
 
 /**
  * UserCommuinityGroupUsersFragment, Show all the users in the selected group
- *
  */
 public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -135,9 +135,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
 
                 if (someSelected) {
                     menuItemDelete.setVisible(true);
-                }
-                else
-                {
+                } else {
                     menuItemDelete.setVisible(false);
                 }
 
@@ -167,7 +165,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
         create.setVisibility(View.VISIBLE);
 
         //Toast.makeText(getActivity(), group.getGroupName(), Toast.LENGTH_LONG).show();
-        getToolbar().setTitle(group.getGroupName()+" Users");
+        getToolbar().setTitle(group.getGroupName() + " Users");
         //getToolbar().getMenu().getItem(1).setVisible(true);
 
         //initialize settings
@@ -211,6 +209,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
         menuItemDelete.setVisible(false);
 
     }
+
     private void setUpPresentation(boolean checkButton) {
 
         PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
@@ -227,6 +226,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
         presentationDialog.show();
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -235,14 +235,10 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
             if (id == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_HELP_GROUP) {
                 setUpPresentation(settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isPresentationHelpEnabled());
                 return true;
-            }
-            else
-            {
+            } else {
                 if (item.getItemId() == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_HELP_GROUP_RENAME) {
                     lauchCreateGroupDialog();
-                }
-                else if (item.getItemId() == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_HELP_GROUP_DELETE)
-                {
+                } else if (item.getItemId() == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_HELP_GROUP_DELETE) {
                     appSession.setData("group_ID", group.getGroupId());
                     ConfirmDeleteDialog dialog = new ConfirmDeleteDialog(getActivity(), (AssetUserCommunitySubAppSession) appSession, appResourcesProviderManager);
                     dialog.setYesBtnListener(new ConfirmDeleteDialog.OnClickAcceptListener() {
@@ -252,7 +248,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
                             try {
                                 groupSelectedID = (String) appSession.getData("group_ID");
                                 List<ActorAssetUser> userList = manager.getListActorAssetUserByGroups(groupSelectedID);
-                                for (ActorAssetUser user : userList){
+                                for (ActorAssetUser user : userList) {
 
                                     AssetUserGroupMemberRecord actorGroup = new AssetUserGroupMemberRecord();
                                     actorGroup.setGroupId(groupSelectedID);
@@ -270,7 +266,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
                             } catch (RecordsNotFoundException e) {
                                 e.printStackTrace();
                                 Toast.makeText(getActivity(), "Group not found.", Toast.LENGTH_SHORT).show();
-                            }catch (CantGetAssetUserActorsException e) {
+                            } catch (CantGetAssetUserActorsException e) {
                                 e.printStackTrace();
                                 Toast.makeText(getActivity(), "Can't get users from group.", Toast.LENGTH_SHORT).show();
                             }
@@ -278,9 +274,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
                     });
                     dialog.show();
 
-                }
-                else if (item.getItemId() == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_HELP_GROUP_DELETE_MEMBERS)
-                {
+                } else if (item.getItemId() == SessionConstantsAssetUserCommunity.IC_ACTION_USER_COMMUNITY_HELP_GROUP_DELETE_MEMBERS) {
                     ConfirmDeleteDialog dialog = new ConfirmDeleteDialog(getActivity(), (AssetUserCommunitySubAppSession) appSession, appResourcesProviderManager);
                     dialog.setYesBtnListener(new ConfirmDeleteDialog.OnClickAcceptListener() {
                         @Override
@@ -349,13 +343,14 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
     private void setUpScreen(LayoutInflater layoutInflater) throws CantGetIdentityAssetUserException {
 
     }
-    private void lauchCreateGroupDialog(){
+
+    private void lauchCreateGroupDialog() {
         dialog = new CreateGroupFragmentDialog(
-                getActivity(),manager,group);
+                getActivity(), manager, group);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                getToolbar().setTitle(group.getGroupName()+" Users");
+                getToolbar().setTitle(group.getGroupName() + " Users");
                 onRefresh();
             }
         });
@@ -426,7 +421,7 @@ public class UserCommuinityGroupUsersFragment extends AbstractFermatFragment imp
         if (resultAux != null && resultAux.size() > 0) {
             for (ActorAssetUser record : resultAux) {
 
-                dataSet.add((new Actor((AssetUserActorRecord)record)));
+                dataSet.add((new Actor((AssetUserActorRecord) record)));
             }
         }
         return dataSet;

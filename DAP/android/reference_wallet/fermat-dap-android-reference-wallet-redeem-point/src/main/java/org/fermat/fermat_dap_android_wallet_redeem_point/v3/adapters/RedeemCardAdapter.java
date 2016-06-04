@@ -7,8 +7,10 @@ import android.widget.Filterable;
 
 import com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.FermatSession;
 
+
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_android_api.ui.util.BitmapWorkerTask;
+
 
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
 

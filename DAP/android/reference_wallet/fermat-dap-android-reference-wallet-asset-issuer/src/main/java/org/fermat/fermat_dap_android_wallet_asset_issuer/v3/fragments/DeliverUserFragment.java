@@ -38,8 +38,6 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.Un
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
-import org.fermat.fermat_dap_android_wallet_asset_issuer.common.adapters.MyAssetsAdapter;
-import org.fermat.fermat_dap_android_wallet_asset_issuer.common.filters.MyAssetsAdapterFilter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Data;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.User;
@@ -53,8 +51,6 @@ import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static android.widget.Toast.makeText;
@@ -407,7 +403,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
             @Override
             protected Object doInBackground() throws Exception {
                 for (User user : usersSelected) {
-                        moduleManager.addUserToDeliver(user.getActorAssetUser());
+                    moduleManager.addUserToDeliver(user.getActorAssetUser());
                 }
                 if (usersSelected.size() > 0) {
                     moduleManager.distributionAssets(assetPublicKey, WalletUtilities.WALLET_PUBLIC_KEY, assetsAmount);

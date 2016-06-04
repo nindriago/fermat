@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
-
 import com.bitdubai.fermat_android_api.engine.NavigationViewPainter;
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
+import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
 
+import org.fermat.fermat_dap_android_wallet_asset_user.sessions.AssetUserSession;
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityAssetUserException;
 
 import java.lang.ref.WeakReference;
@@ -26,17 +26,20 @@ public class UserWalletNavigationViewPainter implements NavigationViewPainter {
 
     private WeakReference<Context> activity;
     private final ActiveActorIdentityInformation identityAssetUser;
+    AssetUserSession assetUserSession;
 
-    public UserWalletNavigationViewPainter(Context activity, ActiveActorIdentityInformation identityAssetUser) {
+    public UserWalletNavigationViewPainter(Context activity, AssetUserSession assetUserSession, ActiveActorIdentityInformation identityAssetUser) {
         this.activity = new WeakReference<Context>(activity);
         this.identityAssetUser = identityAssetUser;
+        this.assetUserSession = assetUserSession;
     }
 
     @Override
     public View addNavigationViewHeader(ActiveActorIdentityInformation identityAssetUser) {
         try {
             return FragmentsCommons.setUpHeaderScreen((LayoutInflater) activity.get()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), identityAssetUser);
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE), activity.get(), assetUserSession,
+                    identityAssetUser);
         } catch (CantGetIdentityAssetUserException e) {
             e.printStackTrace();
         }

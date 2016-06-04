@@ -5,11 +5,12 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
 import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.all_definition.util.Base64;
 import com.bitdubai.fermat_api.layer.osa_android.location_system.Location;
-import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
-import org.fermat.fermat_dap_api.layer.dap_actor.redeem_point.interfaces.Address;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
+import org.fermat.fermat_dap_api.layer.dap_actor.redeem_point.interfaces.Address;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,22 +20,22 @@ import java.util.List;
  */
 public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.dap_actor.redeem_point.interfaces.ActorAssetRedeemPoint {
 
-    private String                  actorPublicKey      ;
-    private String                  name                ;
-    private long                    registrationDate    ;
-    private long                    lastConnectionDate  ;
-    private DAPConnectionState      dapConnectionState  ;
-    private CryptoAddress           cryptoAddress       ;
-    private Location                location            ;
-    private Double                  locationLatitude    ;
-    private Double                  locationLongitude   ;
-    private String                  contactInformation  ;
-    private String                  hoursOfOperation    ;
-    private Address                 address             ;
-    private Actors                  actorsType          = Actors.DAP_ASSET_REDEEM_POINT;
-    private byte[]                  profileImage        ;
-    private BlockchainNetworkType   blockchainNetworkType;
-    private List<String>            registeredIssuers   ;
+    private String actorPublicKey;
+    private String name;
+    private long registrationDate;
+    private long lastConnectionDate;
+    private DAPConnectionState dapConnectionState;
+    private CryptoAddress cryptoAddress;
+    private Location location;
+    private Double locationLatitude;
+    private Double locationLongitude;
+    private String contactInformation;
+    private String hoursOfOperation;
+    private Address address;
+    private Actors actorsType = Actors.DAP_ASSET_REDEEM_POINT;
+    private byte[] profileImage;
+    private BlockchainNetworkType blockchainNetworkType;
+    private List<String> registeredIssuers;
 
     {
         registeredIssuers = new ArrayList<>();
@@ -49,7 +50,7 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     }
 
     /**
-     *  Method for Set Actor in Actor Network Service Redeem Point
+     * Method for Set Actor in Actor Network Service Redeem Point
      */
     public RedeemPointActorRecord(String actorPublicKey,
                                   String name,
@@ -57,26 +58,26 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
                                   Location location,
                                   List<String> registeredIssuers) {
 
-        this.name                   = name                                  ;
-        this.actorPublicKey         = actorPublicKey                        ;
-        this.profileImage           = profileImage.clone()                  ;
+        this.name = name;
+        this.actorPublicKey = actorPublicKey;
+        this.profileImage = profileImage.clone();
 
         if (location != null) {
-            this.locationLatitude   = location.getLatitude()                ;
-            this.locationLongitude  = location.getLongitude()               ;
-        }else{
-            this.locationLatitude   = (double) 0                            ;
-            this.locationLongitude  = (double) 0                            ;
+            this.locationLatitude = location.getLatitude();
+            this.locationLongitude = location.getLongitude();
+        } else {
+            this.locationLatitude = (double) 0;
+            this.locationLongitude = (double) 0;
         }
-        this.dapConnectionState     = DAPConnectionState.REGISTERED_ONLINE  ;
+        this.dapConnectionState = DAPConnectionState.REGISTERED_ONLINE;
         this.registeredIssuers = registeredIssuers;
     }
 
     public RedeemPointActorRecord(String name,
                                   String actorPublicKey) {
 
-        this.actorPublicKey = actorPublicKey    ;
-        this.name           = name              ;
+        this.actorPublicKey = actorPublicKey;
+        this.name = name;
     }
 
     public RedeemPointActorRecord(String name,
@@ -84,13 +85,13 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
                                   byte[] profileImage,
                                   long registrationDate) {
 
-        this.name               = name                                  ;
-        this.actorPublicKey     = actorPublicKey                        ;
+        this.name = name;
+        this.actorPublicKey = actorPublicKey;
 
         this.setProfileImage(profileImage);
-        this.registrationDate   = registrationDate                      ;
+        this.registrationDate = registrationDate;
 
-        this.dapConnectionState = DAPConnectionState.REGISTERED_ONLINE  ;
+        this.dapConnectionState = DAPConnectionState.REGISTERED_ONLINE;
 
     }
 
@@ -132,25 +133,25 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
                                   final byte[] profileImage,
                                   final List<String> registeredIssuers) {
 
-        this.actorPublicKey         =       actorPublicKey          ;
-        this.name                   =       name                    ;
+        this.actorPublicKey = actorPublicKey;
+        this.name = name;
         if (dapConnectionState != null)
-            this.dapConnectionState     =       dapConnectionState  ;
+            this.dapConnectionState = dapConnectionState;
 
         if (locationLatitude != null)
-            this.locationLatitude       = locationLatitude          ;
-        if(locationLongitude != null)
-            this.locationLongitude      = locationLongitude         ;
+            this.locationLatitude = locationLatitude;
+        if (locationLongitude != null)
+            this.locationLongitude = locationLongitude;
 
-        if(cryptoAddress != null)
-            this.cryptoAddress          = cryptoAddress             ;
-        if(blockchainNetworkType != null)
-            this.blockchainNetworkType  =    blockchainNetworkType  ;
+        if (cryptoAddress != null)
+            this.cryptoAddress = cryptoAddress;
+        if (blockchainNetworkType != null)
+            this.blockchainNetworkType = blockchainNetworkType;
 
-        this.actorsType             =       actorsType              ;
+        this.actorsType = actorsType;
 
-        this.registrationDate       =       registrationDate        ;
-        this.lastConnectionDate     =       lastConnectionDate      ;
+        this.registrationDate = registrationDate;
+        this.lastConnectionDate = lastConnectionDate;
 
         this.setProfileImage(profileImage);
 
@@ -254,7 +255,7 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     }
 
     public void setProfileImage(byte[] profileImage) {
-        if(profileImage != null)
+        if (profileImage != null)
             this.profileImage = profileImage.clone();
         else
             this.profileImage = new byte[0];
@@ -265,12 +266,11 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     }
 
     public void setBlockchainNetworkType(BlockchainNetworkType blockchainNetworkType) {
-        if(blockchainNetworkType != null)
+        if (blockchainNetworkType != null)
             this.blockchainNetworkType = blockchainNetworkType;
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -288,7 +288,6 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -299,7 +298,8 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     public void setDapConnectionState(DAPConnectionState dapConnectionState) {
         this.dapConnectionState = dapConnectionState;
     }
-//    /**
+
+    //    /**
 //     *
 //     * {@inheritDoc}
 //     */
@@ -331,7 +331,6 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -344,7 +343,6 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -355,8 +353,8 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
     public void setContactInformation(String contactInformation) {
         this.contactInformation = contactInformation;
     }
+
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -381,47 +379,48 @@ public class RedeemPointActorRecord implements org.fermat.fermat_dap_api.layer.d
         Gson gson = new Gson();
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("actorPublicKey",        actorPublicKey);
-        jsonObject.addProperty("name",                  name);
-        jsonObject.addProperty("registrationDate",      registrationDate);
-        jsonObject.addProperty("lastConnectionDate",    lastConnectionDate);
-        jsonObject.addProperty("dapConnectionState",    dapConnectionState.toString());
-        jsonObject.addProperty("location",              location.toString());
-        jsonObject.addProperty("locationLatitude",      locationLatitude.toString());
-        jsonObject.addProperty("locationLongitude",     locationLongitude.toString());
-        jsonObject.addProperty("cryptoAddress",         cryptoAddress.toString());
-        jsonObject.addProperty("contactInformation",    contactInformation);
-        jsonObject.addProperty("hoursOfOperation",      hoursOfOperation);
-        jsonObject.addProperty("address",               address.toString());
-        jsonObject.addProperty("actorsType",            actorsType.toString());
+        jsonObject.addProperty("actorPublicKey", actorPublicKey);
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("registrationDate", registrationDate);
+        jsonObject.addProperty("lastConnectionDate", lastConnectionDate);
+        jsonObject.addProperty("dapConnectionState", dapConnectionState.toString());
+        jsonObject.addProperty("location", location.toString());
+        jsonObject.addProperty("locationLatitude", locationLatitude.toString());
+        jsonObject.addProperty("locationLongitude", locationLongitude.toString());
+        jsonObject.addProperty("cryptoAddress", cryptoAddress.toString());
+        jsonObject.addProperty("contactInformation", contactInformation);
+        jsonObject.addProperty("hoursOfOperation", hoursOfOperation);
+        jsonObject.addProperty("address", address.toString());
+        jsonObject.addProperty("actorsType", actorsType.toString());
         jsonObject.addProperty("blockchainNetworkType", blockchainNetworkType.toString());
-        jsonObject.addProperty("profileImage",          Base64.encodeToString(profileImage, Base64.DEFAULT));
+        jsonObject.addProperty("profileImage", Base64.encodeToString(profileImage, Base64.DEFAULT));
         jsonObject.addProperty("registeredIssuers", String.valueOf(registeredIssuers));
         return gson.toJson(jsonObject);
     }
+
     @Override
     public String toString() {
         String profileImageRedeem = null;
-        if(profileImage != null)
+        if (profileImage != null)
             profileImageRedeem = Base64.encodeToString(profileImage, Base64.DEFAULT);
 
         return "RedeemPointActorRecord{" +
-                "actorPublicKey='"          + actorPublicKey + '\'' +
-                ", name='"                  + name + '\'' +
-                ", registrationDate="       + registrationDate +
-                ", lastConnectionDate="     + lastConnectionDate +
-                ", dapConnectionState="     + dapConnectionState +
-                ", cryptoAddress="          + cryptoAddress +
-                ", location="               + location +
-                ", locationLatitude="       + locationLatitude +
-                ", locationLongitude="      + locationLongitude +
-                ", contactInformation='"    + contactInformation + '\'' +
-                ", hoursOfOperation='"      + hoursOfOperation + '\'' +
-                ", address="                + address +
-                ", actorsType="             + actorsType +
-                ", blockchainNetworkType="  + blockchainNetworkType +
-                ", profileImage="           + profileImageRedeem +
-                ", registeredIssuers="      + registeredIssuers +
+                "actorPublicKey='" + actorPublicKey + '\'' +
+                ", name='" + name + '\'' +
+                ", registrationDate=" + registrationDate +
+                ", lastConnectionDate=" + lastConnectionDate +
+                ", dapConnectionState=" + dapConnectionState +
+                ", cryptoAddress=" + cryptoAddress +
+                ", location=" + location +
+                ", locationLatitude=" + locationLatitude +
+                ", locationLongitude=" + locationLongitude +
+                ", contactInformation='" + contactInformation + '\'' +
+                ", hoursOfOperation='" + hoursOfOperation + '\'' +
+                ", address=" + address +
+                ", actorsType=" + actorsType +
+                ", blockchainNetworkType=" + blockchainNetworkType +
+                ", profileImage=" + profileImageRedeem +
+                ", registeredIssuers=" + registeredIssuers +
                 '}';
     }
 }

@@ -26,14 +26,14 @@ public class AssetValueSpinnerAdapter extends ArrayAdapter<Currency> {
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        if(row == null) {
+        if (row == null) {
             //inflate your customlayout for the textview
             LayoutInflater inflater = context.getLayoutInflater();
             row = inflater.inflate(R.layout.dap_v3_factory_wizard_crypto_asset_value_spinner_item, parent, false);
         }
         //put the data in it
         String item = data[position].name();
-        if(item != null) {
+        if (item != null) {
             TextView text1 = (TextView) row.findViewById(R.id.textItem);
 //            text1.setTextColor(Color.WHITE);
             text1.setText(item);

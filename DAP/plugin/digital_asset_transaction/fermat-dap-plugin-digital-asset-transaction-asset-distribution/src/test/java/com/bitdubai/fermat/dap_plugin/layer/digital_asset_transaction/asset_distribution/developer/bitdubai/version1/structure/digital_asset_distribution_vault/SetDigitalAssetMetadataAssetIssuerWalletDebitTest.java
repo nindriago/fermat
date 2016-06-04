@@ -7,6 +7,8 @@ import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_pro
 import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_protocol.crypto_transactions.CryptoTransaction;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
+import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetMetadata;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_issuer.interfaces.ActorAssetIssuer;
 import org.fermat.fermat_dap_api.layer.dap_actor.asset_issuer.interfaces.ActorAssetIssuerManager;
@@ -15,8 +17,6 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces
 import org.fermat.fermat_dap_api.layer.dap_wallet.asset_issuer_wallet.interfaces.AssetIssuerWalletManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_distribution.developer.version_1.structure.functional.DigitalAssetDistributionVault;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +54,7 @@ public class SetDigitalAssetMetadataAssetIssuerWalletDebitTest {
     @Mock
     private AssetIssuerWallet assetIssuerWallet;
     private BalanceType typeBalance;
+
     @Before
     public void init() throws Exception {
         pluginId = UUID.randomUUID();
@@ -66,7 +67,7 @@ public class SetDigitalAssetMetadataAssetIssuerWalletDebitTest {
         genesisTransaction = new CryptoTransaction();
         String typeCoin = CryptoCurrency.BITCOIN.getCode();
         typeBalance = BalanceType.getByCode("AVAILABLE");
-        System.out.println("Type coin: "+typeCoin);
+        System.out.println("Type coin: " + typeCoin);
         CryptoCurrency cryptoCurrency = CryptoCurrency.getByCode(typeCoin);
         CryptoAddress addressFrom = new CryptoAddress("mxJJSdXdKQLS4NeX6Y8tXFFoNASQnBShtv", cryptoCurrency);
         CryptoAddress addressTo = new CryptoAddress("mxJJSdXdKQLS4NeX6Y8tXFFoNASQnBShtv", cryptoCurrency);
@@ -92,8 +93,6 @@ public class SetDigitalAssetMetadataAssetIssuerWalletDebitTest {
 
         mockDigitalAssetDistributionVault.updateIssuerWalletBalance(digitalAssetMetadata, genesisTransaction, typeBalance);
     }
-
-
 
 
 }
