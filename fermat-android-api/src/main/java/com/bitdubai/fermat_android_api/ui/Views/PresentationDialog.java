@@ -36,7 +36,7 @@ public class PresentationDialog extends FermatDialog<FermatSession, SubAppResour
     private PresentationCallback callback;
 
     public enum TemplateType {
-        TYPE_PRESENTATION, TYPE_PRESENTATION_WITHOUT_IDENTITIES, DAP_TYPE_PRESENTATION
+        TYPE_PRESENTATION, TYPE_PRESENTATION_WITHOUT_IDENTITIES, TYPE_PRESENTATION_WITH_ONE_IDENTITY
     }
 
     public static final String PRESENTATION_IDENTITY_CREATED = "presentation_identity_created";
@@ -124,7 +124,7 @@ public class PresentationDialog extends FermatDialog<FermatSession, SubAppResour
                     setUpBasics();
                     setUpListenersPresentation();
                     break;
-                case DAP_TYPE_PRESENTATION:
+                case TYPE_PRESENTATION_WITH_ONE_IDENTITY:
                     image_view_left = (ImageView) findViewById(R.id.image_view_left);
                     container_john_doe = (FrameLayout) findViewById(R.id.container_john_doe);
                     btn_left = (Button) findViewById(R.id.btn_left);
@@ -183,8 +183,8 @@ public class PresentationDialog extends FermatDialog<FermatSession, SubAppResour
         switch (type) {
             case TYPE_PRESENTATION:
                 return R.layout.presentation_dialog;
-            case DAP_TYPE_PRESENTATION:
-                return R.layout.dap_presentation_dialog;
+            case TYPE_PRESENTATION_WITH_ONE_IDENTITY:
+                return R.layout.presentation_dialog_with_one_identity;
             case TYPE_PRESENTATION_WITHOUT_IDENTITIES:
                 return R.layout.presentation_dialog_without_identities;
         }
@@ -225,18 +225,18 @@ public class PresentationDialog extends FermatDialog<FermatSession, SubAppResour
     }
 
     private void saveSettings() {
-        if (type != TemplateType.TYPE_PRESENTATION && type != TemplateType.DAP_TYPE_PRESENTATION) {
-            if (checkButton == checkbox_not_show.isChecked() || checkButton == !checkbox_not_show.isChecked())
-                if (checkbox_not_show.isChecked()) {
+        if (type != TemplateType.TYPE_PRESENTATION && type != TemplateType.TYPE_PRESENTATION_WITH_ONE_IDENTITY) {
+//            if (checkButton == checkbox_not_show.isChecked() || checkButton == !checkbox_not_show.isChecked())
+//                if (checkbox_not_show.isChecked()) {
                     SettingsManager settingsManager = getSession().getModuleManager().getSettingsManager();
                     try {
                         FermatSettings bitcoinWalletSettings = settingsManager.loadAndGetSettings(getSession().getAppPublicKey());
-                        bitcoinWalletSettings.setIsPresentationHelpEnabled(false);
+                        bitcoinWalletSettings.setIsPresentationHelpEnabled(!checkbox_not_show.isChecked());
                         settingsManager.persistSettings(getSession().getAppPublicKey(), bitcoinWalletSettings);
                     } catch (CantGetSettingsException | SettingsNotFoundException | CantPersistSettingsException e) {
                         if (callback != null) callback.onError(e);
                     }
-                }
+//                }
         }
     }
 
@@ -331,7 +331,7 @@ public class PresentationDialog extends FermatDialog<FermatSession, SubAppResour
         private final WeakReference<Activity> activity;
         private final WeakReference<FermatSession> fermatSession;
         private TemplateType templateType = TemplateType.TYPE_PRESENTATION;
-        private boolean isCheckEnabled = true;
+        private boolean isCheckEnabled;
         private PresentationCallback callback;
         private String title;
         private int subTitle = -1;
