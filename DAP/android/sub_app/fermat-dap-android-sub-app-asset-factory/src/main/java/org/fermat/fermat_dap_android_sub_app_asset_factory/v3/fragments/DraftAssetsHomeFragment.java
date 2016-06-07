@@ -28,6 +28,9 @@ import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
 import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
@@ -38,9 +41,6 @@ import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter;
 import com.bitdubai.fermat_bch_api.layer.crypto_network.bitcoin.interfaces.BitcoinNetworkConfiguration;
 import com.bitdubai.fermat_bch_api.layer.crypto_vault.classes.CryptoVault;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
 import com.software.shell.fab.ActionButton;
 
@@ -210,7 +210,7 @@ public class DraftAssetsHomeFragment extends FermatWalletListFragment<AssetFacto
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
                     .setBannerRes(R.drawable.banner_asset_factory)
                     .setIconRes(R.drawable.asset_factory)
-                    .setImageLeft(R.drawable.asset_issuer_profile)
+                    .setImageLeft(R.drawable.profile_actor)
                     .setVIewColor(R.color.dap_asset_factory_view_color)
                     .setTitleTextColor(R.color.dap_asset_factory_view_color)
                     .setTextNameLeft(R.string.dap_asset_factory_welcome_name_left)

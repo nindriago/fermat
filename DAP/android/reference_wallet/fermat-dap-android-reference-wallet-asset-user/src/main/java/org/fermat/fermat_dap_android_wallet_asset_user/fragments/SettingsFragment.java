@@ -26,19 +26,13 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.A
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_ccp_api.layer.module.intra_user.exceptions.CantGetActiveLoginIdentityException;
 import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_wallet_asset_user.sessions.AssetUserSession;
 import org.fermat.fermat_dap_android_wallet_asset_user.sessions.SessionConstantsAssetUser;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
-<<<<<<< HEAD
-=======
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
-
->>>>>>> beaaaedab1aa8418724beeb91e49be8c7d09170b
 
 import static android.widget.Toast.makeText;
 

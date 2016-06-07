@@ -31,6 +31,8 @@ import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
 import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.resources_structure.Resource;
@@ -39,8 +41,6 @@ import com.bitdubai.fermat_api.layer.all_definition.resources_structure.enums.Re
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_bch_api.layer.crypto_network.bitcoin.interfaces.BitcoinNetworkConfiguration;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
 
 import org.fermat.fermat_dap_android_sub_app_asset_factory.sessions.AssetFactorySession;

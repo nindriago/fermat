@@ -29,14 +29,14 @@ import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
 import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
 import com.bitdubai.fermat_api.FermatException;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.Data;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.models.DigitalAsset;
@@ -182,9 +182,9 @@ public class DeliverGroupFragment extends FermatWalletListFragment<Group>
         });
         menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_HELP_GROUP, 0, "Help")
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER, 1, "")
+        menu.add(1, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER, 1, "")
                 .setIcon(R.drawable.ic_send)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     @Override

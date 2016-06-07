@@ -23,6 +23,9 @@ import com.bitdubai.fermat_android_api.ui.enums.FermatRefreshTypes;
 import com.bitdubai.fermat_android_api.ui.fragments.FermatWalletListFragment;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
 import com.bitdubai.fermat_api.FermatException;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
@@ -32,9 +35,6 @@ import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.exceptions.
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exceptions.CantGetCryptoLossProtectedWalletException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exceptions.CantListLossProtectedTransactionsException;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.Data;
 import org.fermat.fermat_dap_android_wallet_redeem_point.models.DigitalAsset;

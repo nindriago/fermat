@@ -31,10 +31,6 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.A
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
-
 import org.fermat.fermat_dap_android_wallet_asset_user.adapters.AssetRedeemPointAdapter;
 import org.fermat.fermat_dap_android_wallet_asset_user.models.DigitalAsset;
 import org.fermat.fermat_dap_android_wallet_asset_user.models.RedeemPoint;
@@ -47,13 +43,10 @@ import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSet
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 
-<<<<<<< HEAD
-=======
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 
->>>>>>> beaaaedab1aa8418724beeb91e49be8c7d09170b
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,7 +151,7 @@ public class AssetRedeemRedeemFragment extends FermatWalletListFragment<RedeemPo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(0, SessionConstantsAssetUser.IC_ACTION_USER_ASSET_REDEEM, 0, "Redeem")
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         //menu.add(1, SessionConstantsAssetUser.IC_ACTION_USER_HELP_REDEEM_SELECT, 0, "Help")
         //.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 

@@ -4,6 +4,8 @@ import com.bitdubai.fermat_api.CantStartPluginException;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.abstract_classes.AbstractPlugin;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.annotations.NeededAddonReference;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.utils.PluginVersionReference;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DatabaseManagerForDevelopers;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabase;
@@ -23,8 +25,6 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.Cant
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantOpenDatabaseException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantUpdateRecordException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseNotFoundException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.event_manager.interfaces.EventManager;
 
 import org.fermat.fermat_dap_api.layer.all_definition.offer.AssetSpecificOffer;

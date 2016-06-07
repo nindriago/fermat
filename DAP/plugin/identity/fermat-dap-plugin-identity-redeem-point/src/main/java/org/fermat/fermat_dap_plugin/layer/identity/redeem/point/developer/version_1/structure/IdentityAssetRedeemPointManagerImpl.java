@@ -9,7 +9,6 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.DealsWithPluginFile
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.user.device_user.exceptions.CantGetLoggedInDeviceUserException;
 import com.bitdubai.fermat_pip_api.layer.user.device_user.interfaces.DeviceUser;
 import com.bitdubai.fermat_pip_api.layer.user.device_user.interfaces.DeviceUserManager;
@@ -39,11 +38,6 @@ public class IdentityAssetRedeemPointManagerImpl implements DealsWithLogger, Dea
      * IdentityAssetIssuerManagerImpl member variables
      */
     UUID pluginId;
-
-    /**
-     * DealsWithErrors interface member variables
-     */
-    ErrorManager errorManager;
 
     /**
      * DealsWithLogger interface mmeber variables

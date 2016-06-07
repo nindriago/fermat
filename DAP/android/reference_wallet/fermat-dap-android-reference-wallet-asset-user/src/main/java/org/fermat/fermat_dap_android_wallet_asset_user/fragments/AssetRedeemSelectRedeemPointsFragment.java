@@ -25,9 +25,6 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_asset_user_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_wallet_asset_user.adapters.AssetRedeemSelectRedeemPointsAdapter;
 import org.fermat.fermat_dap_android_wallet_asset_user.models.Data;
@@ -38,12 +35,9 @@ import org.fermat.fermat_dap_android_wallet_asset_user.sessions.SessionConstants
 import org.fermat.fermat_dap_android_wallet_asset_user.util.CommonLogger;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
-<<<<<<< HEAD
-=======
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
->>>>>>> beaaaedab1aa8418724beeb91e49be8c7d09170b
 
 import java.util.ArrayList;
 import java.util.List;
