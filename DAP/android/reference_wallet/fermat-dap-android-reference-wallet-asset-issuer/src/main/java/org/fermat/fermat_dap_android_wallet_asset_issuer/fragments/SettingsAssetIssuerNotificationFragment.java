@@ -16,26 +16,29 @@ import android.widget.Toast;
 
 import com.bitdubai.fermat_android_api.ui.Views.PresentationDialog;
 import com.bitdubai.fermat_api.FermatException;
+
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantGetSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.SettingsNotFoundException;
-import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
-import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
 import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
 import com.mati.fermat_preference_settings.drawer.FermatPreferenceFragment;
 import com.mati.fermat_preference_settings.drawer.interfaces.PreferenceSettingsItem;
 import com.mati.fermat_preference_settings.drawer.models.PreferenceSettingsSwithItem;
+import com.bitdubai.fermat_dap_android_wallet_asset_issuer_bitdubai.R;
+import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.SessionConstantsAssetIssuer;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
+
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +100,6 @@ public class SettingsAssetIssuerNotificationFragment extends FermatPreferenceFra
 //            makeText(getActivity(), "Oooops! recovering from system error", Toast.LENGTH_SHORT).show();
 //            errorManager.reportUnexpectedUIException(UISource.VIEW, UnexpectedUIExceptionSeverity.CRASH, e);
 //        }
-//
 //        return null;
 //    }
 
@@ -110,36 +112,10 @@ public class SettingsAssetIssuerNotificationFragment extends FermatPreferenceFra
     protected List<PreferenceSettingsItem> setSettingsItems() {
         BlockchainNetworkType blockchainNetworkType = null;
         List<PreferenceSettingsItem> list = new ArrayList<>();
-
         try {
             settings = settingsManager.loadAndGetSettings(appSession.getAppPublicKey());
-
             list.add(new PreferenceSettingsSwithItem(1, "Enabled Notifications", settings.getNotificationEnabled()));
-
-//            if (settingsManager.getBlockchainNetworkType() != null) {
-//                blockchainNetworkType = bitcoinWalletSettings.getBlockchainNetworkType();
-//                switch (blockchainNetworkType) {
-//                    case PRODUCTION:
-//                        previousSelectedItem = "MainNet";
-//                        break;
-//                    case REG_TEST:
-//                        previousSelectedItem = "RegTest";
-//                        break;
-//                    case TEST_NET:
-//                        previousSelectedItem = "TestNet";
-//                        break;
-//                }
-//            }
             final Bundle dataDialog = new Bundle();
-//            dataDialog.putInt("items", R.array.items);
-//            dataDialog.putString("positive_button_text", getResources().getString(R.string.ok_label));
-//            dataDialog.putString("negative_button_text", getResources().getString(R.string.cancel_label));
-//            dataDialog.putString("title", getResources().getString(R.string.title_label));
-//            dataDialog.putString("mode", "single_option");
-//            dataDialog.putString("previous_selected_item", previousSelectedItem);
-//            list.add(new PreferenceSettingsOpenDialogText(5, "Select Network", dataDialog));
-//            list.add(new PreferenceSettingsLinkText(9, "Send Error Report", "", 15, Color.GRAY));
-//            list.add(new PreferenceSettingsLinkText(10, "Export Private key ", "", 15, Color.GRAY));
         } catch (CantGetSettingsException e) {
             e.printStackTrace();
         } catch (SettingsNotFoundException e) {
@@ -147,7 +123,6 @@ public class SettingsAssetIssuerNotificationFragment extends FermatPreferenceFra
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return list;
     }
 
@@ -163,15 +138,6 @@ public class SettingsAssetIssuerNotificationFragment extends FermatPreferenceFra
             }
             settings.setIsPresentationHelpEnabled(false);
 
-//            if (preferenceSettingsItem.getId() == 10) {
-//                //export key show fragment
-//                changeActivity(Activities.CCP_BITCOIN_WALLET_MNEMONIC_ACTIVITY, referenceWalletSession.getAppPublicKey());
-//            } else {
-//                if (preferenceSettingsItem.getId() == 9) {
-//                    //export key show fragment
-//                    changeActivity(Activities.CCP_BITCOIN_WALLET_OPEN_SEND_ERROR_REPORT, referenceWalletSession.getAppPublicKey());
-//                }
-//            }
             try {
                 settingsManager.persistSettings(appSession.getAppPublicKey(), settings);
             } catch (CantPersistSettingsException e) {
@@ -229,6 +195,7 @@ public class SettingsAssetIssuerNotificationFragment extends FermatPreferenceFra
     }
 
     @Override
+
     public void dialogOptionSelected(String item, int position) {
         // CustomDialogFragment customDialogFragment = (CustomDialogFragment) dialog;
         // previousSelectedItem = customDialogFragment.getPreviousSelectedItem();

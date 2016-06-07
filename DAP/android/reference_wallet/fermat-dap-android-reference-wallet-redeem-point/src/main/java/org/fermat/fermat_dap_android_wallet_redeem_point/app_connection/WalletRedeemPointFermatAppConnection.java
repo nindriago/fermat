@@ -99,22 +99,10 @@ public class WalletRedeemPointFermatAppConnection extends AppConnections<RedeemP
                 if (enabledNotification) {
                     switch (notificationType) {
                         case "ASSET-REDEEM-DEBIT":
-//                    if (manager != null) {
-                            //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Key", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
                             notification = new WalletRedeemPointNotificationPainter("Wallet Redeem Point - Debit", senderActorPublicKey, "", "");
-//                    }
                             break;
                         case "ASSET-REDEEM-CREDIT":
-//                    if (manager != null) {
-                            //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Request", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
                             notification = new WalletRedeemPointNotificationPainter("Wallet Redeem Point Credit", senderActorPublicKey, "", "");
-//                    }
                             break;
                     }
                 }

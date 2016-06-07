@@ -43,6 +43,12 @@ import org.fermat.fermat_dap_android_wallet_asset_user.sessions.SessionConstants
 import org.fermat.fermat_dap_android_wallet_asset_user.util.CommonLogger;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
+<<<<<<< HEAD
+=======
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+>>>>>>> beaaaedab1aa8418724beeb91e49be8c7d09170b
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

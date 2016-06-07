@@ -97,22 +97,10 @@ public class WalletAssetIssuerFermatAppConnection extends AppConnections<AssetIs
                 if (enabledNotification) {
                     switch (notificationType) {
                         case "ASSET-ISSUER-DEBIT":
-//                    if (manager != null) {
-                            //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Key", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
                             notification = new WalletAssetIssuerNotificationPainter("Wallet Issuer - Debit", senderActorPublicKey, "", "");
-//                    }
                             break;
                         case "ASSET-ISSUER-CREDIT":
-//                    if (manager != null) {
-                            //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Request", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
                             notification = new WalletAssetIssuerNotificationPainter("Wallet Issuer Credit", senderActorPublicKey, "", "");
-//                    }
                             break;
                     }
                 }

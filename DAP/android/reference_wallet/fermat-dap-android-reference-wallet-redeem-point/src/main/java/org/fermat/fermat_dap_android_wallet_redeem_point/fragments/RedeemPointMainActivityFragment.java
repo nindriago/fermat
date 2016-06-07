@@ -33,9 +33,6 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.W
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_dap_android_wallet_redeem_point_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_android_wallet_redeem_point.adapters.MyAssetsAdapter;
 import org.fermat.fermat_dap_android_wallet_redeem_point.filters.MyAssetsAdapterFilter;
@@ -49,6 +46,9 @@ import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentity
 import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.interfaces.RedeemPointIdentity;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.RedeemPointSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_redeem_point.interfaces.AssetRedeemPointWalletSubAppModule;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -114,6 +114,7 @@ public class RedeemPointMainActivityFragment extends FermatWalletListFragment<Di
         if (settings == null) {
             settings = new RedeemPointSettings();
             settings.setIsContactsHelpEnabled(true);
+            settings.setNotificationEnabled(true);
             settings.setIsPresentationHelpEnabled(true);
             settings.setNotificationEnabled(true);
             settings.setAssetNotificationEnabled(true);

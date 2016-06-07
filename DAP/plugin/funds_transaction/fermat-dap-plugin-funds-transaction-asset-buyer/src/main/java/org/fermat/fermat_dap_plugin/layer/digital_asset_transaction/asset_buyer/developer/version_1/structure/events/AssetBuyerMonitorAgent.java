@@ -35,8 +35,6 @@ import com.bitdubai.fermat_ccp_api.layer.crypto_transaction.outgoing_draft.Outgo
 import com.bitdubai.fermat_ccp_api.layer.identity.intra_user.exceptions.CantListIntraWalletUsersException;
 import com.bitdubai.fermat_ccp_api.layer.identity.intra_user.interfaces.IntraWalletUserIdentity;
 import com.bitdubai.fermat_ccp_api.layer.identity.intra_user.interfaces.IntraWalletUserIdentityManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_api.layer.all_definition.digital_asset.DigitalAssetMetadata;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.AssetSellStatus;
@@ -61,10 +59,14 @@ import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.enums.BalanceType;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantGetTransactionsException;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWalletException;
+import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_buyer.developer.version_1.AssetBuyerDigitalAssetTransactionPluginRoot;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_buyer.developer.version_1.structure.database.AssetBuyerDAO;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_buyer.developer.version_1.structure.functional.AssetBuyerTransactionManager;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_buyer.developer.version_1.structure.functional.BuyingRecord;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_buyer.developer.version_1.structure.functional.NegotiationRecord;
+
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -77,7 +79,7 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
     //VARIABLE DECLARATION
     private BuyerAgent buyerAgent;
 
-    private final ErrorManager errorManager;
+    AssetBuyerDigitalAssetTransactionPluginRoot assetBuyerDigitalAssetTransactionPluginRoot;
     private final AssetBuyerDAO dao;
     private final AssetBuyerTransactionManager transactionManager;
     private final AssetUserWalletManager userWalletManager;
@@ -92,8 +94,20 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
 
     //CONSTRUCTORS
 
-    public AssetBuyerMonitorAgent(ErrorManager errorManager, AssetBuyerDAO dao, AssetBuyerTransactionManager transactionManager, AssetUserWalletManager userWalletManager, ActorAssetUserManager actorAssetUserManager, AssetTransmissionNetworkServiceManager assetTransmission, CryptoVaultManager cryptoVaultManager, BitcoinNetworkManager bitcoinNetworkManager, OutgoingDraftManager outgoingDraftManager, IntraWalletUserIdentityManager intraWalletUserIdentityManager, ExtraUserManager extraUserManager, IncomingCryptoManager incomingCryptoManager) {
-        this.errorManager = errorManager;
+    public AssetBuyerMonitorAgent(AssetBuyerDigitalAssetTransactionPluginRoot assetBuyerDigitalAssetTransactionPluginRoot,
+                                  AssetBuyerDAO dao,
+                                  AssetBuyerTransactionManager transactionManager,
+                                  AssetUserWalletManager userWalletManager,
+                                  ActorAssetUserManager actorAssetUserManager,
+                                  AssetTransmissionNetworkServiceManager assetTransmission,
+                                  CryptoVaultManager cryptoVaultManager,
+                                  BitcoinNetworkManager bitcoinNetworkManager,
+                                  OutgoingDraftManager outgoingDraftManager,
+                                  IntraWalletUserIdentityManager intraWalletUserIdentityManager,
+                                  ExtraUserManager extraUserManager,
+                                  IncomingCryptoManager incomingCryptoManager) {
+
+        this.assetBuyerDigitalAssetTransactionPluginRoot = assetBuyerDigitalAssetTransactionPluginRoot;
         this.dao = dao;
         this.transactionManager = transactionManager;
         this.userWalletManager = userWalletManager;
@@ -117,6 +131,7 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
             agentThread.start();
             super.start();
         } catch (Exception e) {
+            assetBuyerDigitalAssetTransactionPluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
             throw new CantStartAgentException(FermatException.wrapException(e), null, null);
         }
     }
@@ -128,6 +143,7 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
             buyerAgent = null; //RELEASE RESOURCES UNTIL WE START IT AGAIN.
             super.stop();
         } catch (Exception e) {
+            assetBuyerDigitalAssetTransactionPluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
             throw new CantStopAgentException(FermatException.wrapException(e), null, null);
         }
     }
@@ -164,13 +180,13 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
                 try {
                     doTheMainTask();
                 } catch (Exception e) {
+                    assetBuyerDigitalAssetTransactionPluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
                     e.printStackTrace();
-                    errorManager.reportUnexpectedPluginException(Plugins.ASSET_BUYER, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
                 } finally {
                     try {
                         Thread.sleep(WAIT_TIME);
                     } catch (InterruptedException e) {
-                        errorManager.reportUnexpectedPluginException(Plugins.ASSET_BUYER, UnexpectedPluginExceptionSeverity.NOT_IMPORTANT, e);
+                        assetBuyerDigitalAssetTransactionPluginRoot.reportError(UnexpectedPluginExceptionSeverity.NOT_IMPORTANT, e);
                         agentRunning = false;
                     }
                 }
@@ -215,6 +231,7 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
                 try {
                     assetTransmission.sendMessage(transactionManager.constructNegotiationMessage(record));
                 } catch (CantSetObjectException e) {
+                    assetBuyerDigitalAssetTransactionPluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                     e.printStackTrace();
                 }
                 dao.updateNegotiationStatus(record.getNegotiation().getNegotiationId(), AssetSellStatus.NO_ACTION_REQUIRED);
@@ -260,6 +277,7 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
                         try {
                             message = transactionManager.constructSellingMessage(buyingRecord, AssetSellStatus.PARTIALLY_SIGNED);
                         } catch (CantSetObjectException e) {
+                            assetBuyerDigitalAssetTransactionPluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                             e.printStackTrace();
                         }
                         assetTransmission.sendMessage(message);
@@ -351,6 +369,7 @@ public class AssetBuyerMonitorAgent extends FermatAgent {
             try {
                 return extraUserManager.getActorByPublicKey(actorAssetUser.getActorPublicKey());
             } catch (CantGetExtraUserException | ExtraUserNotFoundException e) {
+                assetBuyerDigitalAssetTransactionPluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 return extraUserManager.createActor(actorAssetUser.getName(), actorAssetUser.getProfileImage());
             }
         }

@@ -1,7 +1,6 @@
 package org.fermat.fermat_dap_android_wallet_asset_user.app_connection;
 
 import android.content.Context;
-
 import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.engine.FooterViewPainter;
 import com.bitdubai.fermat_android_api.engine.HeaderViewPainter;
@@ -16,7 +15,6 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
-
 import org.fermat.fermat_dap_android_wallet_asset_user.common.header.WalletAssetUserHeaderPainter;
 import org.fermat.fermat_dap_android_wallet_asset_user.factory.WalletAssetUserFragmentFactory;
 import org.fermat.fermat_dap_android_wallet_asset_user.navigation_drawer.UserWalletNavigationViewPainter;
@@ -59,6 +57,7 @@ public class WalletAssetUserFermatAppConnection extends AppConnections<AssetUser
         return new AssetUserSession();
     }
 
+
     @Override
     public NavigationViewPainter getNavigationViewPainter() {
         return new UserWalletNavigationViewPainter(getContext(), this.getFullyLoadedSession(), getActiveIdentity());
@@ -96,22 +95,10 @@ public class WalletAssetUserFermatAppConnection extends AppConnections<AssetUser
                 if (enabledNotification) {
                     switch (notificationType) {
                         case "ASSET-USER-DEBIT":
-//                    if (manager != null) {
-                            //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Key", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
                             notification = new WalletAssetUserNotificationPainter("Wallet User - Debit", senderActorPublicKey, "", "");
-//                    }
                             break;
                         case "ASSET-USER-CREDIT":
-//                    if (manager != null) {
-                            //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Request", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
                             notification = new WalletAssetUserNotificationPainter("Wallet User Credit", senderActorPublicKey, "", "");
-//                    }
                             break;
                     }
                 }

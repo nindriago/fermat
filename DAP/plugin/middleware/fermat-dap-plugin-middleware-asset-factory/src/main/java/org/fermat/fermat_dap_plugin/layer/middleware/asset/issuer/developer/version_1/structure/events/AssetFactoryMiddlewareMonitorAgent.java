@@ -7,8 +7,6 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.exceptions.CantSetObjectException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantCreateFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_api.layer.all_definition.enums.IssuingStatus;
 import org.fermat.fermat_dap_api.layer.all_definition.enums.State;
@@ -18,7 +16,9 @@ import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.exceptio
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_transaction.asset_issuing.interfaces.AssetIssuingManager;
 import org.fermat.fermat_dap_api.layer.dap_transaction.common.exceptions.CantExecuteDatabaseOperationException;
+import org.fermat.fermat_dap_plugin.layer.middleware.asset.issuer.developer.version_1.AssetFactoryMiddlewarePluginRoot;
 import org.fermat.fermat_dap_plugin.layer.middleware.asset.issuer.developer.version_1.structure.functional.AssetFactoryMiddlewareManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,14 @@ public final class AssetFactoryMiddlewareMonitorAgent implements Agent {
 
     private Thread agentThread;
 
-    private final ErrorManager errorManager;
+    AssetFactoryMiddlewarePluginRoot assetFactoryMiddlewarePluginRoot;
     private final AssetFactoryMiddlewareManager assetFactoryMiddlewareManager;
     private final AssetIssuingManager assetIssuingManager;
 
 
     public AssetFactoryMiddlewareMonitorAgent(AssetFactoryMiddlewareManager assetFactoryMiddlewareManager,
                                               AssetIssuingManager assetIssuingManager,
-                                              ErrorManager errorManager) throws CantSetObjectException {
+                                              AssetFactoryMiddlewarePluginRoot assetFactoryMiddlewarePluginRoot) throws CantSetObjectException {
 
         if (assetFactoryMiddlewareManager == null)
             throw new CantSetObjectException("AssetFactoryMiddlewareManager is null");
@@ -46,7 +46,7 @@ public final class AssetFactoryMiddlewareMonitorAgent implements Agent {
         if (assetIssuingManager == null)
             throw new CantSetObjectException("AssetIssuingManager is null");
 
-        this.errorManager = errorManager;
+        this.assetFactoryMiddlewarePluginRoot = assetFactoryMiddlewarePluginRoot;
         this.assetFactoryMiddlewareManager = assetFactoryMiddlewareManager;
         this.assetIssuingManager = assetIssuingManager;
 
@@ -54,7 +54,7 @@ public final class AssetFactoryMiddlewareMonitorAgent implements Agent {
 
     @Override
     public void start() throws CantStartAgentException {
-        final MonitorAgent monitorAgent = new MonitorAgent(errorManager);
+        final MonitorAgent monitorAgent = new MonitorAgent(assetFactoryMiddlewarePluginRoot);
         this.agentThread = new Thread(monitorAgent, "Asset Factory Middleware MonitorAgent");
         this.agentThread.start();
     }
@@ -70,14 +70,13 @@ public final class AssetFactoryMiddlewareMonitorAgent implements Agent {
      */
     private final class MonitorAgent implements Runnable {
 
-        private final ErrorManager errorManager;
+        AssetFactoryMiddlewarePluginRoot assetFactoryMiddlewarePluginRoot;
         public final int SLEEP_TIME = 5000;
         int iterationNumber = 0;
         boolean threadWorking;
 
-        public MonitorAgent(final ErrorManager errorManager) {
-
-            this.errorManager = errorManager;
+        public MonitorAgent(AssetFactoryMiddlewarePluginRoot assetFactoryMiddlewarePluginRoot) {
+            this.assetFactoryMiddlewarePluginRoot = assetFactoryMiddlewarePluginRoot;
         }
 
         @Override
@@ -100,7 +99,7 @@ public final class AssetFactoryMiddlewareMonitorAgent implements Agent {
                 try {
                     doTheMainTask();
                 } catch (Exception e) {
-                    errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_ASSET_FACTORY, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
+                    assetFactoryMiddlewarePluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 }
 
             }
@@ -113,23 +112,23 @@ public final class AssetFactoryMiddlewareMonitorAgent implements Agent {
                     monitorIssuingFactory(assetFactory);
                     monitorState(assetFactory);
                 }
-            } catch (CantSaveAssetFactoryException e) {
 
+            } catch (CantSaveAssetFactoryException e) {
+                assetFactoryMiddlewarePluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 throw new CantSaveAssetFactoryException(e, "Cant Save Asset Factory", "Method: doTheMainTask");
             } catch (CantExecuteDatabaseOperationException | CantDeleteAsserFactoryException e) {
-
+                assetFactoryMiddlewarePluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 e.printStackTrace();
             } catch (CantPersistFileException e) {
-
+                assetFactoryMiddlewarePluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 throw new CantPersistFileException("Cant Persist File", e, "Method: doTheMainTask", null);
             } catch (CantCreateFileException e) {
-
+                assetFactoryMiddlewarePluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 throw new CantCreateFileException("Cant Create File", e, "Method: doTheMainTask", null);
             } catch (CantGetAssetFactoryException e) {
-
+                assetFactoryMiddlewarePluginRoot.reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 throw new CantGetAssetFactoryException("Cant Get Asset Factory", e, "Method: doTheMainTask", null);
             }
-
         }
 
         private void monitorState(AssetFactory assetFactory) throws CantExecuteDatabaseOperationException, CantGetAssetFactoryException, CantCreateFileException, CantDeleteAsserFactoryException, CantSaveAssetFactoryException, CantPersistFileException {
@@ -186,6 +185,5 @@ public final class AssetFactoryMiddlewareMonitorAgent implements Agent {
             factories.addAll(assetFactoryMiddlewareManager.getAssetFactoryAll(BlockchainNetworkType.PRODUCTION));
             return factories;
         }
-
     }
 }

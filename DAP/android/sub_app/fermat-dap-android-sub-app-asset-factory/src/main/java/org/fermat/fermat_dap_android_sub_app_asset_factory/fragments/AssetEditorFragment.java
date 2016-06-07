@@ -52,8 +52,6 @@ import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsM
 import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter;
 import com.bitdubai.fermat_api.layer.all_definition.util.BitcoinConverter.Currency;
 import com.bitdubai.fermat_dap_android_sub_app_asset_factory_bitdubai.R;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
 
 import org.fermat.fermat_dap_android_sub_app_asset_factory.adapters.BitcoinsSpinnerAdapter;
@@ -67,6 +65,8 @@ import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.enums.As
 import org.fermat.fermat_dap_api.layer.dap_middleware.dap_asset_factory.interfaces.AssetFactory;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.AssetFactorySettings;
 import org.fermat.fermat_dap_api.layer.dap_module.asset_factory.interfaces.AssetFactoryModuleManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 
 import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
@@ -213,7 +213,7 @@ public class AssetEditorFragment extends AbstractFermatFragment implements View.
                 getActivity(), android.R.layout.simple_spinner_item,
                 data);
         bitcoinsSpinner.setAdapter(spinnerAdapter);
-        bitcoinsSpinner.setSelection(3);
+        bitcoinsSpinner.setSelection(0);
         bitcoinsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -252,7 +252,7 @@ public class AssetEditorFragment extends AbstractFermatFragment implements View.
         nameView.setText(isEdit ? asset.getName() != null ? asset.getName() : "" : "");
         descriptionView.setText(isEdit ? asset.getDescription() != null ? asset.getDescription() : "" : "");
         quantityView.setText(isEdit ? String.valueOf(asset.getQuantity()) : "");
-        bitcoinsView.setText(isEdit ? String.valueOf(asset.getAmount()) : "");
+        bitcoinsView.setText(isEdit ? String.valueOf(BitcoinConverter.convert(asset.getAmount(), SATOSHI, BITCOIN)) : "");
 
         if (isEdit)
             isRedeemableView.setChecked(asset.getIsRedeemable());

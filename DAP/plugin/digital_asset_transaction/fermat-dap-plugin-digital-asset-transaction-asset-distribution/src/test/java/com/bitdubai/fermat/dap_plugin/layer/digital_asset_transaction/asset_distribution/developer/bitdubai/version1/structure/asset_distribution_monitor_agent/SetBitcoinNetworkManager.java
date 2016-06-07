@@ -4,10 +4,11 @@ import com.bitdubai.fermat_api.layer.all_definition.crypto.asymmetric.ECCKeyPair
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_bch_api.layer.crypto_network.bitcoin.interfaces.BitcoinNetworkManager;
 import com.bitdubai.fermat_bch_api.layer.crypto_vault.asset_vault.interfaces.AssetVaultManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_distribution.developer.version_1.structure.events.AssetDistributionMonitorAgent;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.event_manager.interfaces.EventManager;
 
-import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantSetObjectException;
+import com.bitdubai.fermat_api.layer.all_definition.exceptions.CantSetObjectException;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_distribution.developer.version_1.structure.events.AssetDistributionMonitorAgent;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,6 +40,7 @@ public class SetBitcoinNetworkManager {
     private BitcoinNetworkManager bitcoinNetworkManager;
     private AssetDistributionMonitorAgent assetDistributionMonitorAgent;
 
+<<<<<<< HEAD
     @Before
     public void init() throws CantSetObjectException {
         userPublicKey = new ECCKeyPair().getPublicKey();
@@ -59,5 +61,27 @@ public class SetBitcoinNetworkManager {
             Assert.assertTrue(ex instanceof CantSetObjectException);
         }
     }
+=======
+//    @Before
+//    public void init() throws CantSetObjectException {
+//        userPublicKey = new ECCKeyPair().getPublicKey();
+//        assetDistributionMonitorAgent = new AssetDistributionMonitorAgent(eventManager, pluginDatabaseSystem, errorManager, pluginId, userPublicKey, assetVaultManager);
+//    }
+//
+//    @Test
+//    public void setBitcoinNetworkManagerTest() throws CantSetObjectException {
+//        assetDistributionMonitorAgent.setBitcoinNetworkManager(bitcoinNetworkManager);
+//    }
+//
+//   @Test
+//    public void setBitcoinNetworkManagerThrowsCantSetObjectExceptionTest() throws CantSetObjectException {
+//       try {
+//           assetDistributionMonitorAgent.setBitcoinNetworkManager(null);
+//           fail("The method didn't throw when I expected it to");
+//       }catch (Exception ex) {
+//           Assert.assertTrue(ex instanceof CantSetObjectException);
+//       }
+//    }
+>>>>>>> beaaaedab1aa8418724beeb91e49be8c7d09170b
 
 }

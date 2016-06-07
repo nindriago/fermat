@@ -46,6 +46,11 @@ import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.AssetUserSet
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_user.interfaces.AssetUserWalletSubAppModuleManager;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.WalletUtilities;
 import org.fermat.fermat_dap_api.layer.dap_wallet.common.exceptions.CantLoadWalletException;
+<<<<<<< HEAD
+=======
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+>>>>>>> beaaaedab1aa8418724beeb91e49be8c7d09170b
 
 import java.lang.ref.WeakReference;
 import java.util.List;

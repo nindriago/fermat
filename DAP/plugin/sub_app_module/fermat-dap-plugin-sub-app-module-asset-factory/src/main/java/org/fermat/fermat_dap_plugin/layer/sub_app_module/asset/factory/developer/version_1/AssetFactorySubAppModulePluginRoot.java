@@ -4,6 +4,8 @@ import com.bitdubai.fermat_api.CantStartPluginException;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.abstract_classes.AbstractPlugin;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.annotations.NeededAddonReference;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.annotations.NeededPluginReference;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.utils.PluginVersionReference;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Addons;
 import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
@@ -18,6 +20,7 @@ import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPers
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.SettingsNotFoundException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
+import com.bitdubai.fermat_api.layer.core.PluginInfo;
 import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.CantLoadWalletsException;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_api.layer.modules.exceptions.ActorIdentityNotSelectedException;
@@ -30,8 +33,7 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.FileNotF
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.bitcoin_wallet.interfaces.BitcoinWalletManager;
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.common.enums.BalanceType;
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.common.exceptions.CantCalculateBalanceException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.exceptions.CantListWalletsException;
 
 import org.fermat.fermat_dap_api.layer.all_definition.enums.State;
@@ -58,6 +60,12 @@ import java.util.Objects;
  * <p/>
  * Created by Franklin on 07/09/15.
  */
+@PluginInfo(difficulty = PluginInfo.Dificulty.LOW,
+        maintainerMail = "marsvicam@gmail.com",
+        createdBy = "franklin",
+        layer = Layers.SUB_APP_MODULE,
+        platform = Platforms.DIGITAL_ASSET_PLATFORM,
+        plugin = Plugins.BITDUBAI_ASSET_FACTORY_MODULE)
 public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin implements
         AssetFactoryModuleManager {
 
@@ -66,9 +74,6 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
 
     @NeededAddonReference(platform = Platforms.OPERATIVE_SYSTEM_API, layer = Layers.SYSTEM, addon = Addons.PLUGIN_FILE_SYSTEM)
     private PluginFileSystem pluginFileSystem;
-
-    @NeededAddonReference(platform = Platforms.PLUG_INS_PLATFORM, layer = Layers.PLATFORM_SERVICE, addon = Addons.ERROR_MANAGER)
-    private ErrorManager errorManager;
 
     @NeededPluginReference(platform = Platforms.DIGITAL_ASSET_PLATFORM, layer = Layers.IDENTITY, plugin = Plugins.ASSET_ISSUER)
     IdentityAssetIssuerManager identityAssetIssuerManager;
@@ -92,15 +97,16 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
     @Override
     public void start() throws CantStartPluginException {
         try {
-            assetFactorySupAppModuleManager = new AssetFactorySupAppModuleManager(
-                    assetFactoryManager,
-                    identityAssetIssuerManager,
-                    errorManager);
+
+        assetFactorySupAppModuleManager = new AssetFactorySupAppModuleManager(
+                assetFactoryManager,
+                identityAssetIssuerManager,
+                this);
 
             this.serviceStatus = ServiceStatus.STARTED;
-        } catch (Exception exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_ASSET_FACTORY, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-            throw new CantStartPluginException(exception);
+        } catch (Exception e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+            throw new CantStartPluginException(e);
         }
     }
 
@@ -109,9 +115,9 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
         try {
             List<IdentityAssetIssuer> identities = assetFactorySupAppModuleManager.getActiveIdentities();
             return (identities == null || identities.isEmpty()) ? null : assetFactorySupAppModuleManager.getActiveIdentities().get(0);
-        } catch (Exception exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_ASSET_FACTORY, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-            exception.printStackTrace();
+        } catch (Exception e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -195,10 +201,11 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
                 }
                 settings = settingsManager.loadAndGetSettings(SubAppsPublicKeys.DAP_FACTORY.getCode());
                 selectedNetwork = settings.getBlockchainNetwork().get(settings.getBlockchainNetworkPosition());
-            } catch (CantGetSettingsException exception) {
-                errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_ASSET_FACTORY, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-                exception.printStackTrace();
+            } catch (CantGetSettingsException e) {
+                reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+                e.printStackTrace();
             } catch (SettingsNotFoundException e) {
+                reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
                 //TODO: Only enter while the Active Actor Wallet is not open.
                 selectedNetwork = BlockchainNetworkType.getDefaultBlockchainNetworkType();
 //                e.printStackTrace();
@@ -212,10 +219,10 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
         try {
             assetFactory = getAssetFactoryAll();
 
-        } catch (Exception exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_ASSET_FACTORY, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
+        } catch (Exception e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
             System.out.println("******* Test Asset Factory Module, Error. Franklin ******");
-            exception.printStackTrace();
+            e.printStackTrace();
         }
         return assetFactory;
     }
@@ -238,9 +245,9 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
         try {
             List<IdentityAssetIssuer> identities = assetFactoryManager.getActiveIdentities();
             return (identities == null || identities.isEmpty()) ? null : assetFactoryManager.getActiveIdentities().get(0);
-        } catch (Exception exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_ASSET_FACTORY, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-            exception.printStackTrace();
+        } catch (Exception e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -280,9 +287,9 @@ public final class AssetFactorySubAppModulePluginRoot extends AbstractPlugin imp
 
         try {
             settingsManager.persistSettings(publicKeyApp, settings);
-        } catch (CantPersistSettingsException exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_ASSET_FACTORY, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-            exception.printStackTrace();
+        } catch (CantPersistSettingsException e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+            e.printStackTrace();
         }
     }
 

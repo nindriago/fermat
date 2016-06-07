@@ -25,6 +25,11 @@ import org.fermat.fermat_dap_api.layer.dap_identity.asset_issuer.interfaces.Iden
 import org.fermat.fermat_dap_api.layer.dap_transaction.asset_issuing.exceptions.CantIssueDigitalAssetsException;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_issuing.developer.version_1.structure.database.AssetIssuingDAO;
 import org.fermat.fermat_dap_plugin.layer.digital_asset_transaction.asset_issuing.developer.version_1.structure.functional.DigitalAssetIssuingVault;
+<<<<<<< HEAD
+=======
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+
+>>>>>>> beaaaedab1aa8418724beeb91e49be8c7d09170b
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -5,6 +5,8 @@ import com.bitdubai.fermat_api.Service;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.abstract_classes.AbstractPlugin;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.annotations.NeededAddonReference;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.annotations.NeededPluginReference;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.utils.PluginVersionReference;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Addons;
 import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
@@ -18,12 +20,11 @@ import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPers
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.SettingsNotFoundException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
+import com.bitdubai.fermat_api.layer.core.PluginInfo;
 import com.bitdubai.fermat_api.layer.modules.common_classes.ActiveActorIdentityInformation;
 import com.bitdubai.fermat_api.layer.modules.exceptions.ActorIdentityNotSelectedException;
 import com.bitdubai.fermat_api.layer.modules.exceptions.CantGetSelectedActorIdentityException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 
 import org.fermat.fermat_dap_api.layer.all_definition.exceptions.CantGetIdentityRedeemPointException;
 import org.fermat.fermat_dap_api.layer.dap_identity.redeem_point.exceptions.CantGetRedeemPointIdentitiesException;
@@ -47,14 +48,17 @@ import java.util.Objects;
  * <p/>
  * Created by Franklin on 07/09/15.
  */
+@PluginInfo(difficulty = PluginInfo.Dificulty.MEDIUM,
+        maintainerMail = "marsvicam@gmail.com",
+        createdBy = "franklin",
+        layer = Layers.WALLET_MODULE,
+        platform = Platforms.DIGITAL_ASSET_PLATFORM,
+        plugin = Plugins.BITDUBAI_DAP_ASSET_REDEEM_POINT_WALLET_MODULE)
 public class AssetRedeemPointWalletModulePluginRoot extends AbstractPlugin implements
         AssetRedeemPointWalletSubAppModule {
 
     @NeededPluginReference(platform = Platforms.DIGITAL_ASSET_PLATFORM, layer = Layers.WALLET, plugin = Plugins.REDEEM_POINT)
     AssetRedeemPointWalletManager assetRedeemPointWalletManager;
-
-    @NeededAddonReference(platform = Platforms.PLUG_INS_PLATFORM, layer = Layers.PLATFORM_SERVICE, addon = Addons.ERROR_MANAGER)
-    private ErrorManager errorManager;
 
     @NeededAddonReference(platform = Platforms.OPERATIVE_SYSTEM_API, layer = Layers.SYSTEM, addon = Addons.PLUGIN_FILE_SYSTEM)
     protected PluginFileSystem pluginFileSystem;
@@ -89,14 +93,13 @@ public class AssetRedeemPointWalletModulePluginRoot extends AbstractPlugin imple
                     redeemPointIdentityManager,
                     pluginId,
                     pluginFileSystem,
-                    errorManager
-            );
+                    this);
 
             System.out.println("******* Asset Redeem Point Wallet Module Init ******");
             this.serviceStatus = ServiceStatus.STARTED;
-        } catch (Exception exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_DAP_ASSET_REDEEM_POINT_WALLET_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-            throw new CantStartPluginException(exception);
+        } catch (Exception e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+            throw new CantStartPluginException(e);
         }
     }
 
@@ -121,7 +124,7 @@ public class AssetRedeemPointWalletModulePluginRoot extends AbstractPlugin imple
         try {
             return redeemPointIdentityManager.getIdentityAssetRedeemPoint();
         } catch (CantGetRedeemPointIdentitiesException e) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_DAP_ASSET_REDEEM_POINT_WALLET_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
             throw new CantGetIdentityRedeemPointException(e);
         }
     }
@@ -144,9 +147,9 @@ public class AssetRedeemPointWalletModulePluginRoot extends AbstractPlugin imple
                 }
                 settings = settingsManager.loadAndGetSettings(WalletsPublicKeys.DAP_REDEEM_WALLET.getCode());
                 selectedNetwork = settings.getBlockchainNetwork().get(settings.getBlockchainNetworkPosition());
-            } catch (CantGetSettingsException exception) {
-                errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_DAP_ASSET_REDEEM_POINT_WALLET_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-                exception.printStackTrace();
+            } catch (CantGetSettingsException e) {
+                reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+                e.printStackTrace();
             } catch (SettingsNotFoundException e) {
                 //TODO: Only enter while the Active Actor Wallet is not open.
                 selectedNetwork = BlockchainNetworkType.getDefaultBlockchainNetworkType();
@@ -174,9 +177,9 @@ public class AssetRedeemPointWalletModulePluginRoot extends AbstractPlugin imple
         try {
             List<RedeemPointIdentity> identities = assetRedeemPointWalletModuleManager.getActiveIdentities();
             return (identities == null || identities.isEmpty()) ? null : identities.get(0);
-        } catch (Exception exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_DAP_ASSET_REDEEM_POINT_WALLET_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-            exception.printStackTrace();
+        } catch (Exception e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -217,9 +220,9 @@ public class AssetRedeemPointWalletModulePluginRoot extends AbstractPlugin imple
 
         try {
             settingsManager.persistSettings(publicKeyApp, settings);
-        } catch (CantPersistSettingsException exception) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_DAP_ASSET_REDEEM_POINT_WALLET_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
-            exception.printStackTrace();
+        } catch (CantPersistSettingsException e) {
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, e);
+            e.printStackTrace();
         }
     }
 

@@ -9,7 +9,6 @@ import com.bitdubai.fermat_api.layer.all_definition.util.Validate;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantOpenDatabaseException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseNotFoundException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.platform_service.event_manager.interfaces.EventManager;
 
 import org.fermat.fermat_dap_api.layer.all_definition.enums.EventType;
@@ -34,7 +33,6 @@ public class AssetAppropriationRecorderService implements AssetTransactionServic
     }
 
     private final EventManager eventManager;
-    private ErrorManager errorManager;
     private final PluginDatabaseSystem pluginDatabaseSystem;
     private final UUID pluginId;
     private List<FermatEventListener> listenersAdded;
