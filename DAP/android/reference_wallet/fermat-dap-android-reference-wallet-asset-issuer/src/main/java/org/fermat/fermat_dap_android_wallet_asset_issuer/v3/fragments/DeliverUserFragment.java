@@ -194,7 +194,7 @@ public class DeliverUserFragment extends FermatWalletListFragment<User>
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         menu.add(0, SessionConstantsAssetIssuer.IC_ACTION_ISSUER_DELIVER, 1, "")
                 .setIcon(R.drawable.ic_send)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
     }
 
     @Override

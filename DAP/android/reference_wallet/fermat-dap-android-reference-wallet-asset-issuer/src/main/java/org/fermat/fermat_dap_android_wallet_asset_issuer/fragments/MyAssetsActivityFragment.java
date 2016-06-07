@@ -160,14 +160,14 @@ public class MyAssetsActivityFragment extends FermatWalletListFragment<DigitalAs
             PresentationDialog presentationDialog = new PresentationDialog.Builder(getActivity(), appSession)
                     .setBannerRes(R.drawable.banner_asset_issuer_wallet)
                     .setIconRes(R.drawable.asset_issuer)
-                    .setImageLeft(R.drawable.issuer_profile)
+                    .setImageLeft(R.drawable.profile_actor)
                     .setVIewColor(R.color.dap_issuer_view_color)
                     .setTitleTextColor(R.color.dap_issuer_view_color)
                     .setTextNameLeft(R.string.dap_issuer_wallet_welcome_name_left)
                     .setSubTitle(R.string.dap_issuer_wallet_welcome_subTitle)
                     .setBody(R.string.dap_issuer_wallet_welcome_body)
 //                    .setTextFooter(R.string.dap_issuer_wallet_welcome_Footer)
-                    .setTemplateType((moduleManager.getActiveAssetIssuerIdentity() == null) ? PresentationDialog.TemplateType.DAP_TYPE_PRESENTATION : PresentationDialog.TemplateType.TYPE_PRESENTATION_WITHOUT_IDENTITIES)
+                    .setTemplateType((moduleManager.getActiveAssetIssuerIdentity() == null) ? PresentationDialog.TemplateType.TYPE_PRESENTATION_WITH_ONE_IDENTITY : PresentationDialog.TemplateType.TYPE_PRESENTATION_WITHOUT_IDENTITIES)
                     .setIsCheckEnabled(checkButton)
                     .build();
 

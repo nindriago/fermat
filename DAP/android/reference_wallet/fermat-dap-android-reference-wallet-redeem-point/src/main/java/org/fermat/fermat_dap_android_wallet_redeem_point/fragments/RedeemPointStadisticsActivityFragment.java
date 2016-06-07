@@ -127,7 +127,7 @@ public class RedeemPointStadisticsActivityFragment extends FermatWalletListFragm
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(0, SessionConstantsRedeemPoint.IC_ACTION_REDEEM_HELP_STATISTICS, 0, "Help").setIcon(R.drawable.dap_asset_redeem_help_icon)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
     }
 
     @Override
