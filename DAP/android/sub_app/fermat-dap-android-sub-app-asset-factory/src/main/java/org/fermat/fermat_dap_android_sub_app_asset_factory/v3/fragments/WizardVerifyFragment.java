@@ -211,7 +211,7 @@ public class WizardVerifyFragment extends AbstractFermatFragment {
             public void onClick(View v) {
                 if (isValid(asset)) {
                     doFinish();
-                    Toast.makeText(getActivity(), String.format("Asset %s has been created", asset.getName()), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), String.format("Asset %s has been created", asset.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
