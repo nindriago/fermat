@@ -4,11 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_dap_android_sub_app_asset_issuer_community_bitdubai.R;
 import com.squareup.picasso.Picasso;
 
+import org.fermat.fermat_dap_android_sub_app_asset_issuer_community.filters.IssuerCommunityAdapterFilter;
 import org.fermat.fermat_dap_android_sub_app_asset_issuer_community.holders.IssuerViewHolder;
 import org.fermat.fermat_dap_android_sub_app_asset_issuer_community.interfaces.AdapterChangeListener;
 import org.fermat.fermat_dap_android_sub_app_asset_issuer_community.models.ActorIssuer;
@@ -16,7 +19,7 @@ import org.fermat.fermat_dap_api.layer.all_definition.enums.DAPConnectionState;
 
 import java.util.List;
 
-public class IssuerCommunityAdapter extends FermatAdapter<ActorIssuer, IssuerViewHolder> {
+public class IssuerCommunityAdapter extends FermatAdapter<ActorIssuer, IssuerViewHolder> implements Filterable {
 
     private AdapterChangeListener<ActorIssuer> adapterChangeListener;
 
@@ -131,5 +134,10 @@ public class IssuerCommunityAdapter extends FermatAdapter<ActorIssuer, IssuerVie
         if (dataSet != null)
             return dataSet.size();
         return 0;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new IssuerCommunityAdapterFilter(this.dataSet, this);
     }
 }
