@@ -46,6 +46,7 @@ import org.fermat.fermat_dap_plugin.layer.wallet.asset.user.developer.version_1.
 import org.fermat.fermat_dap_plugin.layer.wallet.asset.user.developer.version_1.structure.database.AssetUserWalletDatabaseFactory;
 import org.fermat.fermat_dap_plugin.layer.wallet.asset.user.developer.version_1.structure.exceptions.CantInitializeAssetUserWalletException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,7 +56,7 @@ import java.util.UUID;
 /**
  * Created by franklin on 05/10/15.
  */
-public class AssetUserWalletImpl implements AssetUserWallet {
+public class AssetUserWalletImpl implements AssetUserWallet, Serializable {
     private static final String ASSET_USER_WALLET_FILE_NAME = "walletsIds";
 
     /**
@@ -198,8 +199,10 @@ public class AssetUserWalletImpl implements AssetUserWallet {
 
     @Override
     public List<AssetUserWalletTransaction> getAllTransactions(CryptoAddress cryptoAddress) throws CantGetTransactionsException {
+        List<AssetUserWalletTransaction> toReturn = new ArrayList<>();
         List<AssetUserWalletTransaction> all = assetUserWalletDao.listsTransactionsByAssets(cryptoAddress);
-        return all;
+        toReturn.addAll(all);
+        return toReturn;
     }
 
     @Override
