@@ -135,7 +135,7 @@ public class RedeemPointDetailFragment extends AbstractFermatFragment {
         viewPager.setAdapter(adapter);
         assetDetailDescription.setText(digitalAsset.getAssetDescription());
         assetDetailAssetValue.setText(digitalAsset.getFormattedAvailableBalanceBitcoin() + " BTC");
-        assetDetailDate.setText(DAPStandardFormats.DATE_FORMAT.format(digitalAsset.getDate()));
+        assetDetailDate.setText(digitalAsset.getFormattedExpDate());
 
         Bitmap bitmap;
         if (digitalAsset.getImageActorIssuerFrom() != null && digitalAsset.getImageActorIssuerFrom().length > 0) {
