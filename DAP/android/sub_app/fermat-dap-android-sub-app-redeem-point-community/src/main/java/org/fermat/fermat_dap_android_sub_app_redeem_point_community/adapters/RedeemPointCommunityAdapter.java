@@ -4,11 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.bitdubai.fermat_android_api.ui.adapters.FermatAdapter;
 import com.bitdubai.fermat_dap_android_sub_app_redeem_point_community_bitdubai.R;
 import com.squareup.picasso.Picasso;
 
+import org.fermat.fermat_dap_android_sub_app_redeem_point_community.filters.RedeemPointCommunityAdapterFilter;
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.holders.RedeemPointViewHolder;
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.interfaces.AdapterChangeListener;
 import org.fermat.fermat_dap_android_sub_app_redeem_point_community.models.Actor;
@@ -19,7 +22,7 @@ import java.util.List;
 /**
  * Created by Nerio on 21/10/15.
  */
-public class RedeemPointCommunityAdapter extends FermatAdapter<Actor, RedeemPointViewHolder> {
+public class RedeemPointCommunityAdapter extends FermatAdapter<Actor, RedeemPointViewHolder> implements Filterable {
 
     private AdapterChangeListener<Actor> adapterChangeListener;
 
@@ -134,5 +137,10 @@ public class RedeemPointCommunityAdapter extends FermatAdapter<Actor, RedeemPoin
         if (dataSet != null)
             return dataSet.size();
         return 0;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new RedeemPointCommunityAdapterFilter(this.dataSet, this);
     }
 }
