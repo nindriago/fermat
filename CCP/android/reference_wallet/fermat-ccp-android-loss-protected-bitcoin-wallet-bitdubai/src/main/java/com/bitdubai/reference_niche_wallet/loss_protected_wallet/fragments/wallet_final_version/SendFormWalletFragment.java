@@ -48,8 +48,8 @@ import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exc
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exceptions.CantSendLossProtectedCryptoException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exceptions.LossProtectedInsufficientFundsException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.interfaces.LossProtectedWallet;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.exceptions.CantListWalletsException;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_manager.interfaces.InstalledWallet;
 import com.bitdubai.reference_niche_wallet.loss_protected_wallet.common.bar_code_scanner.IntentIntegrator;
@@ -154,7 +154,7 @@ public class SendFormWalletFragment extends AbstractFermatFragment<LossProtected
         super.onCreateView(inflater, container, savedInstanceState);
         try {
             rootView = inflater.inflate(R.layout.send_wallet_form_base, container, false);
-            NetworkStatus networkStatus = getFermatState().getFermatNetworkStatus();
+            NetworkStatus networkStatus = getFermatNetworkStatus();
             if (networkStatus != null) {
                 switch (networkStatus) {
                     case CONNECTED:
@@ -199,7 +199,7 @@ public class SendFormWalletFragment extends AbstractFermatFragment<LossProtected
             public void onClick(View v) {
                 errorConnectingFermatNetworkDialog.dismiss();
                 try {
-                    if (getFermatState().getFermatNetworkStatus() == NetworkStatus.DISCONNECTED) {
+                    if (getFermatNetworkStatus() == NetworkStatus.DISCONNECTED) {
                         Toast.makeText(getActivity(), "Wait a minute please, trying to reconnect...", Toast.LENGTH_SHORT).show();
                         getActivity().onBackPressed();
                     }
@@ -295,33 +295,47 @@ public class SendFormWalletFragment extends AbstractFermatFragment<LossProtected
                 String newAmount = "";
                 switch (position) {
                     case 0:
+                        text = "[btc]";
+                        if (!amount.equals("") && amount != null){
+                            if (txtType.equals("[bits]")) {
+                                newAmount = bitcoinConverter.getBitcoinsFromBits(amount);
+                            } else if (txtType.equals("[satoshis]")) {
+                                newAmount = bitcoinConverter.getBTC(amount);
+                            } else {
+                                newAmount = amount;
+                            }
+                        }else{
+                            newAmount = amount;
+                        }
+
+
+                        break;
+                    case 1:
                         text = "[bits]";
-                        if (txtType.equals("[btc]")) {
-                            newAmount = bitcoinConverter.getBitsFromBTC(amount);
-                        } else if (txtType.equals("[satoshis]")) {
-                            newAmount = bitcoinConverter.getBits(amount);
-                        } else {
+                        if (!amount.equals("") && amount != null) {
+                            if (txtType.equals("[btc]")) {
+                                newAmount = bitcoinConverter.getBitsFromBTC(amount);
+                            } else if (txtType.equals("[satoshis]")) {
+                                newAmount = bitcoinConverter.getBits(amount);
+                            } else {
+                                newAmount = amount;
+                            }
+                        }else{
                             newAmount = amount;
                         }
 
                         break;
-                    case 1:
-                        text = "[btc]";
-                        if (txtType.equals("[bits]")) {
-                            newAmount = bitcoinConverter.getBitcoinsFromBits(amount);
-                        } else if (txtType.equals("[satoshis]")) {
-                            newAmount = bitcoinConverter.getBTC(amount);
-                        } else {
-                            newAmount = amount;
-                        }
-                        break;
                     case 2:
                         text = "[satoshis]";
-                        if (txtType.equals("[bits]")) {
-                            newAmount = bitcoinConverter.getSathoshisFromBits(amount);
-                        } else if (txtType.equals("[btc]")) {
-                            newAmount = bitcoinConverter.getSathoshisFromBTC(amount);
-                        } else {
+                        if (!amount.equals("") && amount != null) {
+                            if (txtType.equals("[bits]")) {
+                                newAmount = bitcoinConverter.getSathoshisFromBits(amount);
+                            } else if (txtType.equals("[btc]")) {
+                                newAmount = bitcoinConverter.getSathoshisFromBTC(amount);
+                            } else {
+                                newAmount = amount;
+                            }
+                        }else{
                             newAmount = amount;
                         }
                         break;
@@ -384,11 +398,7 @@ public class SendFormWalletFragment extends AbstractFermatFragment<LossProtected
         editTextAmount.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 try {
-                    //Long amount = Long.parseLong(editTextAmount.getText().toString());
-                    //if (amount > 0) {
-                    //long actualBalance = cryptoWallet.getBalance(BalanceType.AVAILABLE,referenceWalletSession.getWalletSessionType().getWalletPublicKey());
-                    //editTextAmount.setHint("Available amount: " + actualBalance + " bits");
-                    //}
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -529,7 +539,7 @@ public class SendFormWalletFragment extends AbstractFermatFragment<LossProtected
                                 }
                             }
                             if (wallet != null){
-                                System.out.println("public key"+wallet.getWalletPublicKey());
+
                                 if (operator.compareTo(minSatoshis) == 1) {
                                     cryptoWallet.sendToWallet(
                                             operator.longValueExact(),
@@ -541,8 +551,7 @@ public class SendFormWalletFragment extends AbstractFermatFragment<LossProtected
                                             ReferenceWallet.BASIC_WALLET_BITCOIN_WALLET,
                                             blockchainNetworkType
 
-                                            // settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).getBlockchainNetworkType())
-                                    );
+                                           );
                                     Toast.makeText(getActivity(), "Sending...", Toast.LENGTH_SHORT).show();
                                     onBack(null);
                                 } else {

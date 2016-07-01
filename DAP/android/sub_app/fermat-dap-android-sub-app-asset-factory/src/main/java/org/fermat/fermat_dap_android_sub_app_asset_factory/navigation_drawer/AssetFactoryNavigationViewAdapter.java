@@ -48,12 +48,11 @@ public class AssetFactoryNavigationViewAdapter extends FermatAdapter<MenuItem, A
 
                 switch (position) {
                     case 0:
-                        Picasso.with(context).load((data.isSelected()) ? R.drawable.ic_nav_home_active : R.drawable.ic_nav_home_normal).into(holder.getIcon());
+                        holder.getIcon().setImageResource(R.drawable.ic_nav_home_active);
                         break;
                     case 1:
-                        Picasso.with(context).load((data.isSelected()) ? R.drawable.ic_nav_settings_active : R.drawable.ic_nav_settings_normal).into(holder.getIcon());
+                        holder.getIcon().setImageResource(R.drawable.ic_nav_settings_active);
                         break;
-
 //                    case 2:
 //                        Picasso.with(context).load((data.isSelected()) ? R.drawable.ic_nav_history_active : R.drawable.ic_nav_history_normal).into(holder.getIcon());
 //                        break;

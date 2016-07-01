@@ -1,7 +1,6 @@
 package com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet;
 
 import com.bitdubai.fermat_api.layer.all_definition.enums.BlockchainNetworkType;
-import com.bitdubai.fermat_api.layer.modules.interfaces.FermatSettings;
 import com.bitdubai.fermat_ccp_api.layer.module.intra_user.interfaces.IntraUserLoginIdentity;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_settings.exceptions.CantGetDefaultLanguageException;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_settings.exceptions.CantGetDefaultSkinException;
@@ -9,11 +8,11 @@ import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_settings.exceptio
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_settings.exceptions.CantSetDefaultSkinException;
 import com.bitdubai.fermat_wpd_api.layer.wpd_middleware.wallet_settings.interfaces.WalletSettings;
 
-
+import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 
-public class BitcoinWalletSettings implements WalletSettings {
+public class BitcoinWalletSettings implements WalletSettings,Serializable {
 
     private IntraUserLoginIdentity lastSelectedIdentity;
     private boolean isPresentationHelpEnabled;
@@ -21,6 +20,7 @@ public class BitcoinWalletSettings implements WalletSettings {
     private Map<Long, Long>  runningDailyBalance ;
     private BlockchainNetworkType blockchainNetworkType;
     private boolean notificationEnabled;
+    private boolean isBlockchainDownloadEnabled;
 
     public BitcoinWalletSettings() {
         this.lastSelectedIdentity = null;
@@ -62,8 +62,17 @@ public class BitcoinWalletSettings implements WalletSettings {
         return isPresentationHelpEnabled;
     }
 
+
+    public boolean isBlockchainDownloadEnabled() {
+        return isBlockchainDownloadEnabled;
+    }
+
     public void setIsPresentationHelpEnabled(boolean isPresentationHelpEnabled) {
         this.isPresentationHelpEnabled = isPresentationHelpEnabled;
+    }
+
+    public void setIsBlockchainDownloadEnabled(boolean isBlockchainDownloadEnabled) {
+        this.isBlockchainDownloadEnabled = isBlockchainDownloadEnabled;
     }
 
     public boolean isContactsHelpEnabled() {

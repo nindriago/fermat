@@ -48,10 +48,10 @@ import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.exc
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.interfaces.LossProtectedWallet;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.interfaces.LossProtectedWalletContact;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.interfaces.LossProtectedWalletManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
 import com.bitdubai.reference_niche_wallet.loss_protected_wallet.common.CreateContactDialogCallback;
 import com.bitdubai.reference_niche_wallet.loss_protected_wallet.common.LossProtectedWalletConstants;
@@ -162,7 +162,7 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
             cryptoWallet = cryptoWalletManager.getCryptoWallet();
         } catch (CantGetCryptoLossProtectedWalletException e) {
             errorManager.reportUnexpectedWalletException(Wallets.CWP_WALLET_RUNTIME_WALLET_BITCOIN_WALLET_ALL_BITDUBAI, UnexpectedWalletExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_FRAGMENT, e);
-            WalletUtils.showMessage(getActivity(), "Unexpected error get Contact list - " + e.getMessage());
+            WalletUtils.showMessage(getActivity(), "Unexpected error getting Contact list - " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -172,7 +172,7 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         try {
             mSavedInstanceState = savedInstanceState;
-            rootView = inflater.inflate(R.layout.contact_detail_main, container, false);
+            rootView = inflater.inflate(R.layout.loss_conctact_list_main, container, false);
             setupViews(rootView);
             setUpFAB();
             walletContactRecords = new ArrayList<>();
@@ -188,7 +188,8 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
                         try {
                             boolean isHelpEnabled = settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isContactsHelpEnabled();
 
-                            setUpTutorial(isHelpEnabled);
+                            if (isHelpEnabled)
+                                setUpTutorial(true);
                         } catch (CantGetSettingsException e) {
                             e.printStackTrace();
                         } catch (SettingsNotFoundException e) {
@@ -207,37 +208,45 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
         return container;
     }
 
+    private SubActionButton button1;
+    private SubActionButton button2;
+    private com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton actionButton;
+    private FloatingActionMenu actionMenu;
     @SuppressWarnings("ResourceType")
     private void setUpFAB() {
         // in Activity Context
         FrameLayout frameLayout = new FrameLayout(getActivity());
 
         FrameLayout.LayoutParams lbs = new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
         frameLayout.setLayoutParams(lbs);
 
         ImageView icon = new ImageView(getActivity());
         frameLayout.addView(icon);
-        com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton actionButton = new com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton.Builder(getActivity())
+        actionButton = new com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton.Builder(getActivity())
                 .setContentView(frameLayout)
                 .setBackgroundDrawable(R.drawable.btn_contact_selector)
                 .build();
-        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
-        // repeat many times:
-        ImageView itemIcon = new ImageView(getActivity());
-        itemIcon.setImageResource(R.drawable.extra_user_button);
 
-        SubActionButton button1 = itemBuilder.setContentView(itemIcon).setBackgroundDrawable(getResources().getDrawable(R.drawable.extra_user_button)).setText("External User").build();
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
+
+        ImageView itemIcon = new ImageView(getActivity());
+        itemIcon.setImageResource(R.drawable.loss_externaluser_button);
+        button1 = itemBuilder
+                .setContentView(itemIcon)
+                .setBackgroundDrawable(getResources().getDrawable(R.drawable.loss_externaluser_button))
+                .setText("External User")
+                .build();
         button1.setId(ID_BTN_EXTRA_USER);
 
-
         ImageView itemIcon2 = new ImageView(getActivity());
-        itemIcon2.setImageResource(R.drawable.intra_user_button);
-        SubActionButton button2 = itemBuilder.setContentView(itemIcon2).setBackgroundDrawable(getResources().getDrawable(R.drawable.intra_user_button)).setText("Fermat User").build();
+        itemIcon2.setImageResource(R.drawable.loss_fermatuser_button);
+        button2 = itemBuilder.setContentView(itemIcon2)
+                .setBackgroundDrawable(getResources().getDrawable(R.drawable.loss_fermatuser_button))
+                .setText("Fermat User")
+                .build();
         button2.setId(ID_BTN_INTRA_USER);
 
-
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(getActivity())
+        actionMenu = new FloatingActionMenu.Builder(getActivity())
                 .addSubActionView(button1)
                 .addSubActionView(button2)
                 .attachTo(actionButton)
@@ -245,7 +254,6 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
 
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
-
     }
 
     @Override
@@ -258,6 +266,20 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
         }
     }
 
+    @Override
+    public void onDrawerOpen() {
+        actionButton.setVisibility(View.GONE);
+        button1.setVisibility(View.GONE);
+        button2.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDrawerClose() {
+        FermatAnimationsUtils.showEmpty(getActivity(),true,actionMenu.getActivityContentView());
+        actionButton.setVisibility(View.VISIBLE);
+        button1.setVisibility(View.VISIBLE);
+        button2.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public void onStart() {
@@ -334,9 +356,9 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
         refreshAdapter();
     }
 
-    private void setUpTutorial(boolean isHelpEnabled) throws CantGetSettingsException, SettingsNotFoundException {
-        if (isHelpEnabled) {
-            ContactsTutorialPart1V2 contactsTutorialPart1 = new ContactsTutorialPart1V2(getActivity(), referenceWalletSession, null, settingsManager.loadAndGetSettings(referenceWalletSession.getAppPublicKey()).isContactsHelpEnabled());
+    private void setUpTutorial(boolean checkButton) throws CantGetSettingsException, SettingsNotFoundException {
+        //if (isHelpEnabled) {
+            ContactsTutorialPart1V2 contactsTutorialPart1 = new ContactsTutorialPart1V2(getActivity(), referenceWalletSession, null, checkButton);
             contactsTutorialPart1.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -351,7 +373,7 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
                 }
             });
             contactsTutorialPart1.show();
-        }
+       // }
     }
 
     private void refreshAdapter() {
@@ -492,7 +514,7 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
 
                 } catch (Exception ex) {
                     errorManager.reportUnexpectedUIException(UISource.VIEW, UnexpectedUIExceptionSeverity.UNSTABLE, ex);
-                    WalletUtils.showMessage(getActivity(), "Unexpected error get Contact Detalil - " + ex.getMessage());
+                    WalletUtils.showMessage(getActivity(), "Unexpected error getting Contact Detalil - " + ex.getMessage());
                 }
             }
         });
@@ -555,10 +577,10 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//TODO obtener la [a posicion del scroll antes de hacer populate
+//TODO: get scroll position before populating
         //if (isScrolled) {
         //new Populate().execute((ArrayList<CryptoWalletWalletContact>) mItems);
-        //TODO setear la posicion obtenida despues de hacer el populate
+        //TODO: set obtained position after populating
         //   mListView.scrollTo(0, mListSectionPos.size() - firstVisibleItem);
 //        }
     }
@@ -794,7 +816,7 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
                     }
 
                 }
-            //TODO METODO CON RETURN NULL - OJO: solo INFORMATIVO de ayuda VISUAL para DEBUG - Eliminar si molesta
+            //TODO Return null method - OJO: only informative for visual aid during debug - remove if it bothers
             return null;
         }
 

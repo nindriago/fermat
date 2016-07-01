@@ -31,8 +31,8 @@ import com.bitdubai.fermat_cbp_api.layer.wallet.crypto_broker.interfaces.setting
 import com.bitdubai.fermat_cbp_plugin.layer.business_transaction.broker_submit_online_merchandise.developer.bitdubai.version_1.database.BrokerSubmitOnlineMerchandiseBusinessTransactionDao;
 import com.bitdubai.fermat_cbp_plugin.layer.business_transaction.broker_submit_online_merchandise.developer.bitdubai.version_1.exceptions.CantGetCryptoAddressException;
 import com.bitdubai.fermat_cbp_plugin.layer.business_transaction.broker_submit_online_merchandise.developer.bitdubai.version_1.exceptions.CantGetCryptoAmountException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -119,7 +119,7 @@ public class BrokerSubmitOnlineMerchandiseTransactionManager implements BrokerSu
             long cryptoAmount;
             Collection<Clause> negotiationClauses=customerBrokerSaleNegotiation.getClauses();
             for(Clause clause : negotiationClauses){
-                if(clause.getType().getCode().equals(ClauseType.BROKER_CURRENCY_QUANTITY.getCode())){
+                if(clause.getType().getCode().equals(ClauseType.CUSTOMER_CURRENCY_QUANTITY.getCode())){
                     cryptoAmount=parseToLong(clause.getValue());
                     return cryptoAmount;
                 }
@@ -150,7 +150,8 @@ public class BrokerSubmitOnlineMerchandiseTransactionManager implements BrokerSu
             throw new InvalidParameterException("Cannot parse a null string value to long");
         }else{
             try{
-                return Long.valueOf(stringValue);
+                double aux = Float.valueOf(stringValue)*100000000;
+                return (long) aux;
             }catch (Exception exception){
                 errorManager.reportUnexpectedPluginException(
                         Plugins.BROKER_SUBMIT_ONLINE_MERCHANDISE,
@@ -235,15 +236,19 @@ public class BrokerSubmitOnlineMerchandiseTransactionManager implements BrokerSu
             String customerCryptoAddress=getBrokerCryptoAddressString(
                     customerBrokerSaleNegotiation
             );
+            String cryptoAddress,intraActorPk,aux[];
+            aux = customerCryptoAddress.split(":");
+            cryptoAddress=aux[0];
+            intraActorPk=aux[1];
             long cryptoAmount= getAmount(customerBrokerSaleNegotiation);
             this.brokerSubmitOnlineMerchandiseBusinessTransactionDao.persistContractInDatabase(
                     customerBrokerContractSale,
-                    customerCryptoAddress,
+                    cryptoAddress,
                     walletPublicKey,
                     cryptoAmount,
                     cbpWalletPublicKey,
                     referencePrice,
-                    blockchainNetworkType);
+                    blockchainNetworkType,intraActorPk);
         } catch (CantGetListCustomerBrokerContractSaleException e) {
             errorManager.reportUnexpectedPluginException(
                     Plugins.BROKER_SUBMIT_ONLINE_MERCHANDISE,

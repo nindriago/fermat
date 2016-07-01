@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,15 +43,14 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.A
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantGetSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.SettingsNotFoundException;
-import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
-import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.BitcoinWalletSettings;
+import com.bitdubai.fermat_api.layer.pip_engine.interfaces.ResourceProviderManager;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.exceptions.CantGetAllWalletContactsException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.interfaces.CryptoWallet;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.interfaces.CryptoWalletWalletContact;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
 import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.BitcoinWalletConstants;
 import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.CreateContactDialogCallback;
@@ -83,7 +83,7 @@ import static com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.utils.Wa
  * Created by Matias Furszyfer on 19/07/15.
  */
 
-public class ContactsFragment extends AbstractFermatFragment implements FermatListViewFragment, DialogInterface.OnDismissListener, Thread.UncaughtExceptionHandler, CreateContactDialogCallback, View.OnClickListener, AbsListView.OnScrollListener {
+public class ContactsFragment extends AbstractFermatFragment<ReferenceWalletSession,ResourceProviderManager> implements FermatListViewFragment, DialogInterface.OnDismissListener, Thread.UncaughtExceptionHandler, CreateContactDialogCallback, View.OnClickListener, AbsListView.OnScrollListener {
 
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -140,7 +140,6 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
     private WalletContact walletContact;
     private FrameLayout contacts_container;
     private boolean connectionDialogIsShow = false;
-    private SettingsManager<BitcoinWalletSettings> settingsManager;
     private boolean isScrolled = false;
 
     public static ContactsFragment newInstance() {
@@ -160,7 +159,6 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
         errorManager = appSession.getErrorManager();
         try {
         cryptoWallet = (CryptoWallet) appSession.getModuleManager();
-        settingsManager = cryptoWallet.getSettingsManager();
         } catch (Exception e) {
             errorManager.reportUnexpectedWalletException(Wallets.CWP_WALLET_RUNTIME_WALLET_BITCOIN_WALLET_ALL_BITDUBAI, UnexpectedWalletExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_FRAGMENT, e);
             showMessage(getActivity(), "Unexpected error get Contact list - " + e.getMessage());
@@ -185,9 +183,10 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
                     if (walletContactRecords.isEmpty()) {
                         rootView.findViewById(R.id.fragment_container2).setVisibility(View.GONE);
                         try {
-                            boolean isHelpEnabled = settingsManager.loadAndGetSettings(appSession.getAppPublicKey()).isContactsHelpEnabled();
+                            boolean isHelpEnabled = appSession.getModuleManager().loadAndGetSettings(appSession.getAppPublicKey()).isContactsHelpEnabled();
 
-                            setUpTutorial(isHelpEnabled);
+                            if(isHelpEnabled)
+                              setUpTutorial(true);
                         } catch (CantGetSettingsException e) {
                             e.printStackTrace();
                         } catch (SettingsNotFoundException e) {
@@ -206,13 +205,14 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
         return container;
     }
 
+    private SubActionButton button1;
+    private SubActionButton button2;
     @SuppressWarnings("ResourceType")
     private void setUpFAB() {
         // in Activity Context
         FrameLayout frameLayout = new FrameLayout(getActivity());
 
         FrameLayout.LayoutParams lbs = new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
         frameLayout.setLayoutParams(lbs);
 
         ImageView icon = new ImageView(getActivity());
@@ -221,21 +221,27 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
                 .setContentView(frameLayout)
                 .setBackgroundDrawable(R.drawable.btn_contact_selector)
                 .build();
+
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
-        // repeat many times:
+
         ImageView itemIcon = new ImageView(getActivity());
         itemIcon.setImageResource(R.drawable.extra_user_button);
-
-        SubActionButton button1 = itemBuilder.setContentView(itemIcon).setBackgroundDrawable(getResources().getDrawable(R.drawable.extra_user_button)).setText("External User").build();
+        button1 = itemBuilder
+                .setContentView(itemIcon)
+                .setBackgroundDrawable(getResources().getDrawable(R.drawable.extra_user_button))
+                .setText("External User")
+                .build();
         button1.setId(ID_BTN_EXTRA_USER);
-
 
         ImageView itemIcon2 = new ImageView(getActivity());
         itemIcon2.setImageResource(R.drawable.intra_user_button);
-        SubActionButton button2 = itemBuilder.setContentView(itemIcon2).setBackgroundDrawable(getResources().getDrawable(R.drawable.intra_user_button)).setText("Fermat User").build();
+        button2 = itemBuilder.setContentView(itemIcon2)
+                .setBackgroundDrawable(getResources().getDrawable(R.drawable.intra_user_button))
+                .setText("Fermat User")
+                .build();
         button2.setId(ID_BTN_INTRA_USER);
 
-         actionMenu = new FloatingActionMenu.Builder(getActivity())
+        actionMenu = new FloatingActionMenu.Builder(getActivity())
                 .addSubActionView(button1)
                 .addSubActionView(button2)
                 .attachTo(actionButton)
@@ -243,7 +249,6 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
 
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
-
     }
 
     @Override
@@ -257,14 +262,18 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
     }
 
     @Override
-    public void onDrawerClose() {
-        FermatAnimationsUtils.showEmpty(getActivity(),true,actionMenu.getActivityContentView());
-
+    public void onDrawerOpen() {
+        actionButton.setVisibility(View.GONE);
+        button1.setVisibility(View.GONE);
+        button2.setVisibility(View.GONE);
     }
 
     @Override
-    public void onDrawerSlide(View drawerView, float offset) {
-        FermatAnimationsUtils.showEmpty(getActivity(), false, actionMenu.getActivityContentView());
+    public void onDrawerClose() {
+        FermatAnimationsUtils.showEmpty(getActivity(),true,actionMenu.getActivityContentView());
+        actionButton.setVisibility(View.VISIBLE);
+        button1.setVisibility(View.VISIBLE);
+        button2.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -342,9 +351,9 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
         refreshAdapter();
     }
 
-    private void setUpTutorial(boolean isHelpEnabled) throws CantGetSettingsException, SettingsNotFoundException {
-        if (isHelpEnabled) {
-            ContactsTutorialPart1V2 contactsTutorialPart1 = new ContactsTutorialPart1V2(getActivity(), referenceWalletSession, null, settingsManager.loadAndGetSettings(referenceWalletSession.getAppPublicKey()).isContactsHelpEnabled());
+    private void setUpTutorial(boolean checkButton) throws CantGetSettingsException, SettingsNotFoundException {
+       // if (isHelpEnabled) {
+            ContactsTutorialPart1V2 contactsTutorialPart1 = new ContactsTutorialPart1V2(getActivity(), referenceWalletSession, null, checkButton);
             contactsTutorialPart1.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -359,7 +368,7 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
                 }
             });
             contactsTutorialPart1.show();
-        }
+      //  }
     }
 
     private void refreshAdapter() {
@@ -840,8 +849,6 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
             loadingView.setVisibility(View.GONE);
             FermatAnimationsUtils.showEmpty(getActivity(), true, emptyView);
         }
-
-
     }
 
     /**
@@ -890,33 +897,4 @@ public class ContactsFragment extends AbstractFermatFragment implements FermatLi
         }
 
     }
-
-    @Override
-    public void onDrawerOpen() {
-
-        //close add contacts menu - FloatingActionButton
-
-    }
-
-   /* @Override
-    public void onDrawerSlide(View drawerView, float offset){
-
-        try{
-
-            if(offset == 1) {
-                actionButton.setAlpha(0);
-                actionMenu.close(false);
-            }
-            esle
-            {
-                actionButton.setAlpha(1);
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-    }*/
-
 }

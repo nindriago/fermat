@@ -1,21 +1,28 @@
 package com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.utils.mnemonic;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bitdubai.android_fermat_ccp_wallet_bitcoin.R;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFragment;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButton;
-import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
+
 import com.bitdubai.fermat_ccp_api.layer.basic_wallet.common.exceptions.CantGetMnemonicTextException;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.crypto_wallet.interfaces.CryptoWallet;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+
+
+import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.utils.WalletUtils;
+
 import com.bitdubai.reference_niche_wallet.bitcoin_wallet.session.ReferenceWalletSession;
+
 
 
 /**
@@ -57,10 +64,12 @@ public class MnemonicFragment extends AbstractFermatFragment {
         
         
 
-        View view = inflater.inflate(R.layout.mnemonic_fragment_main1,container,false);
+        View view = inflater.inflate(R.layout.bitcoin_mnemonic_fragment_main,container,false);
 
-        FermatTextView txt_mnemonic = (FermatTextView)view.findViewById(R.id.txt_mnemonic);
-        FermatButton open_dialog_btn= (FermatButton)view.findViewById(R.id.open_dialog_btn);
+        final EditText txt_mnemonic = (EditText)view.findViewById(R.id.txt_mnemonic);
+       final EditText mail = (EditText ) view.findViewById(R.id.text_mail);
+        FermatButton send_button= (FermatButton)view.findViewById(R.id.send_button);
+        final EditText encriptKey = (EditText ) view.findViewById(R.id.text_key);
 
 
         try {
@@ -77,13 +86,37 @@ public class MnemonicFragment extends AbstractFermatFragment {
             Toast.makeText(getActivity(), "Oooops! recovering from system error", Toast.LENGTH_SHORT).show();
         }
 
-        open_dialog_btn.setOnClickListener(new View.OnClickListener() {
+        send_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //open dialog to enter user mail and key
-                MnemonicSendDialog mnemonic_dialog = new MnemonicSendDialog(getActivity());
-                mnemonic_dialog.show();
+               //send mail
+                //encript mnemonic text to send by mail
+                final String emailTo= mail.getText().toString();
+                if (TextUtils.isEmpty(emailTo)) {
+                    return;
+                }else {
+                    try {
+
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    sendMail(emailTo, WalletUtils.encrypt(txt_mnemonic.getText().toString(), encriptKey.getText().toString()));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        thread.start();
+
+                        Toast.makeText(getActivity(), "Private Key Sent", Toast.LENGTH_SHORT).show();
+                        mail.getText().clear();
+                    } catch (Exception e) {
+                        errorManager.reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.CRASH, e);
+                    }
+                }
             }
+
         });
         return view;
     }

@@ -9,7 +9,11 @@ package com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.deve
 import com.bitdubai.fermat_api.layer.all_definition.components.enums.PlatformComponentType;
 import com.bitdubai.fermat_api.layer.all_definition.components.interfaces.PlatformComponentProfile;
 import com.bitdubai.fermat_api.layer.all_definition.network_service.enums.NetworkServiceType;
+import com.bitdubai.fermat_p2p_api.layer.all_definition.communication.commons.contents.FermatPacketCommunicationFactory;
+import com.bitdubai.fermat_p2p_api.layer.all_definition.communication.commons.contents.FermatPacketEncoder;
+import com.bitdubai.fermat_p2p_api.layer.p2p_communication.commons.contents.FermatPacket;
 import com.bitdubai.fermat_p2p_api.layer.p2p_communication.commons.enums.FermatPacketType;
+import com.bitdubai.fermat_p2p_api.layer.p2p_communication.commons.enums.JsonAttNamesConstants;
 import com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.developer.bitdubai.version_1.structure.jetty.ClientConnection;
 import com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.developer.bitdubai.version_1.structure.jetty.processors.ActorUpdateRequestJettyPacketProcessor;
 import com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.developer.bitdubai.version_1.structure.jetty.processors.ComponentConnectionRequestJettyPacketProcessor;
@@ -17,6 +21,8 @@ import com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.devel
 import com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.developer.bitdubai.version_1.structure.jetty.processors.DiscoveryComponentConnectionRequestJettyPacketProcessor;
 import com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.developer.bitdubai.version_1.structure.jetty.processors.FermatJettyPacketProcessor;
 import com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.developer.bitdubai.version_1.structure.jetty.processors.RequestListComponentRegisterJettyPacketProcessor;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
@@ -29,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.websocket.Session;
 
 /**
  * The Class <code>com.bitdubai.fermat_p2p_plugin.layer.ws.communications.cloud.server.developer.bitdubai.version_1.structure.jetty.util.MemoryCache</code>
@@ -96,6 +104,11 @@ public class MemoryCache {
      */
     private Map<FermatPacketType, List<FermatJettyPacketProcessor>> packetProcessorsRegister;
 
+    /*
+     * Holds the server of platforms active
+     */
+    private Map<NetworkServiceType,String> listServerConfByPlatform;
+
     /**
      * Constructor
      */
@@ -110,12 +123,14 @@ public class MemoryCache {
         this.registeredOtherPlatformComponentProfileCache = new ConcurrentHashMap<>();
         this.timersByClientIdentity                       = new ConcurrentHashMap<>();
         this.standByProfileByClientIdentity               = new ConcurrentHashMap<>();
+        this.listServerConfByPlatform                     = new ConcurrentHashMap<>();
 
         registerFermatPacketProcessor(new ComponentRegistrationRequestJettyPacketProcessor());
         registerFermatPacketProcessor(new ComponentConnectionRequestJettyPacketProcessor());
         registerFermatPacketProcessor(new DiscoveryComponentConnectionRequestJettyPacketProcessor());
         registerFermatPacketProcessor(new RequestListComponentRegisterJettyPacketProcessor());
         registerFermatPacketProcessor(new ActorUpdateRequestJettyPacketProcessor());
+
     }
 
     /**
@@ -186,6 +201,10 @@ public class MemoryCache {
     public   boolean exist(String key){
 
         return instance.properties.containsKey(key);
+    }
+
+    public Map<NetworkServiceType, String> getListServerConfByPlatform() {
+        return listServerConfByPlatform;
     }
 
     /**
@@ -456,4 +475,76 @@ public class MemoryCache {
 
         return removeProfile;
     }
+
+    public void sendMessageToAll(NetworkServiceType networkServiceType, String ipServer) throws Exception{
+
+        if(instance.getRegisteredClientConnectionsCache() != null){
+
+            Gson gson = new Gson();
+            JsonObject packetContent = new JsonObject();
+            packetContent.addProperty(JsonAttNamesConstants.NETWORK_SERVICE_TYPE, gson.toJson(networkServiceType));
+            packetContent.addProperty(JsonAttNamesConstants.IPSERVER,ipServer);
+
+            for(ClientConnection client : instance.getRegisteredClientConnectionsCache().values()){
+
+                if(client.getSession().isOpen()) {
+
+                    //LOG.info("SEND MESSAGEEEEEEEEEEEEEEEEEEEE");
+
+                    FermatPacket fermatPacketRespond = FermatPacketCommunicationFactory.constructFermatPacketEncryptedAndSinged(client.getClientIdentity(), //Destination
+                                                                                                                                client.getServerIdentity().getPublicKey(), //Sender
+                                                                                                                                gson.toJson(packetContent), //packet Content
+                                                                                                                                FermatPacketType.REGISTER_SERVER_REQUEST, //Packet type
+                                                                                                                                client.getServerIdentity().getPrivateKey()); //Sender private key
+                    /*
+                     * Send the packet
+                     */
+                    client.getSession().getAsyncRemote().sendText(FermatPacketEncoder.encode(fermatPacketRespond));
+                }
+
+            }
+
+            /*
+             * Clear list of the networkServiceType in getRegisteredNetworkServicesCache
+             */
+            if(instance.getRegisteredNetworkServicesCache().containsKey(networkServiceType)){
+                instance.getRegisteredNetworkServicesCache().get(networkServiceType).clear();
+                instance.getRegisteredNetworkServicesCache().remove(networkServiceType);
+            }
+
+
+        }else{
+            LOG.info("instance.SESSION == null");
+        }
+
+    }
+
+    private void putInAlllist(){
+
+        /* ARTIST */
+        listServerConfByPlatform.put(NetworkServiceType.ARTIST_ACTOR, "192.168.1.4");
+        /* ARTIST */
+
+        /* CBP */
+        listServerConfByPlatform.put(NetworkServiceType.CRYPTO_BROKER, "192.168.1.15");
+        /* CBP */
+
+        /* CCP */
+        listServerConfByPlatform.put(NetworkServiceType.INTRA_USER, "192.168.1.6");
+        /* CCP */
+
+        /* CHT */
+        listServerConfByPlatform.put(NetworkServiceType.CHAT, "192.168.1.7");
+        /* CHT */
+
+        /* DAP */
+        listServerConfByPlatform.put(NetworkServiceType.ASSET_USER_ACTOR, "192.168.1.8");
+        /* DAP */
+
+        /* MONITOR */
+        listServerConfByPlatform.put(NetworkServiceType.FERMAT_MONITOR, "192.168.1.9");
+        /* MONITOR */
+    }
+
+
 }

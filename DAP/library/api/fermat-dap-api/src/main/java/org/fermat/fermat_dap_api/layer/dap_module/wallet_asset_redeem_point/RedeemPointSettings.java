@@ -25,6 +25,7 @@ public class RedeemPointSettings implements WalletSettings {
     private boolean isContactsHelpEnabled;
     private List<BlockchainNetworkType> blockchainNetwork;
     private int blockchainNetworkPosition;
+    private boolean notificationEnabled;
 
     public int getBlockchainNetworkPosition() {
         return blockchainNetworkPosition;
@@ -77,5 +78,13 @@ public class RedeemPointSettings implements WalletSettings {
     @Override
     public void setIsPresentationHelpEnabled(boolean isPresentationHelpEnabled) {
         this.isPresentationHelpEnabled = isPresentationHelpEnabled;
+    }
+
+    public boolean getNotificationEnabled() {
+        return this.notificationEnabled;
+    }
+
+    public void setNotificationEnabled(boolean notificationEnabled) {
+        this.notificationEnabled = notificationEnabled;
     }
 }

@@ -1,6 +1,7 @@
 package com.bitdubai.android_core.app.common.version_1.util.system;
 
 import com.bitdubai.android_core.app.ApplicationSession;
+import com.bitdubai.android_core.app.common.version_1.communication.client_system_broker.exceptions.CantCreateProxyException;
 import com.bitdubai.android_core.app.common.version_1.provisory.P2PAppsRuntimeManager;
 import com.bitdubai.android_core.app.common.version_1.provisory.SubAppManagerProvisory;
 import com.bitdubai.fermat_api.layer.all_definition.common.system.exceptions.CantGetErrorManagerException;
@@ -47,7 +48,7 @@ import com.bitdubai.fermat_p2p_api.layer.p2p_communication.WsCommunicationsCloud
 import com.bitdubai.fermat_pip_api.layer.module.android_core.interfaces.AndroidCoreModule;
 import com.bitdubai.fermat_pip_api.layer.module.notification.interfaces.NotificationManagerMiddleware;
 import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_engine.wallet_runtime.interfaces.WalletRuntimeManager;
 import com.bitdubai.fermat_wpd_api.layer.wpd_network_service.wallet_resources.interfaces.WalletResourcesProviderManager;
 
@@ -411,7 +412,24 @@ public class FermatSystemUtils {
      * @return reference of AndroidCoreModule
      */
 
-    public static AndroidCoreModule getAndroidCoreModule() {
+    private static AndroidCoreModule androidCoreModule;
+    public static AndroidCoreModule getAndroidCoreModule() throws CantCreateProxyException {
+//        try{
+//            if(androidCoreModule==null) {
+//                androidCoreModule = (AndroidCoreModule) ApplicationSession.getInstance().getServicesHelpers().getClientSideBrokerServiceAIDL().getModuleManager(
+//                        new PluginVersionReference(
+//                                Platforms.PLUG_INS_PLATFORM,
+//                                Layers.SUB_APP_MODULE,
+//                                Plugins.ANDROID_CORE,
+//                                Developers.BITDUBAI,
+//                                new Version()
+//                        )
+//                );
+//            }
+//            return androidCoreModule;
+//        }catch (Exception e){
+//            throw e;
+//        }
 
         try {
             return (AndroidCoreModule) ApplicationSession.getInstance().getFermatSystem().getModuleManager(

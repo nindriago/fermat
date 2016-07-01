@@ -44,8 +44,9 @@ public enum SubApps {
 
     CHT_CHAT("CHTCHAT"),
     CHT_CHAT_IDENTITY("CHTCHATI"),
+    CHT_COMMUNITY("CHTCOM"),
     Scanner("S"),
-    SETTINGS("SET");
+    SETTINGS("SET"), REPORT_EXCEPTION("RE");
 
 
     private final String code;
@@ -57,8 +58,6 @@ public enum SubApps {
     public static SubApps getByCode(String code) throws InvalidParameterException {
 
         switch (code) {
-            case "CHTCHATI":
-                return SubApps.CHT_CHAT_IDENTITY;
             case "TAISA":
                 return SubApps.TKY_ARTIST_IDENTITY_SUB_APP;
             case "AAIA":
@@ -109,6 +108,10 @@ public enum SubApps {
                 return SubApps.DAP_ASSETS_REDEEM_POINT_IDENTITY;
             case "CHTCHAT":
                 return SubApps.CHT_CHAT;
+            case "CHTCHATI":
+                return SubApps.CHT_CHAT_IDENTITY;
+            case "CHTCOM":
+                return SubApps.CHT_COMMUNITY;
             case "S":
                 return Scanner;
             case "SET":
@@ -119,6 +122,8 @@ public enum SubApps {
                 return ART_FAN_COMMUNITY;
             case "AMP":
                 return ART_MUSIC_PLAYER;
+            case "RE":
+                return REPORT_EXCEPTION;
             default:
                 throw new InvalidParameterException(InvalidParameterException.DEFAULT_MESSAGE, null, "Code Received: " + code, "This Code Is Not Valid for the SubApps enum");
 

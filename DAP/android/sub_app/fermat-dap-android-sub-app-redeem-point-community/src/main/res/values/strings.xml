@@ -11,7 +11,7 @@
     <string name="status_canceled">Connection Canceled</string>
 
     <!--Dialog Help - Init-->
-    <string name="dap_redeem_community_welcome_subTitle">Welcome to the Redeem Point Community.</string>
+    <string name="dap_redeem_community_welcome_subTitle">Redeem Point Community.</string>
     <string name="dap_redeem_community_welcome_body">This application will help you discover and connect to Redeem Points registered in our network.!\n\nIf you are identified as an Asset User, you will need to connect to Redeem Points in order to be able to redeem your assets with them.\n\nSelect any available Redeem Point and click connect to start the process. If your network speed is low, you may have to retry several times.</string>
     <!--Dialog Help - End-->
     <!--Connections Other Profile - Init-->
@@ -22,8 +22,10 @@
     <string name="dap_other_profile_crypto_currency">CryptoCurrency</string>
     <string name="dap_other_profile_last_connection_date">Last Connection Date</string>
     <string name="dap_other_profile_connection_rejected">Connection Canceled</string>
-    <string name="dap_other_profile_request_send">Request Sent</string>
+    <string name="dap_other_profile_request_send">Connection request Sent</string>
     <string name="dap_other_profile_request_send_toast">The connection request has been sent you need to wait until the user responds</string>
+    <string name="create_before_action">Asset User or Redeem Point Identities must be created before using this app.</string>
+    <string name="before_action_redeem">Asset User Identity must be created before action.</string>
     <string name="dap_other_profile_request_reject_toast">The connection request has been rejected</string>
     <string name="dap_other_profile_disconect">Disconnect</string>
     <string name="dap_other_profile_connect">Connect</string>

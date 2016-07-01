@@ -11,6 +11,7 @@
     <string name="home_asset_state_published">Published</string>
     <string name="dap_asset_factory_delete_menu_item">Delete</string>
     <string name="dap_asset_factory_editor_name_hint">Name</string>
+    <string name="dap_asset_factory_editor_bitcoins_note">Note: Values are displayed in Bitcoins</string>
     <string name="dap_asset_factory_editor_description_hint">Description</string>
     <string name="dap_asset_factory_editor_quantity_hint">Quantity</string>
     <string name="dap_asset_factory_editor_bitcoin_price_hint">Asset Value</string>
@@ -20,7 +21,7 @@
     <string name="help">Help</string>
 
     <!--Dialog Help - Init-->
-    <string name="dap_asset_factory_welcome_subTitle">Welcome to the Asset Factory application.</string>
+    <string name="dap_asset_factory_welcome_subTitle">Welcome to the Asset Factory</string>
     <string name="dap_asset_factory_welcome_body">From here you will be able to create, define and publish all your assets.\n\nIn order to start, tap over the + button below where you will be able to "\n" define all the properties of your asset.</string>
     <string name="dap_asset_factory_welcome_Footer"></string>
     <string name="dap_asset_factory_welcome_name_left">Asset Issuer</string>

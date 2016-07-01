@@ -14,15 +14,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.bitdubai.android_core.app.common.version_1.ApplicationConstants;
+import com.bitdubai.android_core.app.common.version_1.communication.client_system_broker.exceptions.CantCreateProxyException;
 import com.bitdubai.android_core.app.common.version_1.connection_manager.FermatAppConnectionManager;
 import com.bitdubai.android_core.app.common.version_1.util.BottomMenuReveal;
 import com.bitdubai.fermat.R;
+import com.bitdubai.fermat_android_api.engine.ElementsWithAnimation;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.ActivityType;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.AppConnections;
 import com.bitdubai.fermat_api.AppsStatus;
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Engine;
-import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.exceptions.InvalidParameterException;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Activity;
@@ -36,7 +37,6 @@ import com.bitdubai.fermat_api.layer.all_definition.runtime.FermatApp;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantGetSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.CantPersistSettingsException;
 import com.bitdubai.fermat_api.layer.all_definition.settings.exceptions.SettingsNotFoundException;
-import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.SubApp;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.SubAppRuntimeManager;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.SubApps;
@@ -44,7 +44,7 @@ import com.bitdubai.fermat_api.layer.dmp_module.sub_app_manager.InstalledSubApp;
 import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.InstalledWallet;
 import com.bitdubai.fermat_api.layer.engine.runtime.RuntimeManager;
 import com.bitdubai.fermat_pip_api.layer.module.android_core.interfaces.AndroidCoreSettings;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
 import com.bitdubai.fermat_wpd_api.all_definition.WalletNavigationStructure;
 import com.bitdubai.sub_app.wallet_manager.fragment.FermatNetworkSettings;
 
@@ -369,7 +369,7 @@ public class DesktopActivity extends FermatActivity implements FermatScreenSwapp
 
                 SubApp subAppNavigationStructure = getSubAppRuntimeMiddleware().getSubAppByPublicKey(installedSubApp.getAppPublicKey());
 
-                if(subAppNavigationStructure.getPlatform() != Platforms.CRYPTO_BROKER_PLATFORM || subAppNavigationStructure.getPlatform() != Platforms.WALLET_PRODUCTION_AND_DISTRIBUTION) {
+//                if(subAppNavigationStructure.getPlatform() != Platforms.CRYPTO_BROKER_PLATFORM || subAppNavigationStructure.getPlatform() != Platforms.WALLET_PRODUCTION_AND_DISTRIBUTION) {
                     intent = new Intent(this, AppActivity.class);
                     intent.putExtra(ApplicationConstants.INSTALLED_FERMAT_APP, installedSubApp);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -377,9 +377,9 @@ public class DesktopActivity extends FermatActivity implements FermatScreenSwapp
                     finish();
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                }else{
-                    Toast.makeText(this,"App in develop :)",Toast.LENGTH_SHORT).show();
-                }
+//                }else{
+//                    Toast.makeText(this,"App in develop :)",Toast.LENGTH_SHORT).show();
+//                }
 
             }
         }catch (Exception e){
@@ -506,21 +506,23 @@ public class DesktopActivity extends FermatActivity implements FermatScreenSwapp
 
 
     private boolean loadSettings(){
-        SettingsManager settingsManager = null;
         AndroidCoreSettings androidCoreSettings = null;
         try {
-            settingsManager = getAndroidCoreModule().getSettingsManager();
-            androidCoreSettings =((AndroidCoreSettings)settingsManager.loadAndGetSettings(ApplicationConstants.SETTINGS_CORE));
+            androidCoreSettings =getAndroidCoreModule().loadAndGetSettings(ApplicationConstants.SETTINGS_CORE);
         } catch (CantGetSettingsException e) {
             e.printStackTrace();
         } catch (SettingsNotFoundException e) {
             androidCoreSettings = new AndroidCoreSettings(AppsStatus.ALPHA);
             androidCoreSettings.setIsPresentationHelpEnabled(true);
             try {
-                settingsManager.persistSettings(ApplicationConstants.SETTINGS_CORE,androidCoreSettings);
+                getAndroidCoreModule().persistSettings(ApplicationConstants.SETTINGS_CORE, androidCoreSettings);
             } catch (CantPersistSettingsException e1) {
                 e1.printStackTrace();
+            } catch (CantCreateProxyException e1) {
+                e1.printStackTrace();
             }
+        } catch (CantCreateProxyException e) {
+            e.printStackTrace();
         }
         return androidCoreSettings.isHelpEnabled();
     }
@@ -550,6 +552,11 @@ public class DesktopActivity extends FermatActivity implements FermatScreenSwapp
 
     @Override
     public void setTabCustomImageView(int position,View view) {
+
+    }
+
+    @Override
+    public void removeCollapseAnimation(ElementsWithAnimation elementsWithAnimation) {
 
     }
 }

@@ -22,14 +22,13 @@ import com.bitdubai.fermat_csh_api.layer.csh_wallet.exceptions.CantGetCashMoneyW
 import com.bitdubai.fermat_csh_api.layer.csh_wallet.interfaces.CashMoneyWalletTransaction;
 import com.bitdubai.fermat_csh_api.layer.csh_wallet_module.CashMoneyWalletPreferenceSettings;
 import com.bitdubai.fermat_csh_api.layer.csh_wallet_module.interfaces.CashMoneyWalletModuleManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 import com.bitdubai.reference_wallet.cash_money_wallet.R;
 import com.bitdubai.reference_wallet.cash_money_wallet.common.CashTransactionParametersImpl;
 import com.bitdubai.reference_wallet.cash_money_wallet.common.dialogs.CreateTransactionFragmentDialog;
 import com.bitdubai.reference_wallet.cash_money_wallet.session.CashMoneyWalletSession;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -175,9 +174,14 @@ public class TransactionDetailFragment extends AbstractFermatFragment implements
 
     private String getTransactionTypeText(TransactionType transactionType) {
         if (transactionType == TransactionType.DEBIT)
-            return getResources().getString(R.string.csh_withdrawal_transaction_text);
-        else
-            return getResources().getString(R.string.csh_deposit_transaction_text);
+            return getResources().getString(R.string.csh_withdrawal_transaction_text_caps);
+        else if (transactionType == TransactionType.CREDIT)
+            return getResources().getString(R.string.csh_deposit_transaction_text_caps);
+        else if (transactionType == TransactionType.HOLD)
+            return getResources().getString(R.string.csh_hold_transaction_text_caps);
+        else if (transactionType == TransactionType.UNHOLD)
+            return getResources().getString(R.string.csh_unhold_transaction_text_caps);
+        else return "ERROR";
     }
 
 

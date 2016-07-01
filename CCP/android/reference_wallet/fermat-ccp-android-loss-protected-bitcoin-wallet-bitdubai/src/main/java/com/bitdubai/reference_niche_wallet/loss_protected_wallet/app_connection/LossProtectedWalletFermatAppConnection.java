@@ -14,6 +14,7 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Developers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
 import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.LossProtectedWalletSettings;
@@ -30,7 +31,7 @@ import com.bitdubai.reference_niche_wallet.loss_protected_wallet.session.LossPro
 public class LossProtectedWalletFermatAppConnection extends AppConnections<LossProtectedWalletSession>{
 
     private LossProtectedWallet moduleManager = null;
-    private LossProtectedWalletSession referenceWalletSession;
+    private LossProtectedWalletSession lossWalletSession;
 
     public LossProtectedWalletFermatAppConnection(Context activity) {
         super(activity);
@@ -80,25 +81,25 @@ public class LossProtectedWalletFermatAppConnection extends AppConnections<LossP
      try
         {
             SettingsManager<LossProtectedWalletSettings> settingsManager = null;
-            String walletPublicKey = referenceWalletSession.getAppPublicKey();
+
             boolean enabledNotification = true;
-            this.referenceWalletSession = (LossProtectedWalletSession)this.getFullyLoadedSession();
-            if(referenceWalletSession!=  null) {
+            this.lossWalletSession = this.getFullyLoadedSession();
+            if(lossWalletSession!=  null) {
+                String walletPublicKey = lossWalletSession.getAppPublicKey();
+                if (lossWalletSession.getModuleManager() != null) {
+                    moduleManager = lossWalletSession.getModuleManager().getCryptoWallet();
 
-                if (referenceWalletSession.getModuleManager() != null) {
-                    moduleManager = referenceWalletSession.getModuleManager().getCryptoWallet();
+                    //enable notification settings
 
-                    //get enabled notification settings
-
-                    settingsManager = referenceWalletSession.getModuleManager().getSettingsManager();
+                    settingsManager = lossWalletSession.getModuleManager().getSettingsManager();
                     enabledNotification = settingsManager.loadAndGetSettings(walletPublicKey).getNotificationEnabled();
                 }
 
 
                 if (enabledNotification)
-                    return LossProtectedWalletBuildNotificationPainter.getNotification(moduleManager, code, referenceWalletSession.getAppPublicKey());
+                    return LossProtectedWalletBuildNotificationPainter.getNotification(moduleManager, code, walletPublicKey,Activities.CWP_WALLET_RUNTIME_WALLET_LOSS_PROTECTED_WALLET_BITDUBAI_VERSION_1_MAIN.getCode());
                 else
-                    return new LossProtectedWalletNotificationPainter("", "", "", "", false,walletPublicKey);
+                    return new LossProtectedWalletNotificationPainter("", "", "", "", false,Activities.CWP_WALLET_RUNTIME_WALLET_LOSS_PROTECTED_WALLET_BITDUBAI_VERSION_1_MAIN.getCode());
 
             }
             else

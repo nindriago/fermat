@@ -10,6 +10,8 @@ import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseT
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseTableRecord;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperObjectFactory;
 import com.bitdubai.fermat_api.layer.all_definition.developer.LogManagerForDevelopers;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.events.EventSource;
 import com.bitdubai.fermat_api.layer.all_definition.network_service.enums.NetworkServiceType;
@@ -20,6 +22,7 @@ import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_pro
 import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_protocol.exceptions.CantDeliverPendingTransactionsException;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
 import com.bitdubai.fermat_api.layer.all_definition.util.XMLParser;
+import com.bitdubai.fermat_api.layer.core.PluginInfo;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.Database;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantCreateDatabaseException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantOpenDatabaseException;
@@ -29,7 +32,9 @@ import com.bitdubai.fermat_api.layer.all_definition.exceptions.CantCreateNotific
 import com.bitdubai.fermat_api.layer.all_definition.exceptions.CantGetNotificationException;
 import com.bitdubai.fermat_api.layer.all_definition.exceptions.NotificationNotFoundException;
 import com.bitdubai.fermat_cht_api.all_definition.enums.MessageStatus;
+import com.bitdubai.fermat_cht_api.all_definition.enums.TypeChat;
 import com.bitdubai.fermat_cht_api.all_definition.events.enums.EventType;
+import com.bitdubai.fermat_cht_api.layer.middleware.interfaces.GroupMember;
 import com.bitdubai.fermat_cht_api.layer.network_service.chat.enums.ChatMessageStatus;
 import com.bitdubai.fermat_cht_api.layer.network_service.chat.enums.ChatMessageTransactionType;
 import com.bitdubai.fermat_cht_api.layer.network_service.chat.enums.ChatProtocolState;
@@ -59,12 +64,15 @@ import com.bitdubai.fermat_p2p_api.layer.p2p_communication.WsCommunicationsCloud
 import com.bitdubai.fermat_p2p_api.layer.p2p_communication.commons.contents.FermatMessage;
 import com.bitdubai.fermat_p2p_api.layer.p2p_communication.commons.enums.FermatMessagesStatus;
 import com.bitdubai.fermat_p2p_api.layer.p2p_communication.commons.exceptions.CantRequestListException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedPluginExceptionSeverity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,6 +86,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by Gabriel Araujo 15/02/16.
  */
+@PluginInfo(createdBy = "Gabirel Araujo", maintainerMail = "franklinmarcano1970@gmail.com",platform = Platforms.CHAT_PLATFORM, layer = Layers.NETWORK_SERVICE, plugin = Plugins.CHAT_NETWORK_SERVICE)
 public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase implements NetworkServiceChatManager,
         LogManagerForDevelopers,
         DatabaseManagerForDevelopers {
@@ -150,7 +159,7 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             chatNetworkServiceDeveloperDatabaseFactory = new ChatNetworkServiceDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId,getErrorManager());
             chatNetworkServiceDeveloperDatabaseFactory.initializeDatabase();
 
-            chatMetadataRecordDAO = new ChatMetadataRecordDAO(dataBaseCommunication, this.pluginDatabaseSystem, this.pluginId,getErrorManager());
+            chatMetadataRecordDAO = new ChatMetadataRecordDAO(dataBaseCommunication, this.pluginDatabaseSystem, this.pluginId, this);
 
             //executorService = Executors.newFixedThreadPool(2);
             executorService = Executors.newFixedThreadPool(3);
@@ -164,7 +173,7 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
 
 
         }catch (Exception e){
-            reportUnexpectedError(e);
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
         }
 
 
@@ -204,18 +213,20 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             ChatMetadataRecord chatMetadataRecord;
             switch (chatMessageTransactionType) {
                 case CHAT_METADATA_TRASMIT:
-                    String chatMetadataXml = messageData.get(ChatTransmissionJsonAttNames.CHAT_METADATA).getAsString();
-                    System.out.println("chatMetadataXml = " + chatMetadataXml);
+                    String chatMetadataJson = messageData.get(ChatTransmissionJsonAttNames.CHAT_METADATA).getAsString();
+                    System.out.println("chatMetadataJson = " + chatMetadataJson);
                     /*
                      * Convert the xml to object
                      */
 
-                    chatMetadataRecord = (ChatMetadataRecord) XMLParser.parseXML(chatMetadataXml, new ChatMetadataRecord());
+                    chatMetadataRecord = ChatMetadataRecord.fromJson(chatMetadataJson);
 //                    messageData = EncodeMsjContent.decodeMsjContent(chatMetadataXml);
 //                    chatMetadataRecord = new ChatMetadataRecord(messageData);
                     System.out.println("----------------------------\n" +
                             "MENSAJE LLEGO EXITOSAMENTE:" + chatMetadataRecord.getLocalActorPublicKey()
                             + "\n-------------------------------------------------");
+
+                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(new Timestamp(System.currentTimeMillis()));
 
                     chatMetadataRecord.changeState(ChatProtocolState.PROCESSING_RECEIVE);
                     chatMetadataRecord.setTransactionId(getChatMetadataRecordDAO().getNewUUID(UUID.randomUUID().toString()));
@@ -224,7 +235,7 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
                     chatMetadataRecord.setMessageStatus(MessageStatus.CREATED);
                     chatMetadataRecord.setDistributionStatus(DistributionStatus.DELIVERING);
                     chatMetadataRecord.setProcessed(ChatMetadataRecord.NO_PROCESSED);
-                    chatMetadataRecord.setSentDate(new Timestamp(System.currentTimeMillis()));
+                    chatMetadataRecord.setSentDate(timeStamp);
                     chatMetadataRecord.setFlagReadead(false);
                     System.out.println("----------------------------\n" +
                             "CREANDO REGISTRO EN EL INCOMING NOTIFICATION DAO:"
@@ -233,17 +244,6 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
 
                     chatMetadataRecord.setFlagReadead(false);
                     getChatMetadataRecordDAO().createNotification(chatMetadataRecord);
-
-                    //NOTIFICATION LAUNCH
-//                    sendChatMessageNewStatusNotification(
-//                            chatMetadataRecord.getRemoteActorPublicKey(),
-//                            chatMetadataRecord.getRemoteActorType(),
-//                            chatMetadataRecord.getLocalActorPublicKey(),
-//                            chatMetadataRecord.getLocalActorType(),
-//                            DistributionStatus.DELIVERED,
-//                            chatMetadataRecord.getTransactionId().toString()
-//                    );
-
 
                     launchIncomingChatNotification(chatMetadataRecord);
 //                    sendChatMessageNewStatusNotification(
@@ -305,12 +305,17 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
                                 launcheIncomingChatStatusNotification(chatMetadataRecord);
 
                             }
-
-                           // getCommunicationNetworkServiceConnectionManager().closeConnection(chatMetadataRecord.getRemoteActorPublicKey());
-                            //chatExecutorAgent.connectionFailure(chatMetadataRecord.getRemoteActorPublicKey());
                         }
                     }
                     break;
+
+                case TRANSACTION_WRITING_STATUS:
+                    chatMetadataRecord=null;
+                    UUID responsTo = (messageData.has(ChatTransmissionJsonAttNames.RESPONSE_TO)) ? gson.fromJson(messageData.get(ChatTransmissionJsonAttNames.RESPONSE_TO).getAsString(), UUID.class) : null;
+                    if(responsTo!=null)
+                    chatMetadataRecord = getChatMetadataRecordDAO().getNotificationByResponseTo(responsTo);
+                    if(chatMetadataRecord!=null)
+                    launcheIncomingWritingStatusNotification(chatMetadataRecord.getChatId());
                 default:
                     break;
 
@@ -318,16 +323,16 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
 
         } catch (CantUpdateRecordDataBaseException |CantCreateNotificationException |CantInsertRecordDataBaseException | CantReadRecordDataBaseException | NotificationNotFoundException | CantGetNotificationException e) {
             e.printStackTrace();
-            errorManager.reportUnexpectedPluginException(Plugins.CHAT_NETWORK_SERVICE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
-        } catch (Exception e){
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
+        } catch (Exception e) {
             e.printStackTrace();
-            errorManager.reportUnexpectedPluginException(Plugins.CHAT_NETWORK_SERVICE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
 
         }
         try {
             getCommunicationNetworkServiceConnectionManager().getIncomingMessageDao().markAsRead(newFermatMessageReceive);
         } catch (com.bitdubai.fermat_p2p_api.layer.all_definition.communication.network_services.exceptions.CantUpdateRecordDataBaseException e) {
-            errorManager.reportUnexpectedPluginException(Plugins.CHAT_NETWORK_SERVICE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
         }
     }
 
@@ -339,26 +344,14 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             UUID chatId = gson.fromJson(messageData.get(ChatTransmissionJsonAttNames.ID_CHAT), UUID.class);
             ChatMessageTransactionType chatMessageTransactionType = gson.fromJson(messageData.get(ChatTransmissionJsonAttNames.MSJ_CONTENT_TYPE), ChatMessageTransactionType.class);
             if (chatMessageTransactionType==ChatMessageTransactionType.CHAT_METADATA_TRASMIT) {
-                // close connection, sender is the destination
                 launchOutgoingChatNotification(chatId);
-                System.out.println("SALIENDO DEL HANDLE NEW SENT MESSAGE NOTIFICATION");
-                //getCommunicationNetworkServiceConnectionManager().closeConnection(chatMetadataRecord.getRemoteActorPublicKey());
-                //actorNetworkServiceRecordedAgent.getPoolConnectionsWaitingForResponse().remove(actorNetworkServiceRecord.getActorDestinationPublicKey());
+                System.out.println("ChatNetworkServicePluginRoot - SALIENDO DEL HANDLE NEW SENT MESSAGE NOTIFICATION");
             }
-
-            //done message type receive
-//            if(actorNetworkServiceRecord.getNotificationDescriptor() == NotificationDescriptor.RECEIVED) {
-//                actorNetworkServiceRecord.setActorProtocolState(ActorProtocolState.DONE);
-//                chatMetadataRecordDAO.update(actorNetworkServiceRecord);
-//                //actorNetworkServiceRecordedAgent.getPoolConnectionsWaitingForResponse().remove(actorNetworkServiceRecord.getActorDestinationPublicKey());
-//            }
-
 
         } catch (Exception e) {
             //quiere decir que no estoy reciviendo metadata si no una respuesta
-            System.out.println("EXCEPCION DENTRO DEL PROCCESS EVENT");
+            System.out.println("ChatNetworkServicePluginRoot - EXCEPCION DENTRO DEL PROCCESS EVENT");
             reportUnexpectedError(e);
-
         }
     }
 
@@ -445,7 +438,7 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
         {
             reportUnexpectedError(e);
         } catch (Exception e) {
-            System.out.println("INTRA USER NS EXCEPCION REPROCESANDO MESSAGEs");
+            System.out.println("ChatNetworkServicePluginRoot EXCEPCION REPROCESANDO MESSAGEs");
             reportUnexpectedError(e);
         }
     }
@@ -469,6 +462,13 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
         event.setSource(ChatNetworkServicePluginRoot.EVENT_SOURCE);
         getEventManager().raiseEvent(event);
     }
+
+    private void launcheIncomingWritingStatusNotification(UUID chatId){
+        IncomingNewChatStatusUpdate event = (IncomingNewChatStatusUpdate) getEventManager().getNewEvent(EventType.INCOMING_WRITING_STATUS);
+        event.setChatId(chatId);
+        event.setSource(ChatNetworkServicePluginRoot.EVENT_SOURCE);
+        getEventManager().raiseEvent(event);
+    }
     private void changeDestination(ChatMetadataRecord chatMetadataRecord) {
 
         String local = chatMetadataRecord.getRemoteActorPublicKey();
@@ -477,35 +477,35 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
     }
 
     // respond receive and done notification
-    private void respondReceiveAndDoneCommunication(ChatMetadataRecord chatMetadataRecord, String responseTo) throws CantUpdateRecordDataBaseException {
-
-        changeDestination(chatMetadataRecord);
-        try {
-            UUID newNotificationID = chatMetadataRecord.getTransactionId();
-            long currentTime = System.currentTimeMillis();
-            chatMetadataRecord.setDistributionStatus(DistributionStatus.DELIVERED);
-            chatMetadataRecord.changeState(ChatProtocolState.PROCESSING_RECEIVE);
-            chatMetadataRecord.setProcessed(ChatMetadataRecord.PROCESSED);
-            chatMetadataRecord.setResponseToNotification(responseTo);
-            chatMetadataRecord.setSentCount(1);
-            chatMetadataRecord.setSentDate(new Timestamp(currentTime));
-            chatMetadataRecord.setFlagReadead(false);
-            chatMetadataRecord.setTransactionId(newNotificationID);
-            String msjContent = EncodeMsjContent.encodeMSjContentTransactionNewStatusNotification(
-                    newNotificationID.toString(),
-                    ChatProtocolState.DONE,
-                    chatMetadataRecord.getLocalActorType(),
-                    chatMetadataRecord.getRemoteActorType()
-            );
-            chatMetadataRecord.setMsgXML(msjContent);
-            getChatMetadataRecordDAO().update(chatMetadataRecord);
-        } catch (CantUpdateRecordDataBaseException e) {
-            CantUpdateRecordDataBaseException cantUpdateRecordDataBaseException = new CantUpdateRecordDataBaseException(e.getMessage());
-            reportUnexpectedError(cantUpdateRecordDataBaseException);
-            throw cantUpdateRecordDataBaseException;
-        }
-
-    }
+//    private void respondReceiveAndDoneCommunication(ChatMetadataRecord chatMetadataRecord, String responseTo) throws CantUpdateRecordDataBaseException {
+//
+//        changeDestination(chatMetadataRecord);
+//        try {
+//            UUID newNotificationID = chatMetadataRecord.getTransactionId();
+//            long currentTime = System.currentTimeMillis();
+//            chatMetadataRecord.setDistributionStatus(DistributionStatus.DELIVERED);
+//            chatMetadataRecord.changeState(ChatProtocolState.PROCESSING_RECEIVE);
+//            chatMetadataRecord.setProcessed(ChatMetadataRecord.PROCESSED);
+//            chatMetadataRecord.setResponseToNotification(responseTo);
+//            chatMetadataRecord.setSentCount(1);
+//            chatMetadataRecord.setSentDate(new Timestamp(currentTime));
+//            chatMetadataRecord.setFlagReadead(false);
+//            chatMetadataRecord.setTransactionId(newNotificationID);
+//            String msjContent = EncodeMsjContent.encodeMSjContentTransactionNewStatusNotification(
+//                    newNotificationID.toString(),
+//                    ChatProtocolState.DONE,
+//                    chatMetadataRecord.getLocalActorType(),
+//                    chatMetadataRecord.getRemoteActorType()
+//            );
+//            chatMetadataRecord.setMsgXML(msjContent);
+//            getChatMetadataRecordDAO().update(chatMetadataRecord);
+//        } catch (CantUpdateRecordDataBaseException e) {
+//            CantUpdateRecordDataBaseException cantUpdateRecordDataBaseException = new CantUpdateRecordDataBaseException(e.getMessage());
+//            reportUnexpectedError(cantUpdateRecordDataBaseException);
+//            throw cantUpdateRecordDataBaseException;
+//        }
+//
+//    }
 
 
     /**
@@ -526,7 +526,7 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             /*
              * The database exists but cannot be open. I can not handle this situation.
              */
-            errorManager.reportUnexpectedPluginException(Plugins.CHAT_NETWORK_SERVICE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantOpenDatabaseException);
+            reportError(UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantOpenDatabaseException);
             throw new CantInitializeChatNetworkServiceDatabaseException(cantOpenDatabaseException.getLocalizedMessage());
 
         } catch (DatabaseNotFoundException e) {
@@ -549,7 +549,7 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
                 /*
                  * The database cannot be created. I can not handle this situation.
                  */
-                errorManager.reportUnexpectedPluginException(Plugins.CHAT_NETWORK_SERVICE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, cantOpenDatabaseException);
+                reportError(UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, cantOpenDatabaseException);
                 throw new CantInitializeChatNetworkServiceDatabaseException(cantOpenDatabaseException.getLocalizedMessage());
 
             }
@@ -557,68 +557,68 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
 
     }
 
-    private void checkFailedDeliveryTime(String destinationPublicKey)
-    {
-        try{
-
-            List<ChatMetadataRecord> chatMetadataRecords = getChatMetadataRecordDAO().getNotificationByDestinationPublicKey(destinationPublicKey);
-
-            //if I try to send more than 5 times I put it on hold
-            for (ChatMetadataRecord record : chatMetadataRecords) {
-
-                if(!record.getChatProtocolState().getCode().equals(ChatProtocolState.WAITING_RESPONSE.getCode()))
-                {
-                    if(record.getSentCount() > 10 )
-                    {
-                        //  if(record.getSentCount() > 20)
-                        //  {
-                        //reprocess at two hours
-                        //  reprocessTimer =  2 * 3600 * 1000;
-                        // }
-
-                        record.changeState(ChatProtocolState.WAITING_RESPONSE);
-                        record.setSentCount(1);
-                        //update state and process again later
-
-                        getChatMetadataRecordDAO().update(record);
-                    }
-                    else
-                    {
-                        record.setSentCount(record.getSentCount() + 1);
-                        getChatMetadataRecordDAO().update(record);
-                    }
-                }
-                else
-                {
-                    //I verify the number of days I'm around trying to send if it exceeds three days I delete record
-
-                    long sentDate = record.getSentDate().getTime();
-                    long currentTime = System.currentTimeMillis();
-                    long dif = currentTime - sentDate;
-
-                    double horas = Math.floor(dif / (1000 * 60 * 60 ));
-
-                    if(horas > 1)
-                    {
-                        //notify the user does not exist to intra user actor plugin
-                        record.setDistributionStatus(DistributionStatus.CANNOT_SEND);
-                        getChatMetadataRecordDAO().createNotification(record);
-
-                        getChatMetadataRecordDAO().delete(record.getTransactionId());
-                    }
-
-                }
-
-            }
-
-
-        }
-        catch(Exception e)
-        {
-            reportUnexpectedError(e);
-        }
-
-    }
+//    private void checkFailedDeliveryTime(String destinationPublicKey)
+//    {
+//        try{
+//
+//            List<ChatMetadataRecord> chatMetadataRecords = getChatMetadataRecordDAO().getNotificationByDestinationPublicKey(destinationPublicKey);
+//
+//            //if I try to send more than 5 times I put it on hold
+//            for (ChatMetadataRecord record : chatMetadataRecords) {
+//
+//                if(!record.getChatProtocolState().getCode().equals(ChatProtocolState.WAITING_RESPONSE.getCode()))
+//                {
+//                    if(record.getSentCount() > 10 )
+//                    {
+//                        //  if(record.getSentCount() > 20)
+//                        //  {
+//                        //reprocess at two hours
+//                        //  reprocessTimer =  2 * 3600 * 1000;
+//                        // }
+//
+//                        record.changeState(ChatProtocolState.WAITING_RESPONSE);
+//                        record.setSentCount(1);
+//                        //update state and process again later
+//
+//                        getChatMetadataRecordDAO().update(record);
+//                    }
+//                    else
+//                    {
+//                        record.setSentCount(record.getSentCount() + 1);
+//                        getChatMetadataRecordDAO().update(record);
+//                    }
+//                }
+//                else
+//                {
+//                    //I verify the number of days I'm around trying to send if it exceeds three days I delete record
+//
+//                    long sentDate = record.getSentDate().getTime();
+//                    long currentTime = System.currentTimeMillis();
+//                    long dif = currentTime - sentDate;
+//
+//                    double horas = Math.floor(dif / (1000 * 60 * 60 ));
+//
+//                    if(horas > 1)
+//                    {
+//                        //notify the user does not exist to intra user actor plugin
+//                        record.setDistributionStatus(DistributionStatus.CANNOT_SEND);
+//                        getChatMetadataRecordDAO().createNotification(record);
+//
+//                        getChatMetadataRecordDAO().delete(record.getTransactionId());
+//                    }
+//
+//                }
+//
+//            }
+//
+//
+//        }
+//        catch(Exception e)
+//        {
+//            reportUnexpectedError(e);
+//        }
+//
+//    }
 
    /*
      * IntraUserManager Interface method implementation
@@ -831,7 +831,6 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
                         @Override
                         public void run() {
                             try {
-
                                 sendNewMessage(
                                         getProfileSenderToRequestConnection(localActorPubKey, NetworkServiceType.UNDEFINED, senderType),
                                         getProfileDestinationToRequestConnection(remoteActorPubKey, NetworkServiceType.UNDEFINED, receiverType),
@@ -847,6 +846,70 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
 
 
 
+
+        } catch (Exception e) {
+
+            StringBuilder contextBuffer = new StringBuilder();
+            contextBuffer.append("Plugin ID: " + pluginId);
+            contextBuffer.append(CantStartPluginException.CONTEXT_CONTENT_SEPARATOR);
+            contextBuffer.append("wsCommunicationsCloudClientManager: " + wsCommunicationsCloudClientManager);
+            contextBuffer.append(CantStartPluginException.CONTEXT_CONTENT_SEPARATOR);
+            contextBuffer.append("pluginDatabaseSystem: " + pluginDatabaseSystem);
+            contextBuffer.append(CantStartPluginException.CONTEXT_CONTENT_SEPARATOR);
+            contextBuffer.append("errorManager: " + errorManager);
+            contextBuffer.append(CantStartPluginException.CONTEXT_CONTENT_SEPARATOR);
+            contextBuffer.append("eventManager: " + eventManager);
+
+            String context = contextBuffer.toString();
+            String possibleCause = "Plugin was not registered";
+
+            CantSendChatMessageNewStatusNotificationException pluginStartException = new CantSendChatMessageNewStatusNotificationException(CantSendChatMessageNewStatusNotificationException.DEFAULT_MESSAGE, e, context, possibleCause);
+
+            reportUnexpectedError(pluginStartException);
+
+            throw pluginStartException;
+        }
+    }
+
+    @Override
+    public void sendWritingStatus(final String localActorPubKey, final PlatformComponentType senderType, final String remoteActorPubKey, final PlatformComponentType receiverType, final UUID chatId) throws CantSendChatMessageNewStatusNotificationException {
+        try {
+
+            if (localActorPubKey == null || localActorPubKey.length() == 0) {
+                throw new IllegalArgumentException("Argument localActorPubKey can not be null");
+            }
+            if (senderType == null) {
+                throw new IllegalArgumentException("Argument senderType can not be null");
+            }
+            if (remoteActorPubKey == null || remoteActorPubKey.length() == 0) {
+                throw new IllegalArgumentException("Argument remoteActorPubKey can not be null");
+            }
+            if (receiverType == null) {
+                throw new IllegalArgumentException("Argument receiverType can not be null");
+            }
+
+            ChatMetadataRecord chatMetadataRecord = getChatMetadataRecordDAO().getNotificationByChatAndMessageId(chatId, null);
+            final String msjContent = EncodeMsjContent.encodeMSjContentTransactionWritingNotification(
+                    chatMetadataRecord.getResponseToNotification(),
+                    senderType,
+                    receiverType,
+                    chatId
+            );
+
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            sendNewMessage(
+                                    getProfileSenderToRequestConnection(localActorPubKey, NetworkServiceType.UNDEFINED, senderType),
+                                    getProfileDestinationToRequestConnection(remoteActorPubKey, NetworkServiceType.UNDEFINED, receiverType),
+                                    msjContent
+                            );
+                        } catch (CantSendMessageException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
         } catch (Exception e) {
 
@@ -894,10 +957,10 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             if (remoteActorPubKey == null || remoteActorPubKey.length() == 0 || remoteActorPubKey.equals("null")) {
                 throw new IllegalArgumentException("Argument remoteActorPubKey can not be null");
             }
-            System.out.println("ChatPLuginRoot - Starting method sendChatMetadata");
+            System.out.println("ChatNetworkServicePluginRoot - Starting method sendChatMetadata");
 
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(new Timestamp(System.currentTimeMillis()));
 
-            long currentTime = System.currentTimeMillis();
             ChatProtocolState protocolState = ChatProtocolState.PROCESSING_SEND;
             chatMetadataRecord.setTransactionId(getChatMetadataRecordDAO().getNewUUID(UUID.randomUUID().toString()));
             chatMetadataRecord.setChatId(chatMetadata.getChatId());
@@ -915,8 +978,10 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             chatMetadataRecord.setDistributionStatus(DistributionStatus.SENT);
             chatMetadataRecord.setResponseToNotification(chatMetadataRecord.getTransactionId().toString());
             chatMetadataRecord.setProcessed(ChatMetadataRecord.NO_PROCESSED);
-            chatMetadataRecord.setSentDate(new Timestamp(currentTime));
+            chatMetadataRecord.setSentDate(timeStamp);
             chatMetadataRecord.changeState(protocolState);
+            chatMetadataRecord.setTypeChat(chatMetadata.getTypeChat());
+            chatMetadataRecord.setGroupMembers(chatMetadata.getGroupMembers());
             final String EncodedMsg = EncodeMsjContent.encodeMSjContentChatMetadataTransmit(chatMetadataRecord, chatMetadata.getLocalActorType(), chatMetadata.getRemoteActorType());
 
 
@@ -936,21 +1001,41 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             final PlatformComponentType remoteType = chatMetadataRecord.getRemoteActorType();
             getChatMetadataRecordDAO().createNotification(chatMetadataRecord);
             System.out.println("*** 12345 case 6:send msg in NS layer" + new Timestamp(System.currentTimeMillis()));
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
+            if(chatMetadata.getTypeChat().equals(TypeChat.INDIVIDUAL)) {
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    try {
-                        sendNewMessage(
-                                getProfileSenderToRequestConnection(localActorPubKey, NetworkServiceType.UNDEFINED, senderType),
-                                getProfileDestinationToRequestConnection(remoteActorPubKey, NetworkServiceType.UNDEFINED, remoteType),
-                                EncodedMsg
-                        );
-                    } catch (CantSendMessageException e) {
-                        e.printStackTrace();
+                        try {
+                            sendNewMessage(
+                                    getProfileSenderToRequestConnection(localActorPubKey, NetworkServiceType.UNDEFINED, senderType),
+                                    getProfileDestinationToRequestConnection(remoteActorPubKey, NetworkServiceType.UNDEFINED, remoteType),
+                                    EncodedMsg
+                            );
+                        } catch (CantSendMessageException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
+            }else if(chatMetadata.getTypeChat().equals(TypeChat.GROUP)){
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        for(GroupMember groupMember : chatMetadata.getGroupMembers()) {
+                            try {
+                                sendNewMessage(
+                                        getProfileSenderToRequestConnection(localActorPubKey, NetworkServiceType.UNDEFINED, senderType),
+                                        getProfileDestinationToRequestConnection(groupMember.getActorPublicKey(), NetworkServiceType.UNDEFINED, remoteType),
+                                        EncodedMsg
+                                );
+                            } catch (CantSendMessageException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+            }
 
         }catch(CantSendChatMessageMetadataException e){
             StringBuilder contextBuffer = new StringBuilder();
@@ -996,8 +1081,9 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             throw pluginStartException;
         }
     }
+
     private void reportUnexpectedError(final Exception e) {
-        errorManager.reportUnexpectedPluginException(Plugins.CHAT_NETWORK_SERVICE, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
+        reportError(UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
     }
 
     @Override
@@ -1048,6 +1134,17 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
         }
     }
 
+//    /**
+//     * @param chatMetadata
+//     * @throws CantSendChatMessageNewStatusNotificationException
+//     */
+//    @Override
+//    public void sendMessageChatBroadcast(ChatMetadata chatMetadata) throws CantSendChatMessageMetadataException {
+//        //TODO: Este metodo es el va hacer llamado desde el middleware para que se arme la data necesaria para proceder a enviar el mensaje desde el metodo que usamos actualmente para el envio
+//
+//
+//    }
+
     @Override
     public void confirmReception(UUID transactionID) throws CantConfirmTransactionException {
         try {
@@ -1085,10 +1182,18 @@ public class ChatNetworkServicePluginRoot extends AbstractNetworkServiceBase imp
             List<ChatMetadataRecord> pendingChatMetadataTransactions = getChatMetadataRecordDAO().findAll(ChatNetworkServiceDataBaseConstants.CHAT_METADATA_TRANSACTION_RECORD_PROCCES_STATUS_COLUMN_NAME, ChatMetadataRecord.NO_PROCESSED);
             if (!pendingChatMetadataTransactions.isEmpty()) {
                 for (ChatMetadataRecord chatMetadataRecord : pendingChatMetadataTransactions) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                    Date parsedDate = null;
+                    try {
+                        parsedDate = dateFormat.parse(chatMetadataRecord.getSentDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
                     Transaction<ChatMetadata> transaction = new Transaction<>(chatMetadataRecord.getTransactionId(),
                             (ChatMetadata) chatMetadataRecord,
                             Action.APPLY,
-                            chatMetadataRecord.getSentDate().getTime());
+                            timestamp.getTime());
                     pendingTransactions.add(transaction);
 
                 }

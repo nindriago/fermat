@@ -17,8 +17,8 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.SubApps;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedSubAppExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedSubAppExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 
 /**
  * ChatFermatAppConnection
@@ -81,7 +81,7 @@ public class ChatFermatAppConnection extends AppConnections {
             String usersend = code.split("@#@#")[0];
             String message = code.split("@#@#")[1];
             //find last transaction
-            notification = new ChatNotificationPainter("New Message Recive", usersend+" : "+message ,"","");
+            notification = new ChatNotificationPainter("New Message Receive", usersend+" : "+message ,"","", android.R.drawable.ic_notification_overlay);
 
         }
         catch(Exception e)

@@ -11,9 +11,10 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatButto
 import com.bitdubai.fermat_android_api.layer.definition.wallet.views.FermatTextView;
 import com.bitdubai.fermat_android_api.ui.holders.FermatViewHolder;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
+import com.bitdubai.fermat_cbp_api.all_definition.enums.MoneyType;
 import com.bitdubai.fermat_cbp_api.layer.wallet_module.crypto_broker.interfaces.CryptoBrokerWalletModuleManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 import com.bitdubai.reference_wallet.crypto_broker_wallet.R;
 import com.bitdubai.reference_wallet.crypto_broker_wallet.common.models.ContractDetail;
 import com.bitdubai.reference_wallet.crypto_broker_wallet.fragments.contract_detail.ContractDetailActivityFragment;
@@ -197,8 +198,10 @@ public class ContractDetailViewHolder extends FermatViewHolder implements View.O
                             textDescription.setText("you receive:");
                             textDescriptionDate.setVisibility(View.INVISIBLE);
                             itemView.setBackgroundColor(res.getColor(R.color.card_background_status_confirm));
-                            confirmButton.setText("Confirm");
-                            confirmButton.setVisibility(View.VISIBLE);
+                            if (itemInfo.getPaymentMethodType() != MoneyType.CRYPTO) {
+                                confirmButton.setText("Confirm");
+                                confirmButton.setVisibility(View.VISIBLE);
+                            }
                         }
 
                         break;

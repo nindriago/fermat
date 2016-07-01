@@ -1,6 +1,7 @@
 package org.fermat.fermat_dap_android_wallet_asset_issuer.app_connection;
 
 import android.content.Context;
+
 import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.engine.FooterViewPainter;
 import com.bitdubai.fermat_android_api.engine.HeaderViewPainter;
@@ -13,13 +14,16 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Developers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Layers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Platforms;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
+import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.all_definition.util.Version;
+
 import org.fermat.fermat_dap_android_wallet_asset_issuer.common.header.WalletAssetIssuerHeaderPainter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.common.navigation_drawer.IssuerWalletNavigationViewPainter;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.factory.IssuerWalletFragmentFactory;
 import org.fermat.fermat_dap_android_wallet_asset_issuer.sessions.AssetIssuerSession;
 
 import org.fermat.fermat_dap_api.layer.dap_identity.asset_issuer.interfaces.IdentityAssetIssuer;
+import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.AssetIssuerSettings;
 import org.fermat.fermat_dap_api.layer.dap_module.wallet_asset_issuer.interfaces.AssetIssuerWalletSupAppModuleManager;
 
 /**
@@ -76,32 +80,31 @@ public class WalletAssetIssuerFermatAppConnection extends AppConnections<AssetIs
     public NotificationPainter getNotificationPainter(String code) {
         NotificationPainter notification = null;
         try {
-            this.assetIssuerSession = (AssetIssuerSession) this.getSession();
-            if (assetIssuerSession != null)
-                manager = assetIssuerSession.getModuleManager();
-            String[] params = code.split("_");
-            String notificationType = params[0];
-            String senderActorPublicKey = params[1];
+            SettingsManager<AssetIssuerSettings> settingsManager;
 
-            switch (notificationType) {
-                case "ASSET-ISSUER-DEBIT":
-//                    if (manager != null) {
-                        //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Key", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
-                        notification = new WalletAssetIssuerNotificationPainter("Wallet Issuer - Debit", senderActorPublicKey, "", "");
-//                    }
-                    break;
-                case "ASSET-ISSUER-CREDIT":
-//                    if (manager != null) {
-                        //find last notification by sender actor public key
-//                        ActorAssetIssuer senderActor = manager.getLastNotification(senderActorPublicKey);
-//                        notification = new WalletAssetIssuerNotificationPainter("New Extended Request", "Was Received From: " + senderActor.getName(), "", "");
-//                    } else {
-                        notification = new WalletAssetIssuerNotificationPainter("Wallet Issuer Credit", senderActorPublicKey, "", "");
-//                    }
-                    break;
+            this.assetIssuerSession = this.getFullyLoadedSession();
+            boolean enabledNotification = true;
+
+            if (assetIssuerSession != null) {
+                if (assetIssuerSession.getModuleManager() != null) {
+                    manager = assetIssuerSession.getModuleManager();
+                    settingsManager = assetIssuerSession.getModuleManager().getSettingsManager();
+                    enabledNotification = settingsManager.loadAndGetSettings(assetIssuerSession.getAppPublicKey()).getNotificationEnabled();
+                }
+                String[] params = code.split("_");
+                String notificationType = params[0];
+                String senderActorPublicKey = params[1];
+
+                if (enabledNotification) {
+                    switch (notificationType) {
+                        case "ASSET-ISSUER-DEBIT":
+                            notification = new WalletAssetIssuerNotificationPainter("Wallet Issuer - Debit", senderActorPublicKey, "", "");
+                            break;
+                        case "ASSET-ISSUER-CREDIT":
+                            notification = new WalletAssetIssuerNotificationPainter("Wallet Issuer Credit", senderActorPublicKey, "", "");
+                            break;
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

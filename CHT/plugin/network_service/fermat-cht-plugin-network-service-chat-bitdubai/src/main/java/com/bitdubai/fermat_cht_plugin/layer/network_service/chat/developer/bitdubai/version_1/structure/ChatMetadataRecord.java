@@ -3,13 +3,17 @@ package com.bitdubai.fermat_cht_plugin.layer.network_service.chat.developer.bitd
 import com.bitdubai.fermat_api.layer.all_definition.components.enums.PlatformComponentType;
 import com.bitdubai.fermat_api.layer.all_definition.util.XMLParser;
 import com.bitdubai.fermat_cht_api.all_definition.enums.MessageStatus;
+import com.bitdubai.fermat_cht_api.all_definition.enums.TypeChat;
+import com.bitdubai.fermat_cht_api.layer.middleware.interfaces.GroupMember;
 import com.bitdubai.fermat_cht_api.layer.network_service.chat.enums.ChatMessageStatus;
 import com.bitdubai.fermat_cht_api.layer.network_service.chat.enums.ChatProtocolState;
 import com.bitdubai.fermat_cht_api.layer.network_service.chat.enums.DistributionStatus;
 import com.bitdubai.fermat_cht_api.layer.network_service.chat.interfaces.ChatMetadata;
+import com.google.gson.Gson;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -40,7 +44,7 @@ public class ChatMetadataRecord implements ChatMetadata{
 
     private MessageStatus messageStatus;
 
-    private Timestamp date;
+    private String date;
 
     private UUID messageId;
 
@@ -50,13 +54,17 @@ public class ChatMetadataRecord implements ChatMetadata{
 
     private ChatProtocolState chatProtocolState;
 
-    private Timestamp sentDate;
+    private String sentDate;
 
     private boolean flagReadead;
 
     private int sentCount;
 
     private String msgXML;
+
+    private TypeChat typeChat;
+
+    private List<GroupMember> groupMembers;
 
     public String getMsgXML() {
         return msgXML;
@@ -79,11 +87,11 @@ public class ChatMetadataRecord implements ChatMetadata{
      */
     private String processed;
 
-    public Timestamp getSentDate() {
+    public String getSentDate() {
         return sentDate;
     }
 
-    public void setSentDate(Timestamp sentDate) {
+    public void setSentDate(String sentDate) {
         this.sentDate = sentDate;
     }
 
@@ -293,6 +301,35 @@ public class ChatMetadataRecord implements ChatMetadata{
         return distributionStatus;
     }
 
+    public void setTypeChat(TypeChat typeChat) {
+        this.typeChat = typeChat;
+    }
+
+    @Override
+    public TypeChat getTypeChat() {
+        return typeChat;
+    }
+
+    public void setGroupMembers(List<GroupMember> groupMembers) {
+        this.groupMembers = groupMembers;
+    }
+
+    @Override
+    public List<GroupMember> getGroupMembers() {
+        return groupMembers;
+    }
+
+    @Override
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static ChatMetadataRecord fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, ChatMetadataRecord.class);
+    }
+
 
     /**
      *
@@ -415,7 +452,7 @@ public class ChatMetadataRecord implements ChatMetadata{
      * @return
      */
     @Override
-    public Timestamp getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -423,7 +460,7 @@ public class ChatMetadataRecord implements ChatMetadata{
      *
      * @param date
      */
-    public void setDate(Timestamp date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

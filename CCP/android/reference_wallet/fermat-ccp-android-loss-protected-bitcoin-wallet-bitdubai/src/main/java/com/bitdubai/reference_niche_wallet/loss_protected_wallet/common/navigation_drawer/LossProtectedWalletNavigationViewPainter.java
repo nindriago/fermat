@@ -3,6 +3,8 @@ package com.bitdubai.reference_niche_wallet.loss_protected_wallet.common.navigat
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,7 @@ public class LossProtectedWalletNavigationViewPainter implements com.bitdubai.fe
     @Override
     public FermatAdapter addNavigationViewAdapter() {
         try {
-            NavigationViewAdapter navigationViewAdapter = new NavigationViewAdapter(activity.get());
+            LossProtectedWalletNavigationViewAdapter navigationViewAdapter = new LossProtectedWalletNavigationViewAdapter(activity.get());
             return navigationViewAdapter;
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +68,7 @@ public class LossProtectedWalletNavigationViewPainter implements com.bitdubai.fe
             options.inScaled = true;
             options.inSampleSize = 5;
             drawable = BitmapFactory.decodeResource(
-                    activity.get().getResources(), R.drawable.navdrawer_background,options);
+                    activity.get().getResources(), Color.WHITE,options);
             //drawable = ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.bg_drawer_body);
         }catch (OutOfMemoryError error){
             error.printStackTrace();

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bitdubai.android_core.app.common.version_1.ApplicationConstants;
 import com.bitdubai.android_core.app.common.version_1.connection_manager.FermatAppConnectionManager;
 import com.bitdubai.fermat.R;
+import com.bitdubai.fermat_android_api.engine.ElementsWithAnimation;
 import com.bitdubai.fermat_android_api.engine.FermatAppsManager;
 import com.bitdubai.fermat_android_api.engine.FermatFragmentFactory;
 import com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.AppConnections;
@@ -42,8 +43,8 @@ import com.bitdubai.fermat_api.layer.all_definition.runtime.FermatApp;
 import com.bitdubai.fermat_api.layer.engine.runtime.RuntimeManager;
 import com.bitdubai.fermat_api.layer.modules.exceptions.ActorIdentityNotSelectedException;
 import com.bitdubai.fermat_api.layer.modules.exceptions.CantGetSelectedActorIdentityException;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedWalletExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedWalletExceptionSeverity;
 
 import static com.bitdubai.android_core.app.common.version_1.util.system.FermatSystemUtils.getAppResources;
 import static com.bitdubai.android_core.app.common.version_1.util.system.FermatSystemUtils.getErrorManager;
@@ -56,7 +57,7 @@ import static com.bitdubai.android_core.app.common.version_1.util.system.FermatS
 public class AppActivity extends FermatActivity implements FermatScreenSwapper {
 
 
-
+    private static final String TAG = "AppActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
         } catch (Exception e) {
             getErrorManager().reportUnexpectedWalletException(Wallets.CWP_WALLET_RUNTIME_WALLET_BITCOIN_WALLET_ALL_BITDUBAI, UnexpectedWalletExceptionSeverity.DISABLES_THIS_FRAGMENT, FermatException.wrapException(e));
             Toast.makeText(getApplicationContext(), "Oooops! recovering from system error", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -125,6 +127,7 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
         } catch (Exception e) {
             getErrorManager().reportUnexpectedWalletException(Wallets.CWP_WALLET_RUNTIME_WALLET_BITCOIN_WALLET_ALL_BITDUBAI, UnexpectedWalletExceptionSeverity.DISABLES_THIS_FRAGMENT, FermatException.wrapException(e));
             Toast.makeText(getApplicationContext(), "Oooops! recovering from system error", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -241,21 +244,21 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
     protected void loadUI(final FermatSession fermatSession) {
         try {
             if(fermatSession!=null) {
-                Log.i("APP ACTIVITY loadUI", "INICIA " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "INICIA " + System.currentTimeMillis());
                 FermatStructure appStructure = ApplicationSession.getInstance().getAppManager().getAppStructure(fermatSession.getAppPublicKey());
-                Log.i("APP ACTIVITY loadUI", "Get App Structure " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "Get App Structure " + System.currentTimeMillis());
                 final AppConnections fermatAppConnection = FermatAppConnectionManager.getFermatAppConnection(appStructure.getPublicKey(), this, fermatSession);
-                Log.i("APP ACTIVITY loadUI", "getFermatAppConnection " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "getFermatAppConnection " + System.currentTimeMillis());
                 FermatFragmentFactory fermatFragmentFactory = fermatAppConnection.getFragmentFactory();
-                Log.i("APP ACTIVITY loadUI", "getFragmentFactory " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "getFragmentFactory " + System.currentTimeMillis());
                 Activity activity = appStructure.getLastActivity();
-                Log.i("APP ACTIVITY loadUI", "getLastActivity " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "getLastActivity " + System.currentTimeMillis());
                 executor.submit(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             fermatAppConnection.setActiveIdentity(fermatSession.getModuleManager().getSelectedActorIdentity());
-                            refreshSideMenu(fermatAppConnection);
+                            //refreshSideMenu(fermatAppConnection);
                         } catch (CantGetSelectedActorIdentityException e) {
                             e.printStackTrace();
                         } catch (ActorIdentityNotSelectedException e) {
@@ -264,36 +267,38 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
                     }
                 });
 
-                Log.i("APP ACTIVITY loadUI", "getSelectedActorIdentity " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "getSelectedActorIdentity " + System.currentTimeMillis());
                 loadBasicUI(activity, fermatAppConnection);
-                Log.i("APP ACTIVITY loadUI", "loadBasicUI " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "loadBasicUI " + System.currentTimeMillis());
                 hideBottonIcons();
-                Log.i("APP ACTIVITY loadUI", "hideBottonIcons " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "hideBottonIcons " + System.currentTimeMillis());
                 paintScreen(activity);
-                Log.i("APP ACTIVITY loadUI", "paintScreen " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", "paintScreen " + System.currentTimeMillis());
                 if (activity.getTabStrip() == null && activity.getFragments().size() > 1) {
                     initialisePaging();
-                    Log.i("APP ACTIVITY loadUI", "initialisePaging " + System.currentTimeMillis());
+//                    Log.i("APP ACTIVITY loadUI", "initialisePaging " + System.currentTimeMillis());
                 }
                 if (activity.getTabStrip() != null) {
                     setPagerTabs(activity.getTabStrip(), fermatSession, fermatFragmentFactory);
-                    Log.i("APP ACTIVITY loadUI", "setPagerTabs " + System.currentTimeMillis());
+//                    Log.i("APP ACTIVITY loadUI", "setPagerTabs " + System.currentTimeMillis());
                 }
                 if (activity.getFragments().size() == 1) {
                     setOneFragmentInScreen(fermatFragmentFactory, fermatSession, appStructure);
-                    Log.i("APP ACTIVITY loadUI", "setOneFragmentInScreen " + System.currentTimeMillis());
+//                    Log.i("APP ACTIVITY loadUI", "setOneFragmentInScreen " + System.currentTimeMillis());
                 }
-                Log.i("APP ACTIVITY loadUI", " TERMINA " + System.currentTimeMillis());
+//                Log.i("APP ACTIVITY loadUI", " TERMINA " + System.currentTimeMillis());
             }else{
-                Log.i("APP ACTIVITY loadUI", " SESSION NULL");
-                Toast.makeText(getApplicationContext(), "Oooops! recovering from system error", Toast.LENGTH_SHORT).show();
+//                Log.i("APP ACTIVITY loadUI", " SESSION NULL");
+                Toast.makeText(getApplicationContext(), "Recovering from system error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG,"ERROR: Session null, please verify this");
                 handleExceptionAndRestart();
             }
         } catch (Exception e) {
-            Log.i("APP ACTIVITY loadUI", " ERROR " + e.getMessage());
+//            Log.i("APP ACTIVITY loadUI", " ERROR " + e.getMessage());
             getErrorManager().reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.UNSTABLE, FermatException.wrapException(e));
-            Toast.makeText(getApplicationContext(), "Oooops! recovering from system error",
+            Toast.makeText(getApplicationContext(), "Recovering from system error",
                     Toast.LENGTH_LONG).show();
+            e.printStackTrace();
             handleExceptionAndRestart();
         }
     }
@@ -309,6 +314,7 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
 //            getErrorManager().reportUnexpectedUIException(UISource.VIEW, UnexpectedUIExceptionSeverity.UNSTABLE, FermatException.wrapException(e));
 //            Toast.makeText(getApplicationContext(), "Oooops! recovering from system error",
 //                    Toast.LENGTH_LONG).show();
+//            e.printStackTrace();
         }
     }
 
@@ -320,7 +326,22 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
         try {
             FermatStructure fermatStructure = ApplicationSession.getInstance().getAppManager().getLastAppStructure();
             lastActivity = fermatStructure.getLastActivity();
-            nextActivity = fermatStructure.getActivity(Activities.getValueFromString(activityName));
+            try {
+                nextActivity = fermatStructure.getActivity(Activities.getValueFromString(activityName));
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e(TAG, "changeActivity error, Avisarle a Mati con este log:");
+                Log.e(TAG,"FermatStructure PK: "+fermatStructure.getPublicKey());
+                Log.e(TAG,"lastActivity: "+lastActivity);
+                Log.e(TAG,"nextActivity code: "+activityName);
+                try {
+                    //TODO: this is only because i am tired, remember to delete this.
+                    fermatStructure = ApplicationSession.getInstance().getAppManager().getAppStructure(appBackPublicKey);
+                    nextActivity = fermatStructure.getActivity(Activities.getValueFromString(activityName));
+                }catch (Exception e1){
+                    handleExceptionAndRestart();
+                }
+            }
             if (!nextActivity.equals(lastActivity)) {
                 resetThisActivity();
                 Intent intent = getIntent(); //new Intent(this,LoadingScreenActivity.class);
@@ -337,10 +358,12 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
                 onBackPressed();
             else {
                 getErrorManager().reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.UNSTABLE, new IllegalArgumentException("Error in changeActivity"));
-                Toast.makeText(getApplicationContext(), "Oooops! recovering from system error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Recovering from system error", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+                handleExceptionAndRestart();
             }
         } catch (Throwable throwable) {
-            Toast.makeText(getApplicationContext(), "Oooops! recovering from system error. Throwable", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Recovering from system error. Throwable", Toast.LENGTH_LONG).show();
             throwable.printStackTrace();
         }
 
@@ -415,6 +438,7 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
         }catch (Exception e){
             getErrorManager().reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.UNSTABLE, new IllegalArgumentException("Error in selectApp"));
             Toast.makeText(getApplicationContext(), "Oooops! recovering from system error", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 
@@ -470,4 +494,8 @@ public class AppActivity extends FermatActivity implements FermatScreenSwapper {
         if(tab!=null) tab.setCustomView(view);
     }
 
+    @Override
+    public void removeCollapseAnimation(ElementsWithAnimation elementsWithAnimation) {
+
+    }
 }
